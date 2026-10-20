@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 620" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient for Blue Hour Portrait Frame -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#182C55" />
+      <stop offset="50%" stop-color="#243C6E" />
+      <stop offset="100%" stop-color="#101D3A" />
+    </linearGradient>
+
+    <!-- Soft Mist Glow -->
+    <radialGradient id="mistGlow" cx="50%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#C9DDF9" stop-opacity="0.35" />
+      <stop offset="60%" stop-color="#344F80" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#101D3A" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Edge Vignette Mask -->
+    <linearGradient id="bottomFade" x1="0%" y1="60%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <mask id="fadeMask">
+      <rect width="480" height="620" fill="url(#bottomFade)" />
+    </mask>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="480" height="620" fill="url(#bgGrad)" rx="24" />
+
+  <!-- Atmospheric Glow Layer -->
+  <circle cx="240" cy="220" r="180" fill="url(#mistGlow)" />
+
+  <!-- Subtle Horizon Line -->
+  <line x1="40" y1="360" x2="440" y2="360" stroke="#C9DDF9" stroke-opacity="0.25" stroke-dasharray="4 6" />
+
+  <!-- Delicate Celestial Accent -->
+  <g transform="translate(390, 60)" opacity="0.6">
+    <circle cx="0" cy="0" r="12" fill="none" stroke="#C9DDF9" stroke-width="1" />
+    <circle cx="0" cy="0" r="2" fill="#C9DDF9" />
+    <line x1="-18" y1="0" x2="18" y2="0" stroke="#C9DDF9" stroke-width="0.8" />
+    <line x1="0" y1="-18" x2="0" y2="18" stroke="#C9DDF9" stroke-width="0.8" />
+  </g>
+
+  <!-- Elegant Editorial Silhouette Group with Fade Mask -->
+  <g mask="url(#fadeMask)">
+    <!-- Shoulders / Torso Silhouette -->
+    <path d="M120 540 C130 430 170 380 210 365 L240 375 L270 365 C310 380 350 430 360 540 Z" fill="#142347" stroke="#344F80" stroke-width="1.5" />
+    <!-- Neck -->
+    <path d="M220 370 L220 310 L260 310 L260 370 Z" fill="#1C305E" />
+    <!-- Head / Jawline -->
+    <ellipse cx="240" cy="245" rx="58" ry="72" fill="#203669" stroke="#C9DDF9" stroke-opacity="0.3" stroke-width="1.5" />
+    <!-- Soft Hair / Headwear outline -->
+    <path d="M172 235 C170 170 200 140 240 140 C280 140 310 170 308 235 C308 275 300 310 285 335 C275 350 255 355 240 355 C225 355 205 350 195 335 C180 310 172 275 172 235 Z" fill="#16274E" stroke="#C9DDF9" stroke-opacity="0.4" stroke-width="1" />
+  </g>
+
+  <!-- Editorial Placeholder Overlay Box -->
+  <g transform="translate(70, 480)">
+    <rect width="340" height="95" rx="14" fill="#0B1327" fill-opacity="0.85" stroke="#C9DDF9" stroke-opacity="0.3" />
+    <text x="170" y="36" font-family="'JetBrains Mono', monospace" font-size="11" fill="#C9DDF9" letter-spacing="2" text-anchor="middle" font-weight="600">PERSONAL PORTRAIT</text>
+    <text x="170" y="58" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" fill="#F4F7FC" text-anchor="middle" font-weight="500">Mukaromah · Editorial Profile</text>
+    <text x="170" y="78" font-family="'JetBrains Mono', monospace" font-size="10" fill="#8FA6C8" letter-spacing="1" text-anchor="middle">Replace with assets/portrait.jpg</text>
+  </g>
+
+  <!-- Fine Inner Frame Line -->
+  <rect x="20" y="20" width="440" height="580" rx="16" fill="none" stroke="#C9DDF9" stroke-opacity="0.18" stroke-width="1" />
+</svg>

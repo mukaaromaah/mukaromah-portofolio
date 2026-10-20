@@ -1,0 +1,7 @@
+# Deploy archives and logs
+*.zip
+.system_generated/
+deploy-staging/
+staging_build/
+.DS_Store
+Thumbs.db
