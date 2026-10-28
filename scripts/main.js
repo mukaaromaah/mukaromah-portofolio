@@ -209,9 +209,46 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateScrollTelemetry, { passive: true });
   updateScrollTelemetry();
 
+  // Lenis Smooth Scroll Integration (Ref: Kaiki Standard)
+  let lenis = null;
+  if (typeof Lenis !== 'undefined') {
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        smoothWheel: true,
+        touchMultiplier: 1.5,
+      });
+
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+      } else {
+        function rafLenis(time) {
+          lenis.raf(time);
+          requestAnimationFrame(rafLenis);
+        }
+        requestAnimationFrame(rafLenis);
+      }
+
+      lenis.on('scroll', updateScrollTelemetry);
+    } catch {
+      lenis = null;
+    }
+  }
+
   if (returnOriginBtn) {
     returnOriginBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (lenis) {
+        lenis.scrollTo(0);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
   }
 
@@ -440,7 +477,206 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // 9. 3D WEBGL LUNAR-BLACKHOLE ENGINE + ORBITAL CODE GLYPH HUD (Ref: poggufanz.xyz)
+  // 9. KAIKI SIGNATURE 3D SHOWCASES & INTERACTION BLUEPRINTS
+  // ==========================================================================
+  init3DCardTilt();
+  init3DCylinderShowcase();
+  init3DSnakeWaveShowcase();
+  initJourneyScrubbedTimeline();
+
+  // BLUEPRINT A: MOUSE-MOVE 3D CARD TILT
+  function init3DCardTilt() {
+    const cards = document.querySelectorAll('.tilt-card-3d');
+    cards.forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        if (typeof gsap !== 'undefined') {
+          gsap.to(card, {
+            rotateY: px * 12,
+            rotateX: -py * 12,
+            y: -5,
+            duration: 0.35,
+            ease: 'power2.out',
+            transformPerspective: 1000,
+          });
+        } else {
+          card.style.transform = `perspective(1000px) rotateY(${px * 12}deg) rotateX(${-py * 12}deg) translateY(-5px)`;
+        }
+      });
+
+      card.addEventListener('mouseleave', () => {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(card, {
+            rotateY: 0,
+            rotateX: 0,
+            y: 0,
+            duration: 0.6,
+            ease: 'elastic.out(1, 0.5)',
+          });
+        } else {
+          card.style.transform = '';
+        }
+      });
+    });
+  }
+
+  // BLUEPRINT B: CONTINUOUS 3D AUTO-SPIN CYLINDER GALLERY (EXACT 3:4 CARDS)
+  function init3DCylinderShowcase() {
+    const ring = document.querySelector('.cylinder-ring');
+    const cards = document.querySelectorAll('.cylinder-card');
+    const stage = document.querySelector('.cylinder-stage');
+    if (!ring || !cards.length || !stage) return;
+
+    const count = cards.length;
+    const angleStep = 360 / count;
+    const radius = window.innerWidth < 640 ? 320 : 520;
+
+    cards.forEach((card, i) => {
+      const angle = angleStep * i;
+      card.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+    });
+
+    let currentY = 0;
+    let targetY = 0;
+    let isDragging = false;
+    let startX = 0;
+    let pauseUntil = 0;
+
+    function tick(now) {
+      requestAnimationFrame(tick);
+      if (!isDragging && now > pauseUntil) {
+        targetY -= 0.12;
+      }
+      currentY += (targetY - currentY) * 0.08;
+      ring.style.transform = `rotateY(${currentY}deg)`;
+    }
+    requestAnimationFrame(tick);
+
+    stage.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      pauseUntil = performance.now() + 3000;
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      startX = e.clientX;
+      targetY += dx * 0.28;
+    });
+
+    window.addEventListener('pointerup', () => {
+      if (isDragging) {
+        isDragging = false;
+        pauseUntil = performance.now() + 3000;
+      }
+    });
+  }
+
+  // BLUEPRINT C: 3D PARAMETRIC SNAKE WAVE TRAJECTORY
+  function init3DSnakeWaveShowcase() {
+    const cards = document.querySelectorAll('.snake-card');
+    if (!cards.length) return;
+
+    let cycle = 0;
+    let speedBoost = 0;
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const dy = Math.abs(window.scrollY - lastScrollY);
+      lastScrollY = window.scrollY;
+      speedBoost = Math.min(0.015, dy * 0.00035);
+    }, { passive: true });
+
+    const CARD_SPACING = 0.08;
+    const TOTAL_CYCLE = 1 + cards.length * CARD_SPACING + 0.15;
+
+    function render() {
+      requestAnimationFrame(render);
+      cycle = (cycle + 0.0028 + speedBoost) % TOTAL_CYCLE;
+      speedBoost *= 0.92;
+
+      cards.forEach((card, idx) => {
+        const u = cycle - idx * CARD_SPACING;
+        if (u < 0 || u > 1) {
+          card.style.opacity = '0';
+          card.style.pointerEvents = 'none';
+          card.style.transform = 'translate3d(-120vw, 180px, -200px) scale(0.5)';
+          return;
+        }
+
+        card.style.pointerEvents = 'auto';
+        const xVw = -75 + u * 150;
+        const waveY = Math.sin(u * Math.PI * 2.4) * 45;
+        const yPx = (0.45 - u) * 220 + waveY;
+        const zPx = Math.sin(u * Math.PI) * 70;
+        const scale = 1.04 - u * 0.16;
+        const opacity = u < 0.05 ? u / 0.05 : u > 0.88 ? (1 - u) / 0.12 : 1;
+
+        card.style.transform = `translate3d(${xVw}vw, ${yPx}px, ${zPx}px) scale(${scale})`;
+        card.style.opacity = Math.max(0, Math.min(1, opacity)).toFixed(3);
+        card.style.zIndex = 100 - idx;
+      });
+    }
+    requestAnimationFrame(render);
+  }
+
+  // BLUEPRINT E: REVERSIBLE SCROLL-SCRUBBED COBALT TIMELINE
+  function initJourneyScrubbedTimeline() {
+    const line = document.querySelector('.timeline-progress-line');
+    const container = document.querySelector('.timeline-container');
+    const items = document.querySelectorAll('.timeline-item');
+
+    if (!line || !container) return;
+
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.fromTo(line,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 70%',
+            end: 'bottom 50%',
+            scrub: 0.4,
+          }
+        }
+      );
+
+      items.forEach((item) => {
+        gsap.fromTo(item,
+          { opacity: 0.3, y: 35, rotateX: -10, transformPerspective: 1000 },
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 88%',
+              end: 'top 55%',
+              scrub: 0.4,
+            }
+          }
+        );
+      });
+    } else {
+      function updateFallbackLine() {
+        const rect = container.getBoundingClientRect();
+        const h = window.innerHeight;
+        const progress = Math.max(0, Math.min(1, (h * 0.7 - rect.top) / (rect.height * 0.8)));
+        line.style.transform = `scaleY(${progress.toFixed(3)})`;
+      }
+      window.addEventListener('scroll', updateFallbackLine, { passive: true });
+      updateFallbackLine();
+    }
+  }
+
+  // ==========================================================================
+  // 10. 3D WEBGL LUNAR CELESTIAL ENGINE (100% PRESERVED ORIGINAL SHADER)
   // ==========================================================================
   initLunarBlackholeEngine();
 
@@ -462,8 +698,8 @@ document.addEventListener('DOMContentLoaded', () => {
         lockBtn.classList.toggle('is-locked', lockHorizon);
         if (lockText) {
           lockText.textContent = lockHorizon
-            ? '3D LUNAR SINGULARITY · HORIZON LOCKED'
-            : '3D LUNAR SINGULARITY · AUTO DIVE';
+            ? 'CELESTIAL HORIZON · LOCKED'
+            : 'CELESTIAL HORIZON · AUTO DIVE';
         }
       });
     }

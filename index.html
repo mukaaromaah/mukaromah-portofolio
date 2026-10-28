@@ -17,21 +17,26 @@
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23101D3A'/><circle cx='50' cy='50' r='24' fill='%23C9DDF9'/><ellipse cx='50' cy='50' rx='44' ry='10' fill='none' stroke='%23F4F7FC' stroke-width='4' transform='rotate(-12 50 50)'/></svg>">
 
-  <!-- Fonts Strictly Preserved: Cormorant Garamond (Editorial Serif), Plus Jakarta Sans (Clean Modern Sans), JetBrains Mono (Technical Details) -->
+  <!-- Core Typography: Plus Jakarta Sans, Cormorant Garamond, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600;1,700&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Smooth Kinetic Animation Libraries: Lenis + GSAP ScrollTrigger (with offline fallback) -->
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
   <!-- ========================================================================
-       3D WEBGL LUNAR-BLACKHOLE & GRAVITATIONAL ACCRETION ENGINE (poggufanz.xyz architecture)
+       3D WEBGL LUNAR CELESTIAL HORIZON & ACCRETION ENGINE
        Uses the attached Moon photo (/assets/aistudio/e9d4166c03b09b3347afb011a77cca60_267f80bf.jpg)
-       mapped onto a 3D rotating sphere inside a relativistic blackhole accretion disk & lensed halo.
+       mapped onto a 3D rotating sphere inside an interactive accretion disk & lensed halo.
        ======================================================================== -->
   <div class="space-canvas-wrap" aria-hidden="true">
-    <!-- Primary WebGL 3D Shader Canvas (3D Moon Sphere + Relativistic Accretion Disk + Gravitational Lensing) -->
+    <!-- Primary WebGL 3D Shader Canvas (3D Moon Sphere + Accretion Disk + Gravitational Lensing) -->
     <canvas id="space-webgl-canvas"></canvas>
     <!-- Synchronized 2D Orbital Code-Glyph & Accretion Particle Overlay Canvas -->
     <canvas id="space-hud-canvas"></canvas>
@@ -47,14 +52,9 @@
   </div>
 
   <!-- ========================================================================
-       FIXED HUD FRAME (Ref: poggufanz.xyz HUD Architecture)
+       CELESTIAL HUD & TELEMETRY FRAME
        ======================================================================== -->
   <div class="hud-frame" aria-hidden="true">
-    <span class="hud-mark hud-mark-tl"></span>
-    <span class="hud-mark hud-mark-tr"></span>
-    <span class="hud-mark hud-mark-bl"></span>
-    <span class="hud-mark hud-mark-br"></span>
-
     <!-- Right-Edge Scroll Depth Telemetry Gauge (000 - 100) -->
     <div class="hud-depth">
       <span class="hud-depth-label">DEPTH</span>
@@ -64,11 +64,11 @@
       <span class="hud-depth-val tabular-nums" id="hud-depth-val">000</span>
     </div>
 
-    <!-- Bottom-Left Interactive 3D Lunar Horizon Telemetry & Mode Control -->
+    <!-- Bottom-Left Interactive 3D Lunar Horizon Mode Control -->
     <div class="hud-telemetry-ctrl">
-      <button type="button" class="hud-lens-btn" id="btn-toggle-lunar-lock" title="Toggle between scroll-dive and locked 3D Lunar Blackhole view">
+      <button type="button" class="hud-lens-btn" id="btn-toggle-lunar-lock" title="Toggle between scroll-dive and locked 3D Lunar Horizon view">
         <span class="hud-lens-dot" id="hud-lens-dot"></span>
-        <span class="hud-lens-text" id="hud-lens-text">3D LUNAR SINGULARITY · AUTO DIVE</span>
+        <span class="hud-lens-text" id="hud-lens-text">CELESTIAL HORIZON · AUTO DIVE</span>
       </button>
     </div>
 
@@ -77,7 +77,7 @@
       <span class="hud-scroll-mouse">
         <span class="hud-scroll-wheel"></span>
       </span>
-      <span class="hud-scroll-label">Scroll to fall into the lunar horizon</span>
+      <span class="hud-scroll-label">Scroll to explore celestial horizon</span>
     </div>
 
     <!-- Bottom-Right Live Telemetry Clock -->
@@ -177,7 +177,7 @@
          The right/center-right stage showcases the live 3D Rotating Moon + Accretion Disk.
          Users can hover/move cursor to bend the relativistic disk & scatter orbiting glyphs.
          ====================================================================== -->
-    <section class="hero-section room room-hero" id="hero" data-world="lunarhole" aria-label="Hero - 3D Lunar Horizon">
+    <section class="hero-section room room-hero" id="hero" data-world="lunarhole" aria-label="Hero - Celestial Lunar Horizon">
       <div class="container hero-container">
         <div class="hero-editorial-grid">
           <!-- Left Column: Editorial Identity, Positioning & CTAs -->
@@ -185,23 +185,36 @@
             <div class="eyebrow">
               <span class="eyebrow-num">00</span>
               <span class="eyebrow-rule"></span>
-              <span class="eyebrow-label">MALANG, ID · S1 TEKNIK INFORMATIKA UM</span>
+              <span class="eyebrow-label">MALANG, INDONESIA · RESEARCH &amp; ENGINEERING</span>
             </div>
 
             <h1 class="hero-title">
-              Curiosity takes <span class="italic-serif">us further.</span>
+              Curiosity takes <br>
+              <span class="italic-serif">us further.</span>
             </h1>
 
             <p class="hero-positioning">
-              Informatics Engineering student at <strong>Universitas Negeri Malang (GPA 3.94/4.00)</strong> crafting thoughtful web architectures, IoT &amp; autonomous robotics research, organizational governance, and cross-border academic collaboration.
+              Mahasiswi Teknik Informatika Universitas Negeri Malang <strong>(IPK 3.94 / 4.00)</strong> dengan fokus pada rekayasa web berstandar tinggi, riset IoT &amp; sistem otonom robotika di Dewantara Research Team, serta kepemimpinan kolaboratif lintas batas (Kagoshima KOSEN Jepang &amp; UiTM Malaysia).
             </p>
 
-            <div class="hero-disciplines">
-              <span class="discipline-tag">WEB PROGRAMMING</span>
-              <span class="discipline-separator">/</span>
-              <span class="discipline-tag">IOT &amp; ROBOTICS RESEARCH</span>
-              <span class="discipline-separator">/</span>
-              <span class="discipline-tag">GLOBAL COORDINATION</span>
+            <!-- Quick Metrics Strip -->
+            <div class="hero-metrics-strip">
+              <div class="metric-pill">
+                <span class="metric-num tabular-nums">3.94</span>
+                <span class="metric-lbl">Cumulative GPA / 4.00</span>
+              </div>
+              <div class="metric-pill">
+                <span class="metric-num tabular-nums">2</span>
+                <span class="metric-lbl">Global Programs</span>
+              </div>
+              <div class="metric-pill">
+                <span class="metric-num tabular-nums">7</span>
+                <span class="metric-lbl">Academic Honors</span>
+              </div>
+              <div class="metric-pill">
+                <span class="metric-num tabular-nums">1</span>
+                <span class="metric-lbl">IEEE ISMEE Paper</span>
+              </div>
             </div>
 
             <div class="hero-actions">
@@ -211,26 +224,26 @@
                   <path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </a>
-              <a href="/assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="btn btn-secondary" id="btn-download-cv">
+              <a href="assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="btn btn-secondary" id="btn-download-cv">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-linecap="round" stroke-linejoin="round"/>
                   <polyline points="7 10 12 15 17 10" stroke-linecap="round" stroke-linejoin="round"/>
                   <line x1="12" y1="15" x2="12" y2="3" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span>Download CV (PDF)</span>
+                <span>Download Official CV (PDF)</span>
               </a>
             </div>
 
-            <!-- Compact Identity Badge Strip with Portrait Avatar -->
-            <div class="hero-identity-pill" id="portrait-card">
+            <!-- Liquid Glass Identity Card with 3D Tilt & Floating Badges -->
+            <div class="hero-portrait-glass tilt-card-3d" id="portrait-card">
               <div class="identity-avatar-wrap">
                 <img
                   src="assets/portrait.jpg"
                   onerror="this.onerror=null; this.src='assets/portrait-placeholder.svg';"
                   alt="Mukaromah — Portrait"
                   class="identity-avatar-img"
-                  width="64"
-                  height="64"
+                  width="72"
+                  height="72"
                   loading="eager"
                 >
               </div>
@@ -241,21 +254,25 @@
                 </div>
                 <span class="identity-role">Web Developer · General Secretary DRT · KOSEN Japan &amp; UiTM Malaysia Alumni</span>
               </div>
+              <div class="floating-badge-wrap" aria-hidden="true">
+                <span class="floating-badge floating-badge-1">Kagoshima KOSEN Japan · 2026</span>
+                <span class="floating-badge floating-badge-2">General Secretary @ DRT UM</span>
+              </div>
             </div>
           </div>
 
-          <!-- Right Column: Interactive 3D Lunar-Blackhole Observatory Stage -->
+          <!-- Right Column: Interactive 3D Lunar Celestial Observatory Stage -->
           <div class="hero-right reveal-on-scroll">
             <div class="lunar-observatory-stage" id="lunar-observatory-stage">
-              <!-- Interactive Reticle & Telemetry Readouts framing the 3D WebGL Moon-Blackhole -->
+              <!-- Interactive Reticle framing the 3D WebGL Moon -->
               <div class="observatory-hud-ring" aria-hidden="true"></div>
               <div class="observatory-callout observatory-callout-top">
-                <span class="callout-code">RELATIVISTIC LUNAR CORE</span>
-                <span class="callout-sub">Drag or move cursor to bend accretion halo</span>
+                <span class="callout-code">CELESTIAL HORIZON · CORE</span>
+                <span class="callout-sub">Drag or move cursor to interact</span>
               </div>
               <div class="observatory-callout observatory-callout-bottom">
-                <span class="callout-code">PHOTON RING · Rs = 1.45</span>
-                <span class="callout-sub">07°58′S 112°37′E · MALANG OBSERVATORY</span>
+                <span class="callout-code">ASTRONOMICAL RETICLE · 07°58′S 112°37′E</span>
+                <span class="callout-sub">MALANG OBSERVATORY · S1 TEKNIK INFORMATIKA</span>
               </div>
             </div>
           </div>
@@ -282,6 +299,14 @@
         </div>
       </div>
     </section>
+
+    <!-- 3D Paper-Cut Wave Relief Divider -->
+    <div class="section-divider-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none" class="wave-svg">
+        <path d="M0,0 L1440,0 L1440,40 C1160,95 880,10 600,60 C320,110 140,25 0,65 Z" fill="#141c2e" opacity="0.45" />
+        <path d="M0,0 L1440,0 L1440,24 C1120,75 840,0 560,42 C280,85 120,18 0,46 Z" fill="#0a0f1d" />
+      </svg>
+    </div>
 
     <!-- ======================================================================
          ROOM 01: SELECTED WORK & RESEARCH PROJECTS (8 Verified CV Projects)
@@ -603,7 +628,231 @@
     </section>
 
     <!-- ======================================================================
-         ROOM 02: ABOUT, EDUCATION & INTERNATIONAL EXPOSURE
+         SHOWCASE 01: 3D CYLINDER GALLERY (Ref: Kaiki Continuous Auto-Spin Ring)
+         ====================================================================== -->
+    <section class="cylinder-showcase-section" id="cylinder-showcase" aria-label="3D Academic Artifacts &amp; Certificates Cylinder">
+      <div class="container">
+        <div class="section-header reveal-on-scroll">
+          <div class="eyebrow">
+            <span class="eyebrow-num">A1</span>
+            <span class="eyebrow-rule"></span>
+            <span class="eyebrow-label">CONTINUOUS 3D PERSPECTIVE CYLINDER</span>
+          </div>
+          <h2 class="section-title">Academic distinctions &amp; <span class="italic-serif">global milestones.</span></h2>
+          <p class="section-lead">Drag or swipe to rotate in 3D perspective. Smooth inertial lerp pauses on interaction and resumes seamlessly.</p>
+        </div>
+
+        <div class="cylinder-stage" aria-label="Interactive 3D Cylinder Stage">
+          <div class="cylinder-ring">
+            <!-- Card 1: Kagoshima KOSEN -->
+            <div class="cylinder-card">
+              <div class="cylinder-card-media cylinder-kosen">
+                <span class="cylinder-badge">2026 · JAPAN</span>
+              </div>
+              <div class="cylinder-card-info">
+                <span class="cylinder-tag">Kagoshima KOSEN</span>
+                <h4 class="cylinder-heading">UM-GIE KOSEN Immersion</h4>
+                <p class="cylinder-desc">Robotics engineering &amp; advanced laboratory collaboration in Kagoshima, Japan.</p>
+              </div>
+            </div>
+
+            <!-- Card 2: UiTM Malaysia -->
+            <div class="cylinder-card">
+              <div class="cylinder-card-media cylinder-uitm">
+                <span class="cylinder-badge">2025 · MALAYSIA</span>
+              </div>
+              <div class="cylinder-card-info">
+                <span class="cylinder-tag">UiTM Malaysia</span>
+                <h4 class="cylinder-heading">Global Project-Based Learning</h4>
+                <p class="cylinder-desc">International robotics project with LEGO EV3 and cross-border engineering teams.</p>
+              </div>
+            </div>
+
+            <!-- Card 3: ISMEE 2025 -->
+            <div class="cylinder-card">
+              <div class="cylinder-card-media cylinder-ismee">
+                <span class="cylinder-badge">2025 · SYMPOSIUM</span>
+              </div>
+              <div class="cylinder-card-info">
+                <span class="cylinder-tag">ISMEE · UPI</span>
+                <h4 class="cylinder-heading">Presenter &amp; Co-Author</h4>
+                <p class="cylinder-desc">Multi-sensor methane &amp; air quality telemetry research paper presented in English.</p>
+              </div>
+            </div>
+
+            <!-- Card 4: Dewantara Research Team -->
+            <div class="cylinder-card">
+              <div class="cylinder-card-media cylinder-drt">
+                <span class="cylinder-badge">2025 – PRESENT</span>
+              </div>
+              <div class="cylinder-card-info">
+                <span class="cylinder-tag">Leadership</span>
+                <h4 class="cylinder-heading">General Secretary @ DRT UM</h4>
+                <p class="cylinder-desc">Research administration, national robotics competition coordination &amp; grant stewardship.</p>
+              </div>
+            </div>
+
+            <!-- Card 5: Smart Air Quality Grant -->
+            <div class="cylinder-card">
+              <div class="cylinder-card-media cylinder-grant">
+                <span class="cylinder-badge">2025 · UM GRANT</span>
+              </div>
+              <div class="cylinder-card-info">
+                <span class="cylinder-tag">LPPM UM Award</span>
+                <h4 class="cylinder-heading">Smart Air Quality Station</h4>
+                <p class="cylinder-desc">Student innovation research grant awardee for distributed environmental IoT telemetry.</p>
+              </div>
+            </div>
+
+            <!-- Card 6: GPA 3.94 Distinction -->
+            <div class="cylinder-card">
+              <div class="cylinder-card-media cylinder-gpa">
+                <span class="cylinder-badge">ACADEMIC DISTINCTION</span>
+              </div>
+              <div class="cylinder-card-info">
+                <span class="cylinder-tag">S1 Teknik Informatika</span>
+                <h4 class="cylinder-heading">GPA 3.94 / 4.00 Standing</h4>
+                <p class="cylinder-desc">Consistently maintaining highest academic performance at Universitas Negeri Malang.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SHOWCASE 02: 3D PARAMETRIC SNAKE WAVE TRAJECTORY (Ref: Kaiki Sine Deck)
+         ====================================================================== -->
+    <section class="snake-wave-section" id="snake-wave" aria-label="3D Parametric Snake Wave Deck">
+      <div class="container">
+        <div class="section-header reveal-on-scroll">
+          <div class="eyebrow">
+            <span class="eyebrow-num">A2</span>
+            <span class="eyebrow-rule"></span>
+            <span class="eyebrow-label">3D PARAMETRIC SINE WAVE STREAM</span>
+          </div>
+          <h2 class="section-title">Research trajectories <span class="italic-serif">in motion.</span></h2>
+          <p class="section-lead">Cards glide along a 3D parametric sine curve across the screen, accelerating with your scroll speed.</p>
+        </div>
+
+        <div class="snake-wave-stage" aria-label="3D Parametric Wave Stage">
+          <div class="snake-card">
+            <span class="snake-badge">IOT TELEMETRY</span>
+            <h4 class="snake-title">Methane Array Calibration</h4>
+            <span class="snake-meta">Supit Urang Landfill · 2025</span>
+          </div>
+          <div class="snake-card">
+            <span class="snake-badge">EMBEDDED ROBOTICS</span>
+            <h4 class="snake-title">Autonomous Obstacle Pathing</h4>
+            <span class="snake-meta">DRT UM Mobile Platform</span>
+          </div>
+          <div class="snake-card">
+            <span class="snake-badge">WEB PLATFORMS</span>
+            <h4 class="snake-title">Responsive Architecture</h4>
+            <span class="snake-meta">Spektrum Teknologi Profile</span>
+          </div>
+          <div class="snake-card">
+            <span class="snake-badge">RESEARCH GRANT</span>
+            <h4 class="snake-title">Smart Weighing Circular Model</h4>
+            <span class="snake-meta">Universitas Negeri Malang</span>
+          </div>
+          <div class="snake-card">
+            <span class="snake-badge">GLOBAL ENGAGEMENT</span>
+            <h4 class="snake-title">Sakura Science Immersion</h4>
+            <span class="snake-meta">Kagoshima KOSEN · Japan</span>
+          </div>
+          <div class="snake-card">
+            <span class="snake-badge">INTERNATIONAL</span>
+            <h4 class="snake-title">GPBL Robotics Integration</h4>
+            <span class="snake-meta">UiTM · Malaysia</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SHOWCASE 03: FISHEYE DOME WALL (Ref: Kaiki 4-Row Curved Perspective Marquee)
+         ====================================================================== -->
+    <section class="dome-wall-section" id="dome-wall" aria-label="Fisheye Perspective Dome Wall">
+      <div class="dome-wall-container">
+        <!-- Row 1: RotateX 15deg -->
+        <div class="dome-row" style="transform: rotateX(15deg) translateZ(-48px);">
+          <div class="marquee-track-right">
+            <span class="dome-card">S1 TEKNIK INFORMATIKA UM</span>
+            <span class="dome-card">GPA 3.94 / 4.00</span>
+            <span class="dome-card">KAGOSHIMA KOSEN JAPAN 2026</span>
+            <span class="dome-card">UiTM MALAYSIA 2025</span>
+            <span class="dome-card">ISMEE 2025 INTERNATIONAL SYMPOSIUM</span>
+            <span class="dome-card">DEWANTARA RESEARCH TEAM</span>
+            <!-- Loop Duplicates -->
+            <span class="dome-card">S1 TEKNIK INFORMATIKA UM</span>
+            <span class="dome-card">GPA 3.94 / 4.00</span>
+            <span class="dome-card">KAGOSHIMA KOSEN JAPAN 2026</span>
+            <span class="dome-card">UiTM MALAYSIA 2025</span>
+            <span class="dome-card">ISMEE 2025 INTERNATIONAL SYMPOSIUM</span>
+            <span class="dome-card">DEWANTARA RESEARCH TEAM</span>
+          </div>
+        </div>
+
+        <!-- Row 2: RotateX 5deg -->
+        <div class="dome-row" style="transform: rotateX(5deg) translateZ(-16px);">
+          <div class="marquee-track-left">
+            <span class="dome-card">ESP32 &amp; LORAWAN TELEMETRY</span>
+            <span class="dome-card">AUTONOMOUS MOBILE ROBOTICS</span>
+            <span class="dome-card">NEXT.JS &amp; RESPONSIVE UI</span>
+            <span class="dome-card">FLUTTER / DART MOBILE TELEMETRY</span>
+            <span class="dome-card">LPPM RESEARCH GRANTS</span>
+            <span class="dome-card">7 VERIFIED ACADEMIC AWARDS</span>
+            <!-- Loop Duplicates -->
+            <span class="dome-card">ESP32 &amp; LORAWAN TELEMETRY</span>
+            <span class="dome-card">AUTONOMOUS MOBILE ROBOTICS</span>
+            <span class="dome-card">NEXT.JS &amp; RESPONSIVE UI</span>
+            <span class="dome-card">FLUTTER / DART MOBILE TELEMETRY</span>
+            <span class="dome-card">LPPM RESEARCH GRANTS</span>
+            <span class="dome-card">7 VERIFIED ACADEMIC AWARDS</span>
+          </div>
+        </div>
+
+        <!-- Row 3: RotateX -5deg -->
+        <div class="dome-row" style="transform: rotateX(-5deg) translateZ(-16px);">
+          <div class="marquee-track-right">
+            <span class="dome-card">GENERAL SECRETARY @ DRT UM</span>
+            <span class="dome-card">PROGRAMMING INSTRUCTOR NEW PRIMAGAMA</span>
+            <span class="dome-card">PYTHON DATA PREPROCESSING</span>
+            <span class="dome-card">EMBEDDED C/C++ CONTROL</span>
+            <span class="dome-card">SUPIT URANG METHANE STUDY</span>
+            <span class="dome-card">OIA UM DIGITAL SERVICES</span>
+            <!-- Loop Duplicates -->
+            <span class="dome-card">GENERAL SECRETARY @ DRT UM</span>
+            <span class="dome-card">PROGRAMMING INSTRUCTOR NEW PRIMAGAMA</span>
+            <span class="dome-card">PYTHON DATA PREPROCESSING</span>
+            <span class="dome-card">EMBEDDED C/C++ CONTROL</span>
+            <span class="dome-card">SUPIT URANG METHANE STUDY</span>
+            <span class="dome-card">OIA UM DIGITAL SERVICES</span>
+          </div>
+        </div>
+
+        <!-- Row 4: RotateX -15deg -->
+        <div class="dome-row" style="transform: rotateX(-15deg) translateZ(-48px);">
+          <div class="marquee-track-left">
+            <span class="dome-card">CORMORANT GARAMOND EDITORIAL</span>
+            <span class="dome-card">PLUS JAKARTA SANS CLEAN DISPLAY</span>
+            <span class="dome-card">JETBRAINS MONO TECHNICAL TOKENS</span>
+            <span class="dome-card">MIDNIGHT BLUE HORIZON</span>
+            <span class="dome-card">ROYAL COBALT ACCENTS</span>
+            <span class="dome-card">LIQUID GLASS REFLECTIONS</span>
+            <!-- Loop Duplicates -->
+            <span class="dome-card">CORMORANT GARAMOND EDITORIAL</span>
+            <span class="dome-card">PLUS JAKARTA SANS CLEAN DISPLAY</span>
+            <span class="dome-card">JETBRAINS MONO TECHNICAL TOKENS</span>
+            <span class="dome-card">MIDNIGHT BLUE HORIZON</span>
+            <span class="dome-card">ROYAL COBALT ACCENTS</span>
+            <span class="dome-card">LIQUID GLASS REFLECTIONS</span>
+          </div>
+        </div>
+      </div>
+      <div class="dome-vignette" aria-hidden="true"></div>
+    </section>
          ====================================================================== -->
     <section class="about-section room" id="about" data-world="orbital" aria-label="About Mukaromah and International Exposure">
       <div class="container">
@@ -718,6 +967,9 @@
         </div>
 
         <div class="timeline-container">
+          <!-- Animated Scrubbed Cobalt Progress Line (Blueprint E) -->
+          <div class="timeline-progress-line" aria-hidden="true"></div>
+
           <!-- Timeline Entry 1: New Primagama -->
           <div class="timeline-item reveal-on-scroll">
             <div class="timeline-marker">
@@ -1213,7 +1465,7 @@
           © <span id="current-year">2026</span> Mukaromah. Crafted with clarity, logic, and care.
         </p>
         <p class="horizon-note">
-          Celestial Engine: <em>3D Lunar Singularity &amp; Midnight Blue Horizon</em>
+          Celestial Engine: <em>3D Lunar Celestial Horizon &amp; Midnight Editorial System</em>
         </p>
       </div>
     </div>

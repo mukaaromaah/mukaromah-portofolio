@@ -2464,6 +2464,445 @@ body {
 }
 
 /* ==========================================================================
+   KAIKI EDITORIAL DESIGN SYSTEM & 3D INTERACTIVE SHOWCASES
+   ========================================================================== */
+
+/* 1. Hero Metrics Strip */
+.hero-metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-pill {
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  background: rgba(16, 28, 52, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 221, 249, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.metric-num {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #C9DDF9;
+  letter-spacing: -0.02em;
+}
+
+.metric-lbl {
+  font-size: 0.72rem;
+  color: var(--text-muted-light);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* 2. Hero Portrait Glass Card & Floating Badges */
+.hero-portrait-glass {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.1rem 1.4rem;
+  border-radius: 24px;
+  background: rgba(16, 29, 58, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.55), inset 0 -1px 2px rgba(255, 255, 255, 0.12), 0 24px 60px rgba(0, 0, 0, 0.75);
+  margin-top: 2rem;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.hero-portrait-glass .identity-avatar-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(201, 221, 249, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.hero-portrait-glass .identity-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.floating-badge-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.floating-badge {
+  position: absolute;
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.floating-badge-1 {
+  top: -14px;
+  right: 18px;
+  background: rgba(30, 44, 74, 0.88);
+  color: #C9DDF9;
+  border-color: rgba(56, 189, 248, 0.45);
+  animation: bounce-down 4.2s ease-in-out infinite;
+}
+
+.floating-badge-2 {
+  bottom: -14px;
+  left: 28px;
+  background: rgba(14, 25, 48, 0.92);
+  color: #F4F7FC;
+  border-color: rgba(0, 85, 255, 0.5);
+  animation: bounce-down 3.8s ease-in-out infinite 0.6s;
+}
+
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* 3. 3D Card Tilt */
+.tilt-card-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 4. Section Wave Divider */
+.section-divider-wave {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  pointer-events: none;
+  z-index: 20;
+  margin-top: -1px;
+}
+
+.section-divider-wave svg {
+  display: block;
+  width: 100%;
+  height: 52px;
+}
+
+@media (min-width: 768px) {
+  .section-divider-wave svg {
+    height: 76px;
+  }
+}
+
+/* 5. 3D Cylinder Showcase */
+.cylinder-showcase-section {
+  position: relative;
+  padding: 6.5rem 0;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.cylinder-stage {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+  margin-top: 2rem;
+}
+
+.cylinder-stage:active {
+  cursor: grabbing;
+}
+
+.cylinder-ring {
+  position: relative;
+  width: 280px;
+  height: 380px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.cylinder-card {
+  position: absolute;
+  inset: 0;
+  width: 280px;
+  height: 380px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(14, 24, 46, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.45), 0 20px 50px rgba(0, 0, 0, 0.75);
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease;
+}
+
+.cylinder-card:hover {
+  border-color: rgba(56, 189, 248, 0.65);
+}
+
+.cylinder-card-media {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.cylinder-kosen {
+  background: linear-gradient(135deg, #102445 0%, #1c3b6f 60%, #305f9e 100%);
+}
+.cylinder-uitm {
+  background: linear-gradient(135deg, #0e203c 0%, #183863 60%, #2b558c 100%);
+}
+.cylinder-ismee {
+  background: linear-gradient(135deg, #132543 0%, #1e4272 60%, #3567a5 100%);
+}
+.cylinder-drt {
+  background: linear-gradient(135deg, #16243d 0%, #254471 60%, #3d689e 100%);
+}
+.cylinder-grant {
+  background: linear-gradient(135deg, #0f223a 0%, #1c4266 60%, #2f6b98 100%);
+}
+.cylinder-gpa {
+  background: linear-gradient(135deg, #152238 0%, #274068 60%, #44699e 100%);
+}
+
+.cylinder-badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  background: rgba(8, 14, 28, 0.75);
+  backdrop-filter: blur(8px);
+  color: #C9DDF9;
+  border: 1px solid rgba(201, 221, 249, 0.3);
+}
+
+.cylinder-card-info {
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.cylinder-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.cylinder-heading {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #F4F7FC;
+  line-height: 1.3;
+  margin-top: 0.35rem;
+}
+
+.cylinder-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted-light);
+  line-height: 1.5;
+  margin-top: 0.5rem;
+}
+
+/* 6. 3D Parametric Snake Wave Showcase */
+.snake-wave-section {
+  position: relative;
+  padding: 6.5rem 0;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.snake-wave-stage {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.snake-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 250px;
+  height: 155px;
+  margin-left: -125px;
+  margin-top: -77px;
+  border-radius: 20px;
+  background: rgba(16, 28, 52, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(201, 221, 249, 0.28);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 18px 45px rgba(0, 0, 0, 0.7);
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.snake-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #38bdf8;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.snake-title {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #F4F7FC;
+  line-height: 1.3;
+}
+
+.snake-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted-light);
+}
+
+/* 7. Fisheye Dome Wall */
+.dome-wall-section {
+  position: relative;
+  width: 100%;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 10;
+  padding: 5rem 0;
+}
+
+.dome-wall-container {
+  position: relative;
+  width: 100%;
+  perspective: 950px;
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.dome-row {
+  width: 100%;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.marquee-track-right,
+.marquee-track-left {
+  display: flex;
+  gap: 1.35rem;
+  width: max-content;
+}
+
+.marquee-track-right {
+  animation: marqueeRight 36s linear infinite;
+}
+
+.marquee-track-left {
+  animation: marqueeLeft 32s linear infinite;
+}
+
+.marquee-track-right:hover,
+.marquee-track-left:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marqueeLeft {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.dome-card {
+  flex-shrink: 0;
+  padding: 0.85rem 1.6rem;
+  border-radius: 9999px;
+  background: rgba(16, 28, 52, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 221, 249, 0.22);
+  color: #C9DDF9;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.dome-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  background: radial-gradient(circle at 50% 50%, rgba(13, 16, 23, 0.2) 20%, rgba(10, 15, 29, 0.85) 70%, #0a0f1d 100%);
+}
+
+/* 8. Scrubbed Cobalt Progress Timeline */
+.timeline-progress-line {
+  position: absolute;
+  left: 17px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: linear-gradient(180deg, #0055FF 0%, #38bdf8 65%, #c9ddf9 100%);
+  box-shadow: 0 0 12px rgba(0, 85, 255, 0.85), 0 0 24px rgba(56, 189, 248, 0.5);
+  transform-origin: top center;
+  transform: scaleY(0);
+  z-index: 2;
+  will-change: transform;
+}
+
+/* ==========================================================================
    REDUCED MOTION MODE
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
