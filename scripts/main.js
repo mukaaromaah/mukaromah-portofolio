@@ -617,18 +617,18 @@ document.addEventListener('DOMContentLoaded', () => {
           vec2 dir = p / max(r, 1e-4);
           vec2 lensedUv = uv - dir * defl * 0.085;
 
-          // Seamless transition into Oryzo deep carbon canvas #08090C & panel #11141C
-          vec3 deepCarbon = vec3(0.031, 0.035, 0.047); // #08090C
-          vec3 panelBase  = vec3(0.067, 0.078, 0.110); // #11141C
-          vec3 subtleTint = vec3(0.120, 0.145, 0.200);
-          vec3 sandBone   = vec3(0.875, 0.851, 0.808);
+          // Seamless transition into Oryzo Walnut Shadow #100904 & Bark Brown #382416
+          vec3 deepWalnut = vec3(0.063, 0.035, 0.016); // #100904
+          vec3 barkBrown  = vec3(0.180, 0.110, 0.060); // #382416
+          vec3 warmHaze   = vec3(0.350, 0.220, 0.130);
+          vec3 warmBone   = vec3(0.965, 0.878, 0.776); // #F6E0C6
 
           float neb1 = fbm(lensedUv * 2.6 + vec2(uTime * 0.012, -uScroll * 0.35));
           float neb2 = fbm(lensedUv * 5.2 - vec2(uTime * 0.018, uScroll * 0.2));
 
-          vec3 bg = mix(deepCarbon, panelBase, smoothstep(0.0, 0.85, uv.y));
-          bg += subtleTint * pow(neb1, 2.2) * 0.35;
-          bg += sandBone * pow(neb1 * neb2, 3.2) * 0.16;
+          vec3 bg = mix(deepWalnut, barkBrown, smoothstep(0.0, 0.85, uv.y));
+          bg += warmHaze * pow(neb1, 2.2) * 0.35;
+          bg += warmBone * pow(neb1 * neb2, 3.2) * 0.16;
 
           // Gravitationally lensed background stars
           vec2 starGrid = lensedUv * vec2(uRes.x / uRes.y * 42.0, 42.0);
@@ -641,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
             float twinkle = 0.65 + 0.35 * sin(uTime * (1.5 + rnd * 3.0) + rnd * 40.0);
             float star = smoothstep(0.09, 0.0, d) * twinkle;
             float einstein = 1.0 + 2.2 * exp(-sq((r - rs * 1.45) / (rs * 0.24)));
-            bg += mix(sandBone, vec3(0.97, 0.96, 0.93), rnd) * star * einstein * 0.85;
+            bg += mix(warmBone, vec3(1.0, 0.93, 0.84), rnd) * star * einstein * 0.85;
           }
 
           return bg;
@@ -660,11 +660,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
           vec3 col = renderBackground(vUv, p, r, rs);
 
-          // Oryzo Design Palette: Stark Warm Cream, Bone Sand, and Ember
-          vec3 cTint  = vec3(0.160, 0.190, 0.250);
-          vec3 cBone  = vec3(0.875, 0.851, 0.808); // #DFD9CE
-          vec3 cCream = vec3(0.969, 0.957, 0.933); // #F7F4EE
-          vec3 cEmber = vec3(1.000, 0.302, 0.000); // #FF4D00
+          // Oryzo Design Palette: Warm Cream (#FFEDD7), Bone Sand (#F6E0C6), and Ember (#DC5000)
+          vec3 cTint  = vec3(0.240, 0.150, 0.090);
+          vec3 cBone  = vec3(0.965, 0.878, 0.776); // #F6E0C6
+          vec3 cCream = vec3(1.000, 0.929, 0.843); // #FFEDD7
+          vec3 cEmber = vec3(0.863, 0.314, 0.000); // #DC5000
 
           float outerGlow = exp(-r * 2.1) * 0.42 + exp(-r * 5.0) * 0.30;
           col += mix(cTint, cBone, 0.35) * outerGlow;
@@ -754,9 +754,9 @@ document.addEventListener('DOMContentLoaded', () => {
             float fresnel = pow(1.0 - z, 2.6);
             float equatorBounce = exp(-sq(pr.y / (rs * 0.35))) * 0.55;
 
-            vec3 moonShadow = vec3(0.045, 0.052, 0.070); // Deep Carbon Umbra
-            vec3 moonMid    = vec3(0.650, 0.630, 0.600); // Bone Sand Midtone
-            vec3 moonHigh   = vec3(0.970, 0.960, 0.940); // Warm Cream Highlight
+            vec3 moonShadow = vec3(0.063, 0.035, 0.016); // Deep Walnut Umbra #100904
+            vec3 moonMid    = vec3(0.780, 0.680, 0.580); // Warm Cork Midtone
+            vec3 moonHigh   = vec3(1.000, 0.929, 0.843); // Pure Warm Cream Highlight #FFEDD7
 
             float shade = clamp(diff1 * 0.88 + 0.22, 0.0, 1.0);
             vec3 surfaceCol = mix(moonShadow, moonMid, smoothstep(0.0, 0.55, moonAlbedo.r * shade));
@@ -1032,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const tr = starTrails[i];
             const ang = tr.angle + elapsed * tr.speed;
             const r = tr.radiusNorm * maxDim;
-            ctx2d.strokeStyle = `rgba(223, 217, 206, ${(tr.alpha * trailVis).toFixed(3)})`;
+            ctx2d.strokeStyle = `rgba(246, 224, 198, ${(tr.alpha * trailVis).toFixed(3)})`;
             ctx2d.lineWidth = tr.width;
             ctx2d.beginPath();
             ctx2d.arc(centerPxX, centerPxY, r, ang, ang + tr.arcLen);
@@ -1061,7 +1061,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const doppler = 0.65 + 0.45 * (-Math.cos(a));
           const alpha = Math.max(0.08, Math.min(0.95, p.alpha * doppler));
 
-          ctx2d.fillStyle = `rgba(247, 244, 238, ${alpha.toFixed(3)})`;
+          ctx2d.fillStyle = `rgba(255, 237, 215, ${alpha.toFixed(3)})`;
           ctx2d.beginPath();
           ctx2d.arc(sx, sy, p.radius, 0, Math.PI * 2);
           ctx2d.fill();
