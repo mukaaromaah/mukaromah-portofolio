@@ -3,44 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mukaromah — Digital Portfolio</title>
-  <meta name="description" content="Personal portfolio of Mukaromah, Informatics Engineering student at Universitas Negeri Malang. Web development, IoT & robotics research, international engagement, and digital experiences.">
-  <meta name="keywords" content="Mukaromah, Universitas Negeri Malang, Informatics Engineering, Web Developer, IoT, Robotics, Research, Portfolio, Lunar Horizon">
+  <title>MUKAROMAH — Architectural Portfolio (Informatics &amp; Robotics)</title>
+  <meta name="description" content="Mukaromah — Informatics Engineering student at Universitas Negeri Malang (GPA 3.94/4.00). Web platforms, IoT &amp; autonomous robotics research, international programs in Japan &amp; Malaysia.">
+  <meta name="keywords" content="Mukaromah, Universitas Negeri Malang, Informatics Engineering, Web Developer, IoT, Autonomous Robotics, ISMEE 2025, KOSEN, UiTM">
   <meta name="author" content="Mukaromah">
 
-  <!-- Open Graph / Social Meta -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Mukaromah — Digital Portfolio">
-  <meta property="og:description" content="Personal portfolio of Mukaromah, Informatics Engineering student at Universitas Negeri Malang. Web development, IoT & robotics research, international engagement, and digital experiences.">
+  <meta property="og:title" content="MUKAROMAH — Built for Web. Engineered for the Field.">
+  <meta property="og:description" content="Informatics Engineering student at Universitas Negeri Malang (GPA 3.94/4.00). Web architecture, IoT telemetry, autonomous robotics research.">
   <meta property="og:url" content="https://mukaromah.my.id">
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23101D3A'/><circle cx='50' cy='50' r='24' fill='%23C9DDF9'/><ellipse cx='50' cy='50' rx='44' ry='10' fill='none' stroke='%23F4F7FC' stroke-width='4' transform='rotate(-12 50 50)'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2308090C'/><rect x='18' y='18' width='64' height='64' fill='none' stroke='%23F7F4EE' stroke-width='6'/><path d='M30 70V30L50 54L70 30V70' fill='none' stroke='%23FF4D00' stroke-width='6' stroke-linejoin='miter'/></svg>">
 
-  <!-- Core Typography: Plus Jakarta Sans, Cormorant Garamond, JetBrains Mono -->
+  <!-- High-Contrast Architectural Typography: Syne, Inter, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600;1,700&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Smooth Kinetic Animation Libraries: Lenis + GSAP ScrollTrigger (with offline fallback) -->
-  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
   <!-- ========================================================================
-       3D WEBGL LUNAR CELESTIAL HORIZON & ACCRETION ENGINE
-       Uses the attached Moon photo (/assets/aistudio/e9d4166c03b09b3347afb011a77cca60_267f80bf.jpg)
-       mapped onto a 3D rotating sphere inside an interactive accretion disk & lensed halo.
+       SUBTLE BACKGROUND CELESTIAL CANVAS (Right-Weighted, No Game HUD)
        ======================================================================== -->
   <div class="space-canvas-wrap" aria-hidden="true">
-    <!-- Primary WebGL 3D Shader Canvas (3D Moon Sphere + Accretion Disk + Gravitational Lensing) -->
     <canvas id="space-webgl-canvas"></canvas>
-    <!-- Synchronized 2D Orbital Code-Glyph & Accretion Particle Overlay Canvas -->
     <canvas id="space-hud-canvas"></canvas>
-    <!-- Preloaded Moon Texture Source for WebGL Shader & Fallback -->
     <img
       id="moon-texture-source"
       src="/assets/aistudio/e9d4166c03b09b3347afb011a77cca60_267f80bf.jpg"
@@ -48,1195 +38,496 @@
       crossorigin="anonymous"
       style="display: none;"
     >
-    <div class="space-vignette-overlay"></div>
   </div>
 
   <!-- ========================================================================
-       CELESTIAL HUD & TELEMETRY FRAME
+       TOP NAVIGATION BAR (Fixed, Full-Bleed, Sharp Architectural)
        ======================================================================== -->
-  <div class="hud-frame" aria-hidden="true">
-    <!-- Right-Edge Scroll Depth Telemetry Gauge (000 - 100) -->
-    <div class="hud-depth">
-      <span class="hud-depth-label">DEPTH</span>
-      <div class="hud-depth-track">
-        <div class="hud-depth-fill" id="hud-depth-fill"></div>
-      </div>
-      <span class="hud-depth-val tabular-nums" id="hud-depth-val">000</span>
-    </div>
-
-    <!-- Bottom-Left Interactive 3D Lunar Horizon Mode Control -->
-    <div class="hud-telemetry-ctrl">
-      <button type="button" class="hud-lens-btn" id="btn-toggle-lunar-lock" title="Toggle between scroll-dive and locked 3D Lunar Horizon view">
-        <span class="hud-lens-dot" id="hud-lens-dot"></span>
-        <span class="hud-lens-text" id="hud-lens-text">CELESTIAL HORIZON · AUTO DIVE</span>
-      </button>
-    </div>
-
-    <!-- Bottom-Center Scroll Cue -->
-    <div class="hud-scroll" id="hud-scroll-cue">
-      <span class="hud-scroll-mouse">
-        <span class="hud-scroll-wheel"></span>
-      </span>
-      <span class="hud-scroll-label">Scroll to explore celestial horizon</span>
-    </div>
-
-    <!-- Bottom-Right Live Telemetry Clock -->
-    <div class="hud-clock">
-      <span>UTC+7</span>
-      <span class="hud-sep">·</span>
-      <span class="hud-clock-time tabular-nums" id="live-time">00:00:00</span>
-      <span class="hud-sep">·</span>
-      <span>Malang, ID</span>
-    </div>
-  </div>
-
-  <!-- ========================================================================
-       HEADER & NUMBERED HUD NAVIGATION (Ref: poggufanz.xyz Top Bar)
-       ======================================================================== -->
-  <header class="site-header" id="header">
-    <div class="nav-container">
-      <a href="#hero" class="brand" aria-label="Mukaromah Homepage">
-        <span class="brand-dot"></span>
+  <header class="top-nav" id="top-nav">
+    <div class="nav-inner">
+      <a href="#hero" class="brand-link" aria-label="Mukaromah Home">
         <span class="brand-text">MUKAROMAH</span>
-        <span class="brand-coords">07°58′S 112°37′E</span>
       </a>
 
-      <nav class="main-nav" aria-label="Main Navigation">
-        <div class="hud-nav-thumb" id="hud-nav-thumb"></div>
-        <ul class="nav-list" id="hud-nav-list">
-          <li>
-            <a href="#works" class="nav-link" data-nav-index="0">
-              <span class="nav-num">01</span>
-              <span class="nav-label">Work</span>
-            </a>
-          </li>
-          <li>
-            <a href="#about" class="nav-link" data-nav-index="1">
-              <span class="nav-num">02</span>
-              <span class="nav-label">About</span>
-            </a>
-          </li>
-          <li>
-            <a href="#journey" class="nav-link" data-nav-index="2">
-              <span class="nav-num">03</span>
-              <span class="nav-label">Experience</span>
-            </a>
-          </li>
-          <li>
-            <a href="#awards" class="nav-link" data-nav-index="3">
-              <span class="nav-num">04</span>
-              <span class="nav-label">Awards</span>
-            </a>
-          </li>
-          <li>
-            <a href="#skills" class="nav-link" data-nav-index="4">
-              <span class="nav-num">05</span>
-              <span class="nav-label">Skills</span>
-            </a>
-          </li>
-          <li>
-            <a href="#contact" class="nav-link" data-nav-index="5">
-              <span class="nav-num">06</span>
-              <span class="nav-label">Contact</span>
-            </a>
-          </li>
-        </ul>
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="#work" class="nav-item">WORK</a>
+        <a href="#profile" class="nav-item">PROFILE</a>
+        <a href="#experience" class="nav-item">EXPERIENCE</a>
+        <a href="#recognition" class="nav-item">RECOGNITION</a>
+        <a href="#capabilities" class="nav-item">CAPABILITIES</a>
+        <a href="#contact" class="nav-item">CONTACT</a>
       </nav>
 
-      <div class="header-cta-zone">
-        <a href="/assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="nav-link-cta">
-          <span>CV · PDF</span>
+      <div class="nav-actions">
+        <a href="assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="btn btn-nav">
+          <span>CV [PDF]</span>
         </a>
-        <!-- Mobile Hamburger Button -->
-        <button class="mobile-toggle" id="mobile-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation menu">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
+        <button type="button" class="mobile-menu-btn" id="mobile-toggle" aria-expanded="false" aria-controls="mobile-nav-drawer" aria-label="Toggle Navigation Menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-      <ul class="mobile-nav-list">
-        <li><a href="#works" class="mobile-nav-link"><span class="nav-num">01</span> Selected Work</a></li>
-        <li><a href="#about" class="mobile-nav-link"><span class="nav-num">02</span> About &amp; Global</a></li>
-        <li><a href="#journey" class="mobile-nav-link"><span class="nav-num">03</span> Experience</a></li>
-        <li><a href="#awards" class="mobile-nav-link"><span class="nav-num">04</span> Awards</a></li>
-        <li><a href="#skills" class="mobile-nav-link"><span class="nav-num">05</span> Skills</a></li>
-        <li><a href="#contact" class="mobile-nav-link"><span class="nav-num">06</span> Contact</a></li>
-      </ul>
-      <div class="mobile-menu-footer">
-        <p class="mobile-meta">Universitas Negeri Malang · S1 Informatics Engineering · GPA 3.94/4.00</p>
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true">
+      <div class="mobile-nav-links">
+        <a href="#work" class="mobile-nav-item">01 // WORK</a>
+        <a href="#profile" class="mobile-nav-item">02 // PROFILE</a>
+        <a href="#experience" class="mobile-nav-item">03 // EXPERIENCE</a>
+        <a href="#recognition" class="mobile-nav-item">04 // RECOGNITION</a>
+        <a href="#capabilities" class="mobile-nav-item">05 // CAPABILITIES</a>
+        <a href="#contact" class="mobile-nav-item">06 // CONTACT</a>
+        <a href="assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="btn btn-primary mobile-cv-btn">
+          DOWNLOAD CV [PDF] ↗
+        </a>
       </div>
     </div>
   </header>
 
-  <main id="main-content" class="world">
+  <main id="main-content">
     <!-- ======================================================================
-         ROOM 00: HERO — 3D LUNAR BLACKHOLE HORIZON (Ref: poggufanz.xyz Hero Stage)
-         The right/center-right stage showcases the live 3D Rotating Moon + Accretion Disk.
-         Users can hover/move cursor to bend the relativistic disk & scatter orbiting glyphs.
+         SECTION 01: HERO (Full-Viewport 100svh, 12-Column Asymmetric Grid)
          ====================================================================== -->
-    <section class="hero-section room room-hero" id="hero" data-world="lunarhole" aria-label="Hero - Celestial Lunar Horizon">
-      <div class="container hero-container">
-        <div class="hero-editorial-grid">
-          <!-- Left Column: Editorial Identity, Positioning & CTAs -->
-          <div class="hero-left reveal-on-scroll">
-            <div class="eyebrow">
-              <span class="eyebrow-num">00</span>
-              <span class="eyebrow-rule"></span>
-              <span class="eyebrow-label">MALANG, INDONESIA · RESEARCH &amp; ENGINEERING</span>
+    <section class="section hero-section" id="hero" aria-label="Hero Overview">
+      <div class="hero-content">
+        <!-- Main Display Title (Columns 1–12) -->
+        <div class="hero-title-block">
+          <h1 class="hero-display-title">
+            BUILT FOR WEB.<br>
+            ENGINEERED FOR THE FIELD.
+          </h1>
+          <p class="hero-statement">
+            From landfill methane telemetry to cross-border robotics in Japan and Malaysia. Mukaromah builds software, embedded systems, and research workflows that work in the real world.
+          </p>
+        </div>
+
+        <!-- Lower Section: Left Specs & Right Actions -->
+        <div class="hero-lower-grid">
+          <!-- Lower-Left Editorial Panel (Sharp Rectangular Portrait + Hard Facts) -->
+          <div class="hero-editorial-panel">
+            <div class="hero-portrait-frame">
+              <img
+                src="assets/portrait.jpg"
+                alt="Mukaromah"
+                class="hero-portrait-img"
+                width="88"
+                height="110"
+                loading="eager"
+              >
             </div>
+            <div class="hero-spec-rows">
+              <div class="spec-row">
+                <span class="spec-label">INSTITUTION</span>
+                <span class="spec-value">Universitas Negeri Malang — S1 Informatics Engineering</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">STANDING</span>
+                <span class="spec-value highlight">3.94 / 4.00 Cumulative GPA (2024 – Present)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">CURRENT ROLES</span>
+                <span class="spec-value">General Secretary @ DRT · Instructor @ New Primagama</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">GLOBAL TRACK</span>
+                <span class="spec-value">Kagoshima KOSEN (Japan) · UiTM (Malaysia)</span>
+              </div>
+            </div>
+          </div>
 
-            <h1 class="hero-title">
-              Curiosity takes <br>
-              <span class="italic-serif">us further.</span>
-            </h1>
+          <!-- Lower-Right Actions -->
+          <div class="hero-actions-panel">
+            <a href="#work" class="btn btn-primary">
+              <span>VIEW SELECTED WORK ↓</span>
+            </a>
+            <a href="assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="btn btn-secondary">
+              <span>DOWNLOAD CV (PDF) ↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <p class="hero-positioning">
-              Mahasiswi Teknik Informatika Universitas Negeri Malang <strong>(IPK 3.94 / 4.00)</strong> dengan fokus pada rekayasa web berstandar tinggi, riset IoT &amp; sistem otonom robotika di Dewantara Research Team, serta kepemimpinan kolaboratif lintas batas (Kagoshima KOSEN Jepang &amp; UiTM Malaysia).
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider-line" aria-hidden="true"></div>
+
+    <!-- ======================================================================
+         SECTION 02: SELECTED WORK & RESEARCH (Oryzo Spec-Sheet Matrix — 8 Projects)
+         ====================================================================== -->
+    <section class="section work-section" id="work" aria-label="Selected Work &amp; Research">
+      <div class="asymmetric-grid">
+        <!-- Left Column: Columns 1–4 -->
+        <div class="col-left">
+          <div class="sticky-side">
+            <div class="section-tag-row">
+              <span class="index-num">01</span>
+              <span class="section-tag">CATALOG</span>
+            </div>
+            <h2 class="section-heading">EIGHT SYSTEMS.<br>ZERO FILLER.</h2>
+            <p class="section-statement">
+              Production web interfaces, funded IoT &amp; robotics grants at Universitas Negeri Malang, and international symposium research.
             </p>
 
-            <!-- Quick Metrics Strip -->
-            <div class="hero-metrics-strip">
-              <div class="metric-pill">
-                <span class="metric-num tabular-nums">3.94</span>
-                <span class="metric-lbl">Cumulative GPA / 4.00</span>
-              </div>
-              <div class="metric-pill">
-                <span class="metric-num tabular-nums">2</span>
-                <span class="metric-lbl">Global Programs</span>
-              </div>
-              <div class="metric-pill">
-                <span class="metric-num tabular-nums">7</span>
-                <span class="metric-lbl">Academic Honors</span>
-              </div>
-              <div class="metric-pill">
-                <span class="metric-num tabular-nums">1</span>
-                <span class="metric-lbl">IEEE ISMEE Paper</span>
-              </div>
+            <!-- Filter Controls: Sharp Rectangular -->
+            <div class="filter-controls" role="tablist" aria-label="Filter Projects">
+              <button type="button" class="filter-tab active" data-filter="all" role="tab" aria-selected="true">ALL [8]</button>
+              <button type="button" class="filter-tab" data-filter="web" role="tab" aria-selected="false">WEB &amp; APPS</button>
+              <button type="button" class="filter-tab" data-filter="iot" role="tab" aria-selected="false">IOT &amp; ROBOTICS</button>
+              <button type="button" class="filter-tab" data-filter="research" role="tab" aria-selected="false">RESEARCH</button>
             </div>
+          </div>
+        </div>
 
-            <div class="hero-actions">
-              <a href="#works" class="btn btn-primary" id="btn-explore-works">
-                <span>Explore Selected Work</span>
-                <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-              <a href="assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="btn btn-secondary" id="btn-download-cv">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <polyline points="7 10 12 15 17 10" stroke-linecap="round" stroke-linejoin="round"/>
-                  <line x1="12" y1="15" x2="12" y2="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Download Official CV (PDF)</span>
-              </a>
-            </div>
-
-            <!-- Liquid Glass Identity Card with 3D Tilt & Floating Badges -->
-            <div class="hero-portrait-glass tilt-card-3d" id="portrait-card">
-              <div class="identity-avatar-wrap">
-                <img
-                  src="assets/portrait.jpg"
-                  onerror="this.onerror=null; this.src='assets/portrait-placeholder.svg';"
-                  alt="Mukaromah — Portrait"
-                  class="identity-avatar-img"
-                  width="72"
-                  height="72"
-                  loading="eager"
-                >
+        <!-- Right Column: Columns 5–12 -->
+        <div class="col-right">
+          <div class="projects-matrix" id="projects-container">
+            <!-- Project 01: Spektrum Teknologi -->
+            <article class="spec-card" data-category="web" id="project-card-spektrum">
+              <div class="card-top-bar">
+                <span class="card-index">01</span>
+                <span class="card-category">WEB ARCHITECTURE</span>
               </div>
-              <div class="identity-meta">
-                <div class="identity-name-row">
-                  <span class="identity-name">Mukaromah</span>
-                  <span class="identity-badge">GPA 3.94 / 4.00</span>
+              <h3 class="card-title">Spektrum Teknologi</h3>
+              <p class="card-subtitle">Corporate Profile &amp; Service Hierarchy</p>
+              <p class="card-description">
+                Company profile architecture built to present corporate engineering services and client communication channels without clutter.
+              </p>
+              <div class="card-spec-table">
+                <div class="card-spec-row">
+                  <span class="cs-label">TYPE</span>
+                  <span class="cs-value">Company Profile Website</span>
                 </div>
-                <span class="identity-role">Web Developer · General Secretary DRT · KOSEN Japan &amp; UiTM Malaysia Alumni</span>
+                <div class="card-spec-row">
+                  <span class="cs-label">STACK</span>
+                  <span class="cs-value">HTML5, CSS3, Responsive Layout</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">CONTEXT</span>
+                  <span class="cs-value">Academic Project</span>
+                </div>
               </div>
-              <div class="floating-badge-wrap" aria-hidden="true">
-                <span class="floating-badge floating-badge-1">Kagoshima KOSEN Japan · 2026</span>
-                <span class="floating-badge floating-badge-2">General Secretary @ DRT UM</span>
-              </div>
-            </div>
-          </div>
+              <button type="button" class="btn btn-card-action open-dossier" data-project-id="spektrum">
+                <span>READ FULL SPECIFICATION →</span>
+              </button>
+            </article>
 
-          <!-- Right Column: Interactive 3D Lunar Celestial Observatory Stage -->
-          <div class="hero-right reveal-on-scroll">
-            <div class="lunar-observatory-stage" id="lunar-observatory-stage">
-              <!-- Interactive Reticle framing the 3D WebGL Moon -->
-              <div class="observatory-hud-ring" aria-hidden="true"></div>
-              <div class="observatory-callout observatory-callout-top">
-                <span class="callout-code">CELESTIAL HORIZON · CORE</span>
-                <span class="callout-sub">Drag or move cursor to interact</span>
+            <!-- Project 02: Eksas Bakes -->
+            <article class="spec-card" data-category="web" id="project-card-eksas">
+              <div class="card-top-bar">
+                <span class="card-index">02</span>
+                <span class="card-category">COMMERCIAL FRONTEND</span>
               </div>
-              <div class="observatory-callout observatory-callout-bottom">
-                <span class="callout-code">ASTRONOMICAL RETICLE · 07°58′S 112°37′E</span>
-                <span class="callout-sub">MALANG OBSERVATORY · S1 TEKNIK INFORMATIKA</span>
+              <h3 class="card-title">Eksas Bakes</h3>
+              <p class="card-subtitle">Artisanal Bakery &amp; Product Catalog</p>
+              <p class="card-description">
+                Digital storefront and product catalog designed for an artisanal bakery. Built to make browsing pastries and placing inquiries effortless.
+              </p>
+              <div class="card-spec-table">
+                <div class="card-spec-row">
+                  <span class="cs-label">TYPE</span>
+                  <span class="cs-value">Commercial Bakery Web</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">STACK</span>
+                  <span class="cs-value">Frontend UI, Product Catalog</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">CONTEXT</span>
+                  <span class="cs-value">Class Project</span>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
+              <button type="button" class="btn btn-card-action open-dossier" data-project-id="eksas">
+                <span>READ FULL SPECIFICATION →</span>
+              </button>
+            </article>
 
-        <!-- Hero Bottom Metadata Bar -->
-        <div class="hero-bottom-bar reveal-on-scroll">
-          <div class="hero-info-item">
-            <span class="info-label">INSTITUTION</span>
-            <span class="info-value">Universitas Negeri Malang (2024–Present)</span>
-          </div>
-          <div class="hero-info-item">
-            <span class="info-label">ACADEMIC STANDING</span>
-            <span class="info-value tabular-nums">GPA 3.94 / 4.00 · S1 Teknik Informatika</span>
-          </div>
-          <div class="hero-info-item">
-            <span class="info-label">GLOBAL EXPOSURE</span>
-            <span class="info-value">Kagoshima KOSEN (Japan) &amp; UiTM (Malaysia)</span>
-          </div>
-          <div class="hero-info-item">
-            <span class="info-label">RESEARCH &amp; HONORS</span>
-            <span class="info-value tabular-nums">3 UM Grants · ISMEE Paper · 7 Awards</span>
+            <!-- Project 03: Supit Urang Methane System -->
+            <article class="spec-card" data-category="research" id="project-card-ismee">
+              <div class="card-top-bar">
+                <span class="card-index">03</span>
+                <span class="card-category">INTERNATIONAL SYMPOSIUM</span>
+              </div>
+              <h3 class="card-title">Supit Urang Methane &amp; Air Quality System</h3>
+              <p class="card-subtitle">Empirical Environmental Telemetry Array</p>
+              <p class="card-description">
+                Empirical multi-sensor system measuring methane concentration and air quality across the Supit Urang landfill. Co-authored and presented at ISMEE 2025.
+              </p>
+              <div class="card-spec-table">
+                <div class="card-spec-row">
+                  <span class="cs-label">PUBLICATION</span>
+                  <span class="cs-value">ISMEE 2025 Symposium (UPI)</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">ROLE</span>
+                  <span class="cs-value">Presenter &amp; Co-Author</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">DOMAIN</span>
+                  <span class="cs-value">Multi-Sensor Telemetry</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-card-action open-dossier" data-project-id="ismee">
+                <span>READ FULL SPECIFICATION →</span>
+              </button>
+            </article>
+
+            <!-- Project 04: Landfill Air Quality Mobile Monitor -->
+            <article class="spec-card" data-category="iot" id="project-card-airquality">
+              <div class="card-top-bar">
+                <span class="card-index">04</span>
+                <span class="card-category">MOBILE TELEMETRY</span>
+              </div>
+              <h3 class="card-title">Landfill Air Quality Mobile Monitor</h3>
+              <p class="card-subtitle">Hazard Sensor Telemetry Dashboard</p>
+              <p class="card-description">
+                Mobile telemetry interface translating raw landfill gas sensor streams into real-time environmental safety indicators for field operators.
+              </p>
+              <div class="card-spec-table">
+                <div class="card-spec-row">
+                  <span class="cs-label">PLATFORM</span>
+                  <span class="cs-value">Mobile Application</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">STACK</span>
+                  <span class="cs-value">Flutter, Dart, IoT Stream</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">TARGET</span>
+                  <span class="cs-value">Landfill Hazard Monitoring</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-card-action open-dossier" data-project-id="airquality">
+                <span>READ FULL SPECIFICATION →</span>
+              </button>
+            </article>
+
+            <!-- Project 05: Big Data Web Pipeline -->
+            <article class="spec-card" data-category="research" id="project-card-bigdata">
+              <div class="card-top-bar">
+                <span class="card-index">05</span>
+                <span class="card-category">DATA RESEARCH TEAM</span>
+              </div>
+              <h3 class="card-title">Big Data Web Pipeline</h3>
+              <p class="card-subtitle">Large-Scale Dataset Ingestion &amp; Visualization</p>
+              <p class="card-description">
+                Collaborative web-based big data research project handling large-scale dataset preprocessing, structuring, and analytical visualization.
+              </p>
+              <div class="card-spec-table">
+                <div class="card-spec-row">
+                  <span class="cs-label">ROLE</span>
+                  <span class="cs-value">Data Researcher</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">STACK</span>
+                  <span class="cs-value">Python, Data Processing, Web</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">STATUS</span>
+                  <span class="cs-value">Active Team Research</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-card-action open-dossier" data-project-id="bigdata">
+                <span>READ FULL SPECIFICATION →</span>
+              </button>
+            </article>
+
+            <!-- Project 06: Smart Weighing Waste System -->
+            <article class="spec-card" data-category="iot" id="project-card-smartweighing">
+              <div class="card-top-bar">
+                <span class="card-index">06</span>
+                <span class="card-category">UM RESEARCH GRANT</span>
+              </div>
+              <h3 class="card-title">Smart Weighing Waste System</h3>
+              <p class="card-subtitle">IoT Circular Economy Infrastructure</p>
+              <p class="card-description">
+                IoT-integrated weighing station engineered to track waste mass and material flow in support of circular economy infrastructure.
+              </p>
+              <div class="card-spec-table">
+                <div class="card-spec-row">
+                  <span class="cs-label">FUNDING</span>
+                  <span class="cs-value">UM Research Grant Awardee</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">HARDWARE</span>
+                  <span class="cs-value">Arduino / ESP32, Load Cells</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">FOCUS</span>
+                  <span class="cs-value">Circular Economy IoT</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-card-action open-dossier" data-project-id="smartweighing">
+                <span>READ FULL SPECIFICATION →</span>
+              </button>
+            </article>
+
+            <!-- Project 07: Autonomous Environmental Monitoring Robot -->
+            <article class="spec-card" data-category="iot" id="project-card-autonomousrobot">
+              <div class="card-top-bar">
+                <span class="card-index">07</span>
+                <span class="card-category">UM RESEARCH GRANT</span>
+              </div>
+              <h3 class="card-title">Autonomous Environmental Robot</h3>
+              <p class="card-subtitle">Hazardous Gas Detection &amp; Mitigation</p>
+              <p class="card-description">
+                Unmanned ground robot equipped with multi-gas sensor arrays to detect hazardous emissions and support rapid environmental mitigation.
+              </p>
+              <div class="card-spec-table">
+                <div class="card-spec-row">
+                  <span class="cs-label">FUNDING</span>
+                  <span class="cs-value">UM Research Grant Awardee</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">SYSTEM</span>
+                  <span class="cs-value">Autonomous Mobile Robotics</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">SENSORS</span>
+                  <span class="cs-value">Hazardous Gas Detection</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-card-action open-dossier" data-project-id="autonomousrobot">
+                <span>READ FULL SPECIFICATION →</span>
+              </button>
+            </article>
+
+            <!-- Project 08: AIoT Smart Mobile Robot for Landfill Mapping -->
+            <article class="spec-card" data-category="iot" id="project-card-aiotrobot">
+              <div class="card-top-bar">
+                <span class="card-index">08</span>
+                <span class="card-category">UM RESEARCH GRANT</span>
+              </div>
+              <h3 class="card-title">AIoT Smart Mobile Robot</h3>
+              <p class="card-subtitle">Pollution Detection &amp; Landfill Spatial Mapping</p>
+              <p class="card-description">
+                Mobile robot combining Artificial Intelligence of Things (AIoT) with spatial mapping to chart pollution hotspots across landfill terrain.
+              </p>
+              <div class="card-spec-table">
+                <div class="card-spec-row">
+                  <span class="cs-label">FUNDING</span>
+                  <span class="cs-value">UM Research Grant Awardee</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">STACK</span>
+                  <span class="cs-value">AIoT, C/C++, Python</span>
+                </div>
+                <div class="card-spec-row">
+                  <span class="cs-label">OUTPUT</span>
+                  <span class="cs-value">Spatial Pollution Mapping</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-card-action open-dossier" data-project-id="aiotrobot">
+                <span>READ FULL SPECIFICATION →</span>
+              </button>
+            </article>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 3D Paper-Cut Wave Relief Divider -->
-    <div class="section-divider-wave" aria-hidden="true">
-      <svg viewBox="0 0 1440 100" preserveAspectRatio="none" class="wave-svg">
-        <path d="M0,0 L1440,0 L1440,40 C1160,95 880,10 600,60 C320,110 140,25 0,65 Z" fill="#141c2e" opacity="0.45" />
-        <path d="M0,0 L1440,0 L1440,24 C1120,75 840,0 560,42 C280,85 120,18 0,46 Z" fill="#0a0f1d" />
-      </svg>
-    </div>
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider-line" aria-hidden="true"></div>
 
     <!-- ======================================================================
-         ROOM 01: SELECTED WORK & RESEARCH PROJECTS (8 Verified CV Projects)
+         SECTION 03: PROFILE, EDUCATION & INTERNATIONAL EXPOSURE
          ====================================================================== -->
-    <section class="works-section room" id="works" data-world="accretion" aria-label="Selected Works and Research Projects">
-      <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="eyebrow">
-            <span class="eyebrow-num">01</span>
-            <span class="eyebrow-rule"></span>
-            <span class="eyebrow-label">SELECTED WORK &amp; RESEARCH ARCHIVE</span>
-          </div>
-          <h2 class="section-title">Crafted with logic, shaped by <span class="italic-serif">purpose.</span></h2>
-          <p class="section-lead">Eight verified projects spanning web platforms, environmental IoT &amp; robotics engineering grants, and international symposium publications.</p>
-        </div>
-
-        <!-- Project Filter Buttons -->
-        <div class="project-filters reveal-on-scroll" role="tablist" aria-label="Filter projects">
-          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All Works (8)</button>
-          <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web &amp; Apps</button>
-          <button class="filter-btn" data-filter="iot" role="tab" aria-selected="false">IoT &amp; Robotics Grants</button>
-          <button class="filter-btn" data-filter="research" role="tab" aria-selected="false">Research &amp; Symposium</button>
-        </div>
-
-        <!-- Projects Grid (8 Verified CV Projects) -->
-        <div class="projects-grid" id="projects-grid">
-          <!-- Project 1: Spektrum Teknologi -->
-          <article class="project-card reveal-on-scroll" data-category="web" id="project-spektrum">
-            <div class="project-card-visual spektrum-visual">
-              <div class="visual-art">
-                <div class="art-grid-lines"></div>
-                <div class="art-shape art-shape-spektrum"></div>
-                <div class="visual-kicker">01 / 08 · WEB ARCHITECTURE</div>
-              </div>
+    <section class="section profile-section" id="profile" aria-label="Profile and Global Exposure">
+      <div class="asymmetric-grid">
+        <!-- Left Column -->
+        <div class="col-left">
+          <div class="sticky-side">
+            <div class="section-tag-row">
+              <span class="index-num">02</span>
+              <span class="section-tag">PROFILE &amp; TRACK</span>
             </div>
-            <div class="project-card-body">
-              <div class="project-meta">
-                <span class="project-index tabular-nums">01</span>
-                <span class="meta-dot">·</span>
-                <span class="project-category">Company Profile Website</span>
-              </div>
-              <h3 class="project-title">Spektrum Teknologi</h3>
-              <p class="project-subtitle">Corporate Profile &amp; Service Architecture</p>
-              <p class="project-description">
-                Developed a responsive company profile website as part of an academic project, presenting corporate competencies, structured service offerings, and clear client communication flows.
-              </p>
-              <div class="project-meta-line">
-                <span>HTML5 &amp; CSS3</span>
-                <span>·</span>
-                <span>Responsive UI</span>
-                <span>·</span>
-                <span>Information Architecture</span>
-              </div>
-              <div class="project-actions">
-                <button class="btn-text-link view-case-btn" data-project-id="spektrum">
-                  <span>Inspect Dossier</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
-                <span class="project-status-text">Academic Project</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Project 2: Eksas Bakes -->
-          <article class="project-card reveal-on-scroll" data-category="web" id="project-eksas">
-            <div class="project-card-visual eksas-visual">
-              <div class="visual-art">
-                <div class="art-grid-lines"></div>
-                <div class="art-shape art-shape-eksas"></div>
-                <div class="visual-kicker">02 / 08 · DIGITAL SHOWCASE</div>
-              </div>
-            </div>
-            <div class="project-card-body">
-              <div class="project-meta">
-                <span class="project-index tabular-nums">02</span>
-                <span class="meta-dot">·</span>
-                <span class="project-category">Bakery Website</span>
-              </div>
-              <h3 class="project-title">Eksas Bakes</h3>
-              <p class="project-subtitle">Artisanal Bakery Brand &amp; Product Catalog</p>
-              <p class="project-description">
-                Developed a bakery website as part of a class project, focusing on presenting the artisanal business identity, curated product catalog, and seamless customer inquiry channels.
-              </p>
-              <div class="project-meta-line">
-                <span>Frontend Design</span>
-                <span>·</span>
-                <span>Product Showcase</span>
-                <span>·</span>
-                <span>Customer UX</span>
-              </div>
-              <div class="project-actions">
-                <button class="btn-text-link view-case-btn" data-project-id="eksas">
-                  <span>Inspect Dossier</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
-                <span class="project-status-text">Class Project</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Project 3: ISMEE 2025 Symposium Paper -->
-          <article class="project-card reveal-on-scroll" data-category="research" id="project-ismee">
-            <div class="project-card-visual ismee-visual">
-              <div class="visual-art">
-                <div class="art-sensor-rings"></div>
-                <div class="visual-kicker">03 / 08 · ISMEE 2025 SYMPOSIUM (UPI)</div>
-              </div>
-            </div>
-            <div class="project-card-body">
-              <div class="project-meta">
-                <span class="project-index tabular-nums">03</span>
-                <span class="meta-dot">·</span>
-                <span class="project-category">Presenter &amp; Co-Author · 2025</span>
-              </div>
-              <h3 class="project-title">Multi-Sensor Methane &amp; Air Quality</h3>
-              <p class="project-subtitle">ISMEE 2025 International Symposium Paper (UPI)</p>
-              <p class="project-description">
-                Presented and co-authored “Effectiveness of a Multi-Sensor System for Methane and Air Quality Monitoring in Supit Urang Landfill” at the International Symposium on Material and Electrical Engineering (ISMEE).
-              </p>
-              <div class="project-meta-line">
-                <span>Multi-Sensor Telemetry</span>
-                <span>·</span>
-                <span>Methane Detection</span>
-                <span>·</span>
-                <span>Scientific Publication</span>
-              </div>
-              <div class="project-actions">
-                <button class="btn-text-link view-case-btn" data-project-id="ismee">
-                  <span>Inspect Dossier</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
-                <span class="project-status-text">International Paper</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Project 4: Mobile Air Quality Monitoring -->
-          <article class="project-card reveal-on-scroll" data-category="iot" id="project-airquality">
-            <div class="project-card-visual airquality-visual">
-              <div class="visual-art">
-                <div class="art-sensor-rings"></div>
-                <div class="visual-kicker">04 / 08 · MOBILE &amp; IOT TELEMETRY</div>
-              </div>
-            </div>
-            <div class="project-card-body">
-              <div class="project-meta">
-                <span class="project-index tabular-nums">04</span>
-                <span class="meta-dot">·</span>
-                <span class="project-category">Mobile Application &amp; IoT</span>
-              </div>
-              <h3 class="project-title">Landfill Air Quality Monitor</h3>
-              <p class="project-subtitle">Mobile Environmental Monitoring Application</p>
-              <p class="project-description">
-                Worked on a mobile application for monitoring real-time air quality and hazardous gas concentrations in landfill areas, translating sensor data streams into clear health indicators.
-              </p>
-              <div class="project-meta-line">
-                <span>Flutter / Dart</span>
-                <span>·</span>
-                <span>IoT Sensor Stream</span>
-                <span>·</span>
-                <span>Real-Time Telemetry</span>
-              </div>
-              <div class="project-actions">
-                <button class="btn-text-link view-case-btn" data-project-id="airquality">
-                  <span>Inspect Dossier</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
-                <span class="project-status-text">Mobile &amp; IoT</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Project 5: Big Data Web Project -->
-          <article class="project-card reveal-on-scroll" data-category="research" id="project-bigdata">
-            <div class="project-card-visual bigdata-visual">
-              <div class="visual-art">
-                <div class="art-data-matrix"></div>
-                <div class="visual-kicker">05 / 08 · DATA RESEARCH TEAM</div>
-              </div>
-            </div>
-            <div class="project-card-body">
-              <div class="project-meta">
-                <span class="project-index tabular-nums">05</span>
-                <span class="meta-dot">·</span>
-                <span class="project-category">Data &amp; Web Research</span>
-              </div>
-              <h3 class="project-title">Big Data Web Project</h3>
-              <p class="project-subtitle">Web-Based Big Data Research Contribution</p>
-              <p class="project-description">
-                Contributing as a data researcher in a collaborative team project involving web-based big data pipelines, systematic data preprocessing, and interactive analytical visualizations.
-              </p>
-              <div class="project-meta-line">
-                <span>Python &amp; Data Analysis</span>
-                <span>·</span>
-                <span>Web Datasets</span>
-                <span>·</span>
-                <span>Visual Analytics</span>
-              </div>
-              <div class="project-actions">
-                <button class="btn-text-link view-case-btn" data-project-id="bigdata">
-                  <span>Inspect Dossier</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
-                <span class="project-status-text">Active Research</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Project 6: Smart Weighing for Waste Management -->
-          <article class="project-card reveal-on-scroll" data-category="iot" id="project-smartweighing">
-            <div class="project-card-visual grant-visual-1">
-              <div class="visual-art">
-                <div class="art-grid-lines"></div>
-                <div class="art-shape art-shape-spektrum"></div>
-                <div class="visual-kicker">06 / 08 · RESEARCH GRANT AWARDEE · UM</div>
-              </div>
-            </div>
-            <div class="project-card-body">
-              <div class="project-meta">
-                <span class="project-index tabular-nums">06</span>
-                <span class="meta-dot">·</span>
-                <span class="project-category">IoT &amp; Circular Economy Grant</span>
-              </div>
-              <h3 class="project-title">Smart Weighing Waste System</h3>
-              <p class="project-subtitle">IoT Integration to Support Circular Economy</p>
-              <p class="project-description">
-                Awarded Universitas Negeri Malang research grant to engineer a smart weighing waste management system utilizing microcontroller load cells and IoT cloud integration for circular economy tracking.
-              </p>
-              <div class="project-meta-line">
-                <span>Arduino / ESP32</span>
-                <span>·</span>
-                <span>IoT Telemetry</span>
-                <span>·</span>
-                <span>Circular Economy</span>
-              </div>
-              <div class="project-actions">
-                <button class="btn-text-link view-case-btn" data-project-id="smartweighing">
-                  <span>Inspect Dossier</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
-                <span class="project-status-text">UM Research Grant</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Project 7: Autonomous Environmental Monitoring Robot -->
-          <article class="project-card reveal-on-scroll" data-category="iot" id="project-autonomousrobot">
-            <div class="project-card-visual grant-visual-2">
-              <div class="visual-art">
-                <div class="art-sensor-rings"></div>
-                <div class="visual-kicker">07 / 08 · RESEARCH GRANT AWARDEE · UM</div>
-              </div>
-            </div>
-            <div class="project-card-body">
-              <div class="project-meta">
-                <span class="project-index tabular-nums">07</span>
-                <span class="meta-dot">·</span>
-                <span class="project-category">Robotics &amp; Environmental Mitigation</span>
-              </div>
-              <h3 class="project-title">Autonomous Monitoring Robot</h3>
-              <p class="project-subtitle">Hazardous Gas Detection &amp; Environmental Mitigation</p>
-              <p class="project-description">
-                Research grant project developing an autonomous environmental monitoring robot equipped with multi-gas sensor arrays for hazardous gas detection and rapid environmental mitigation.
-              </p>
-              <div class="project-meta-line">
-                <span>Robotics Programming</span>
-                <span>·</span>
-                <span>Embedded Systems</span>
-                <span>·</span>
-                <span>Gas Sensors</span>
-              </div>
-              <div class="project-actions">
-                <button class="btn-text-link view-case-btn" data-project-id="autonomousrobot">
-                  <span>Inspect Dossier</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
-                <span class="project-status-text">UM Research Grant</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Project 8: AIoT-Based Smart Mobile Robot -->
-          <article class="project-card reveal-on-scroll" data-category="iot" id="project-aiotrobot">
-            <div class="project-card-visual grant-visual-3">
-              <div class="visual-art">
-                <div class="art-data-matrix"></div>
-                <div class="visual-kicker">08 / 08 · RESEARCH GRANT AWARDEE · UM</div>
-              </div>
-            </div>
-            <div class="project-card-body">
-              <div class="project-meta">
-                <span class="project-index tabular-nums">08</span>
-                <span class="meta-dot">·</span>
-                <span class="project-category">AIoT Robotics &amp; Spatial Mapping</span>
-              </div>
-              <h3 class="project-title">AIoT Smart Mobile Robot</h3>
-              <p class="project-subtitle">Pollution Detection &amp; Landfill Mapping</p>
-              <p class="project-description">
-                Research grant initiative combining Artificial Intelligence of Things (AIoT) and mobile robotics to perform automated pollution detection and spatial mapping across landfill terrains.
-              </p>
-              <div class="project-meta-line">
-                <span>AIoT Systems</span>
-                <span>·</span>
-                <span>C/C++ &amp; Python</span>
-                <span>·</span>
-                <span>Landfill Mapping</span>
-              </div>
-              <div class="project-actions">
-                <button class="btn-text-link view-case-btn" data-project-id="aiotrobot">
-                  <span>Inspect Dossier</span>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
-                <span class="project-status-text">UM Research Grant</span>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         SHOWCASE 01: 3D CYLINDER GALLERY (Ref: Kaiki Continuous Auto-Spin Ring)
-         ====================================================================== -->
-    <section class="cylinder-showcase-section" id="cylinder-showcase" aria-label="3D Academic Artifacts &amp; Certificates Cylinder">
-      <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="eyebrow">
-            <span class="eyebrow-num">A1</span>
-            <span class="eyebrow-rule"></span>
-            <span class="eyebrow-label">CONTINUOUS 3D PERSPECTIVE CYLINDER</span>
-          </div>
-          <h2 class="section-title">Academic distinctions &amp; <span class="italic-serif">global milestones.</span></h2>
-          <p class="section-lead">Drag or swipe to rotate in 3D perspective. Smooth inertial lerp pauses on interaction and resumes seamlessly.</p>
-        </div>
-
-        <div class="cylinder-stage" aria-label="Interactive 3D Cylinder Stage">
-          <div class="cylinder-ring">
-            <!-- Card 1: Kagoshima KOSEN -->
-            <div class="cylinder-card">
-              <div class="cylinder-card-media cylinder-kosen">
-                <span class="cylinder-badge">2026 · JAPAN</span>
-              </div>
-              <div class="cylinder-card-info">
-                <span class="cylinder-tag">Kagoshima KOSEN</span>
-                <h4 class="cylinder-heading">UM-GIE KOSEN Immersion</h4>
-                <p class="cylinder-desc">Robotics engineering &amp; advanced laboratory collaboration in Kagoshima, Japan.</p>
-              </div>
-            </div>
-
-            <!-- Card 2: UiTM Malaysia -->
-            <div class="cylinder-card">
-              <div class="cylinder-card-media cylinder-uitm">
-                <span class="cylinder-badge">2025 · MALAYSIA</span>
-              </div>
-              <div class="cylinder-card-info">
-                <span class="cylinder-tag">UiTM Malaysia</span>
-                <h4 class="cylinder-heading">Global Project-Based Learning</h4>
-                <p class="cylinder-desc">International robotics project with LEGO EV3 and cross-border engineering teams.</p>
-              </div>
-            </div>
-
-            <!-- Card 3: ISMEE 2025 -->
-            <div class="cylinder-card">
-              <div class="cylinder-card-media cylinder-ismee">
-                <span class="cylinder-badge">2025 · SYMPOSIUM</span>
-              </div>
-              <div class="cylinder-card-info">
-                <span class="cylinder-tag">ISMEE · UPI</span>
-                <h4 class="cylinder-heading">Presenter &amp; Co-Author</h4>
-                <p class="cylinder-desc">Multi-sensor methane &amp; air quality telemetry research paper presented in English.</p>
-              </div>
-            </div>
-
-            <!-- Card 4: Dewantara Research Team -->
-            <div class="cylinder-card">
-              <div class="cylinder-card-media cylinder-drt">
-                <span class="cylinder-badge">2025 – PRESENT</span>
-              </div>
-              <div class="cylinder-card-info">
-                <span class="cylinder-tag">Leadership</span>
-                <h4 class="cylinder-heading">General Secretary @ DRT UM</h4>
-                <p class="cylinder-desc">Research administration, national robotics competition coordination &amp; grant stewardship.</p>
-              </div>
-            </div>
-
-            <!-- Card 5: Smart Air Quality Grant -->
-            <div class="cylinder-card">
-              <div class="cylinder-card-media cylinder-grant">
-                <span class="cylinder-badge">2025 · UM GRANT</span>
-              </div>
-              <div class="cylinder-card-info">
-                <span class="cylinder-tag">LPPM UM Award</span>
-                <h4 class="cylinder-heading">Smart Air Quality Station</h4>
-                <p class="cylinder-desc">Student innovation research grant awardee for distributed environmental IoT telemetry.</p>
-              </div>
-            </div>
-
-            <!-- Card 6: GPA 3.94 Distinction -->
-            <div class="cylinder-card">
-              <div class="cylinder-card-media cylinder-gpa">
-                <span class="cylinder-badge">ACADEMIC DISTINCTION</span>
-              </div>
-              <div class="cylinder-card-info">
-                <span class="cylinder-tag">S1 Teknik Informatika</span>
-                <h4 class="cylinder-heading">GPA 3.94 / 4.00 Standing</h4>
-                <p class="cylinder-desc">Consistently maintaining highest academic performance at Universitas Negeri Malang.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         SHOWCASE 02: 3D PARAMETRIC SNAKE WAVE TRAJECTORY (Ref: Kaiki Sine Deck)
-         ====================================================================== -->
-    <section class="snake-wave-section" id="snake-wave" aria-label="3D Parametric Snake Wave Deck">
-      <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="eyebrow">
-            <span class="eyebrow-num">A2</span>
-            <span class="eyebrow-rule"></span>
-            <span class="eyebrow-label">3D PARAMETRIC SINE WAVE STREAM</span>
-          </div>
-          <h2 class="section-title">Research trajectories <span class="italic-serif">in motion.</span></h2>
-          <p class="section-lead">Cards glide along a 3D parametric sine curve across the screen, accelerating with your scroll speed.</p>
-        </div>
-
-        <div class="snake-wave-stage" aria-label="3D Parametric Wave Stage">
-          <div class="snake-card">
-            <span class="snake-badge">IOT TELEMETRY</span>
-            <h4 class="snake-title">Methane Array Calibration</h4>
-            <span class="snake-meta">Supit Urang Landfill · 2025</span>
-          </div>
-          <div class="snake-card">
-            <span class="snake-badge">EMBEDDED ROBOTICS</span>
-            <h4 class="snake-title">Autonomous Obstacle Pathing</h4>
-            <span class="snake-meta">DRT UM Mobile Platform</span>
-          </div>
-          <div class="snake-card">
-            <span class="snake-badge">WEB PLATFORMS</span>
-            <h4 class="snake-title">Responsive Architecture</h4>
-            <span class="snake-meta">Spektrum Teknologi Profile</span>
-          </div>
-          <div class="snake-card">
-            <span class="snake-badge">RESEARCH GRANT</span>
-            <h4 class="snake-title">Smart Weighing Circular Model</h4>
-            <span class="snake-meta">Universitas Negeri Malang</span>
-          </div>
-          <div class="snake-card">
-            <span class="snake-badge">GLOBAL ENGAGEMENT</span>
-            <h4 class="snake-title">Sakura Science Immersion</h4>
-            <span class="snake-meta">Kagoshima KOSEN · Japan</span>
-          </div>
-          <div class="snake-card">
-            <span class="snake-badge">INTERNATIONAL</span>
-            <h4 class="snake-title">GPBL Robotics Integration</h4>
-            <span class="snake-meta">UiTM · Malaysia</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         SHOWCASE 03: FISHEYE DOME WALL (Ref: Kaiki 4-Row Curved Perspective Marquee)
-         ====================================================================== -->
-    <section class="dome-wall-section" id="dome-wall" aria-label="Fisheye Perspective Dome Wall">
-      <div class="dome-wall-container">
-        <!-- Row 1: RotateX 15deg -->
-        <div class="dome-row" style="transform: rotateX(15deg) translateZ(-48px);">
-          <div class="marquee-track-right">
-            <span class="dome-card">S1 TEKNIK INFORMATIKA UM</span>
-            <span class="dome-card">GPA 3.94 / 4.00</span>
-            <span class="dome-card">KAGOSHIMA KOSEN JAPAN 2026</span>
-            <span class="dome-card">UiTM MALAYSIA 2025</span>
-            <span class="dome-card">ISMEE 2025 INTERNATIONAL SYMPOSIUM</span>
-            <span class="dome-card">DEWANTARA RESEARCH TEAM</span>
-            <!-- Loop Duplicates -->
-            <span class="dome-card">S1 TEKNIK INFORMATIKA UM</span>
-            <span class="dome-card">GPA 3.94 / 4.00</span>
-            <span class="dome-card">KAGOSHIMA KOSEN JAPAN 2026</span>
-            <span class="dome-card">UiTM MALAYSIA 2025</span>
-            <span class="dome-card">ISMEE 2025 INTERNATIONAL SYMPOSIUM</span>
-            <span class="dome-card">DEWANTARA RESEARCH TEAM</span>
-          </div>
-        </div>
-
-        <!-- Row 2: RotateX 5deg -->
-        <div class="dome-row" style="transform: rotateX(5deg) translateZ(-16px);">
-          <div class="marquee-track-left">
-            <span class="dome-card">ESP32 &amp; LORAWAN TELEMETRY</span>
-            <span class="dome-card">AUTONOMOUS MOBILE ROBOTICS</span>
-            <span class="dome-card">NEXT.JS &amp; RESPONSIVE UI</span>
-            <span class="dome-card">FLUTTER / DART MOBILE TELEMETRY</span>
-            <span class="dome-card">LPPM RESEARCH GRANTS</span>
-            <span class="dome-card">7 VERIFIED ACADEMIC AWARDS</span>
-            <!-- Loop Duplicates -->
-            <span class="dome-card">ESP32 &amp; LORAWAN TELEMETRY</span>
-            <span class="dome-card">AUTONOMOUS MOBILE ROBOTICS</span>
-            <span class="dome-card">NEXT.JS &amp; RESPONSIVE UI</span>
-            <span class="dome-card">FLUTTER / DART MOBILE TELEMETRY</span>
-            <span class="dome-card">LPPM RESEARCH GRANTS</span>
-            <span class="dome-card">7 VERIFIED ACADEMIC AWARDS</span>
-          </div>
-        </div>
-
-        <!-- Row 3: RotateX -5deg -->
-        <div class="dome-row" style="transform: rotateX(-5deg) translateZ(-16px);">
-          <div class="marquee-track-right">
-            <span class="dome-card">GENERAL SECRETARY @ DRT UM</span>
-            <span class="dome-card">PROGRAMMING INSTRUCTOR NEW PRIMAGAMA</span>
-            <span class="dome-card">PYTHON DATA PREPROCESSING</span>
-            <span class="dome-card">EMBEDDED C/C++ CONTROL</span>
-            <span class="dome-card">SUPIT URANG METHANE STUDY</span>
-            <span class="dome-card">OIA UM DIGITAL SERVICES</span>
-            <!-- Loop Duplicates -->
-            <span class="dome-card">GENERAL SECRETARY @ DRT UM</span>
-            <span class="dome-card">PROGRAMMING INSTRUCTOR NEW PRIMAGAMA</span>
-            <span class="dome-card">PYTHON DATA PREPROCESSING</span>
-            <span class="dome-card">EMBEDDED C/C++ CONTROL</span>
-            <span class="dome-card">SUPIT URANG METHANE STUDY</span>
-            <span class="dome-card">OIA UM DIGITAL SERVICES</span>
-          </div>
-        </div>
-
-        <!-- Row 4: RotateX -15deg -->
-        <div class="dome-row" style="transform: rotateX(-15deg) translateZ(-48px);">
-          <div class="marquee-track-left">
-            <span class="dome-card">CORMORANT GARAMOND EDITORIAL</span>
-            <span class="dome-card">PLUS JAKARTA SANS CLEAN DISPLAY</span>
-            <span class="dome-card">JETBRAINS MONO TECHNICAL TOKENS</span>
-            <span class="dome-card">MIDNIGHT BLUE HORIZON</span>
-            <span class="dome-card">ROYAL COBALT ACCENTS</span>
-            <span class="dome-card">LIQUID GLASS REFLECTIONS</span>
-            <!-- Loop Duplicates -->
-            <span class="dome-card">CORMORANT GARAMOND EDITORIAL</span>
-            <span class="dome-card">PLUS JAKARTA SANS CLEAN DISPLAY</span>
-            <span class="dome-card">JETBRAINS MONO TECHNICAL TOKENS</span>
-            <span class="dome-card">MIDNIGHT BLUE HORIZON</span>
-            <span class="dome-card">ROYAL COBALT ACCENTS</span>
-            <span class="dome-card">LIQUID GLASS REFLECTIONS</span>
-          </div>
-        </div>
-      </div>
-      <div class="dome-vignette" aria-hidden="true"></div>
-    </section>
-         ====================================================================== -->
-    <section class="about-section room" id="about" data-world="orbital" aria-label="About Mukaromah and International Exposure">
-      <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="eyebrow">
-            <span class="eyebrow-num">02</span>
-            <span class="eyebrow-rule"></span>
-            <span class="eyebrow-label">ACADEMIC PROFILE &amp; GLOBAL ENGAGEMENT</span>
-          </div>
-          <h2 class="section-title">Rooted in logic, driven by <span class="italic-serif">clarity and global outlook.</span></h2>
-        </div>
-
-        <div class="about-grid">
-          <!-- Left Column: Narrative + Education Card -->
-          <div class="about-narrative reveal-on-scroll">
-            <p class="about-lead">
-              I am an <strong>Informatics Engineering student at Universitas Negeri Malang</strong> with hands-on experience in web development, research administration, organizational coordination, and programming instruction.
+            <h2 class="section-heading">TRAINED IN MALANG.<br>TESTED ABROAD.</h2>
+            <p class="section-statement">
+              Combining a 3.94 GPA in Informatics Engineering with hands-on laboratory and robotics immersion in Japan and Malaysia.
             </p>
-            <p class="about-body">
-              Skilled in website development using WordPress, HTML, CSS, Flutter/Dart, and Laravel, alongside embedded IoT systems, technical documentation, and project coordination. Experienced in leading administrative workflows within a university research team and participating in international engineering programs in Japan and Malaysia—eager to contribute technical, organizational, and communication skills to support OIA UM’s digital services and international engagement.
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-right">
+          <div class="editorial-copy-block">
+            <p class="editorial-lead">
+              Informatics Engineering student at Universitas Negeri Malang specializing in web development, embedded IoT robotics, research administration, and programming instruction.
             </p>
-
-            <!-- Education Highlight Panel -->
-            <div class="education-panel">
-              <div class="edu-header">
-                <span class="edu-kicker">EDUCATION · 2024 – PRESENT</span>
-                <span class="edu-gpa tabular-nums">GPA: 3.94 / 4.00</span>
-              </div>
-              <h3 class="edu-institution">Universitas Negeri Malang (UM)</h3>
-              <p class="edu-degree">Bachelor of Informatics Engineering (S1 Teknik Informatika)</p>
-              <p class="edu-focus">
-                <strong>Focus Areas:</strong> Programming, robotics systems, Internet of Things (IoT), embedded systems, and data analysis.
-              </p>
-            </div>
-
-            <div class="about-credentials-strip">
-              <div class="credential-box">
-                <span class="cred-number tabular-nums">3.94</span>
-                <span class="cred-label">Cumulative GPA / 4.00 at UM</span>
-              </div>
-              <div class="credential-box">
-                <span class="cred-number tabular-nums">8+</span>
-                <span class="cred-label">Web, IoT &amp; Research Grant Projects</span>
-              </div>
-              <div class="credential-box">
-                <span class="cred-number tabular-nums">7</span>
-                <span class="cred-label">Academic &amp; Innovation Awards</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Column: International Exposure & Core Pillars -->
-          <div class="about-pillars reveal-on-scroll">
-            <div class="international-showcase-header">
-              <span class="intl-kicker">INTERNATIONAL EXPOSURE</span>
-              <h3 class="intl-heading">Cross-Border Engineering &amp; Immersion</h3>
-            </div>
-
-            <!-- International 1: Kagoshima KOSEN, Japan -->
-            <div class="pillar-card pillar-card-highlight">
-              <div class="pillar-meta-row">
-                <span class="pillar-location">KAGOSHIMA KOSEN · JAPAN</span>
-                <span class="pillar-year tabular-nums">2026</span>
-              </div>
-              <h4 class="pillar-title">UM-GIE Short Term KOSEN Immersion Program</h4>
-              <p class="pillar-text">
-                Participated in an international engineering immersion program in Kagoshima, Japan involving advanced technical learning, laboratory visits, and cross-cultural academic collaboration.
-              </p>
-            </div>
-
-            <!-- International 2: UiTM, Malaysia -->
-            <div class="pillar-card pillar-card-highlight">
-              <div class="pillar-meta-row">
-                <span class="pillar-location">UNIVERSITI TEKNOLOGI MARA (UiTM) · MALAYSIA</span>
-                <span class="pillar-year tabular-nums">2025</span>
-              </div>
-              <h4 class="pillar-title">Global Project-Based Learning (GPBL)</h4>
-              <p class="pillar-text">
-                Participated in an international collaborative engineering program in Malaysia and worked with international students on a LEGO EV3-based robotics engineering project.
-              </p>
-            </div>
-
-            <!-- International 3: ISMEE 2025 Symposium -->
-            <div class="pillar-card">
-              <div class="pillar-meta-row">
-                <span class="pillar-location">ISMEE SYMPOSIUM · HOSTED BY UPI</span>
-                <span class="pillar-year tabular-nums">2025</span>
-              </div>
-              <h4 class="pillar-title">Presenter &amp; Co-Author · International Symposium</h4>
-              <p class="pillar-text">
-                Presented empirical environmental-monitoring research at the International Symposium on Material and Electrical Engineering (ISMEE 2025).
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         ROOM 03: PROFESSIONAL & ORGANIZATIONAL EXPERIENCE
-         ====================================================================== -->
-    <section class="journey-section room" id="journey" data-world="trails" aria-label="Professional and Organizational Experience">
-      <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="eyebrow">
-            <span class="eyebrow-num">03</span>
-            <span class="eyebrow-rule"></span>
-            <span class="eyebrow-label">PROFESSIONAL &amp; ORGANIZATIONAL EXPERIENCE</span>
-          </div>
-          <h2 class="section-title">Stewardship, research governance, <span class="italic-serif">and instruction.</span></h2>
-          <p class="section-lead">Chronological track record in programming education, research administration, and university research initiatives.</p>
-        </div>
-
-        <div class="timeline-container">
-          <!-- Animated Scrubbed Cobalt Progress Line (Blueprint E) -->
-          <div class="timeline-progress-line" aria-hidden="true"></div>
-
-          <!-- Timeline Entry 1: New Primagama -->
-          <div class="timeline-item reveal-on-scroll">
-            <div class="timeline-marker">
-              <span class="marker-dot"></span>
-              <span class="marker-line"></span>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-header">
-                <span class="timeline-period tabular-nums">2026 – Present</span>
-                <span class="timeline-domain">Instruction &amp; Pedagogy</span>
-              </div>
-              <h3 class="timeline-role">Programming Instructor</h3>
-              <div class="timeline-org">New Primagama</div>
-              <p class="timeline-desc">
-                Mentoring elementary school students in computational logic, algorithmic problem-solving, and foundational coding concepts.
-              </p>
-              <ul class="timeline-bullets">
-                <li>Teach visual programming and text-based programming to elementary school students.</li>
-                <li>Translate abstract computational concepts into interactive, accessible learning projects.</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Timeline Entry 2: Dewantara Research Team (DRT) -->
-          <div class="timeline-item reveal-on-scroll">
-            <div class="timeline-marker">
-              <span class="marker-dot"></span>
-              <span class="marker-line"></span>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-header">
-                <span class="timeline-period tabular-nums">2025 – Present</span>
-                <span class="timeline-domain">Research Governance</span>
-              </div>
-              <h3 class="timeline-role">General Secretary</h3>
-              <div class="timeline-org">Dewantara Research Team (DRT)</div>
-              <p class="timeline-desc">
-                Leading administrative operations, research documentation, and cross-functional team synergy across multidisciplinary academic competitions.
-              </p>
-              <ul class="timeline-bullets">
-                <li>Coordinate research administration and inter-division collaboration.</li>
-                <li>Support the coordination of research projects and academic competition teams.</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Timeline Entry 3: LPPM UM -->
-          <div class="timeline-item reveal-on-scroll">
-            <div class="timeline-marker">
-              <span class="marker-dot"></span>
-              <span class="marker-line"></span>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-header">
-                <span class="timeline-period tabular-nums">2025 – Present</span>
-                <span class="timeline-domain">Institutional Research</span>
-              </div>
-              <h3 class="timeline-role">Research Initiative Member</h3>
-              <div class="timeline-org">LPPM UM (Research and Community Service Institute)</div>
-              <p class="timeline-desc">
-                Active contributor to university-level applied research and community service technology programs at Universitas Negeri Malang.
-              </p>
-              <ul class="timeline-bullets">
-                <li>Participated as a member in university research initiatives and grant-funded engineering deployments.</li>
-                <li>Supported empirical field testing, sensor calibration, and technical documentation.</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Timeline Entry 4: Tutor TKJ -->
-          <div class="timeline-item reveal-on-scroll">
-            <div class="timeline-marker">
-              <span class="marker-dot"></span>
-              <span class="marker-line"></span>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-header">
-                <span class="timeline-period tabular-nums">2024</span>
-                <span class="timeline-domain">Vocational Mentorship</span>
-              </div>
-              <h3 class="timeline-role">Computer &amp; Network Engineering Tutor</h3>
-              <div class="timeline-org">Vocational High School, Computer and Network Engineering (TKJ)</div>
-              <p class="timeline-desc">
-                Provided hands-on technical tutoring for vocational students in network infrastructure, routing fundamentals, and hardware configuration.
-              </p>
-              <ul class="timeline-bullets">
-                <li>Delivered tutoring support to students in the Computer and Network Engineering (TKJ) program.</li>
-                <li>Guided practical laboratory exercises on IP subnetting, network topology, and troubleshooting.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         ROOM 04: AWARDS & ACHIEVEMENTS (7 Verified Competitions)
-         ====================================================================== -->
-    <section class="awards-section room" id="awards" data-world="nebula" aria-label="Awards and Achievements">
-      <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="eyebrow">
-            <span class="eyebrow-num">04</span>
-            <span class="eyebrow-rule"></span>
-            <span class="eyebrow-label">HONORS &amp; RECOGNITION</span>
-          </div>
-          <h2 class="section-title">Distinctions in <span class="italic-serif">innovation, debate, and science.</span></h2>
-          <p class="section-lead">Verified awards across application design, statistics essay writing, green scientific research, and robotics competitions.</p>
-        </div>
-
-        <div class="awards-grid">
-          <article class="award-card reveal-on-scroll">
-            <div class="award-top">
-              <span class="award-rank">2ND PLACE</span>
-              <span class="award-year tabular-nums">2026</span>
-            </div>
-            <h3 class="award-title">Qur’an Application Design Competition (MDAQ)</h3>
-            <p class="award-org">MTQ Universitas Negeri Malang (UM)</p>
-          </article>
-
-          <article class="award-card reveal-on-scroll">
-            <div class="award-top">
-              <span class="award-rank">3RD PLACE</span>
-              <span class="award-year tabular-nums">2026</span>
-            </div>
-            <h3 class="award-title">Scientific Debate on the Contents of the Qur’an in English</h3>
-            <p class="award-org">MTQ Universitas Negeri Malang (UM)</p>
-          </article>
-
-          <article class="award-card award-card-featured reveal-on-scroll">
-            <div class="award-top">
-              <span class="award-rank">1ST WINNER</span>
-              <span class="award-year tabular-nums">2025</span>
-            </div>
-            <h3 class="award-title">Qur’an Application Design Competition (MDAQ)</h3>
-            <p class="award-org">MTQ Universitas Negeri Malang (UM)</p>
-          </article>
-
-          <article class="award-card award-card-featured reveal-on-scroll">
-            <div class="award-top">
-              <span class="award-rank">1ST WINNER</span>
-              <span class="award-year tabular-nums">2025</span>
-            </div>
-            <h3 class="award-title">Statistics Essay Competition (FESMARO)</h3>
-            <p class="award-org">Universitas Negeri Malang (UM)</p>
-          </article>
-
-          <article class="award-card reveal-on-scroll">
-            <div class="award-top">
-              <span class="award-rank">HONORABLE MENTION</span>
-              <span class="award-year tabular-nums">2025</span>
-            </div>
-            <h3 class="award-title">International Green Scientific Competition (IGSC)</h3>
-            <p class="award-org">Universitas Negeri Semarang (UNNES)</p>
-          </article>
-
-          <article class="award-card award-card-featured reveal-on-scroll">
-            <div class="award-top">
-              <span class="award-rank">GOLD MEDAL</span>
-              <span class="award-year tabular-nums">2024</span>
-            </div>
-            <h3 class="award-title">IDEA FEST Innovation Competition</h3>
-            <p class="award-org">Universitas Negeri Malang (UM)</p>
-          </article>
-
-          <article class="award-card reveal-on-scroll">
-            <div class="award-top">
-              <span class="award-rank">2ND WINNER</span>
-              <span class="award-year tabular-nums">2024</span>
-            </div>
-            <h3 class="award-title">Robofest Electro Modern Creative (EMC)</h3>
-            <p class="award-org">Politeknik Negeri Malang (Polinema)</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         ROOM 05: TECHNICAL SKILLS & LANGUAGES
-         ====================================================================== -->
-    <section class="skills-section room" id="skills" data-world="orbital" aria-label="Skills and Languages">
-      <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="eyebrow">
-            <span class="eyebrow-num">05</span>
-            <span class="eyebrow-rule"></span>
-            <span class="eyebrow-label">COMPETENCIES &amp; LANGUAGES</span>
-          </div>
-          <h2 class="section-title">Technical capabilities &amp; <span class="italic-serif">operational domains.</span></h2>
-          <p class="section-lead">Full-spectrum skills across web &amp; mobile development, embedded IoT robotics, research administration, and cross-cultural communication.</p>
-        </div>
-
-        <div class="skills-grid">
-          <!-- Category 1: Web & App Development -->
-          <div class="skill-group-card reveal-on-scroll">
-            <div class="skill-group-header">
-              <div class="skill-group-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <rect x="2" y="3" width="20" height="14" rx="2" stroke-linecap="round"/>
-                  <line x1="8" y1="21" x2="16" y2="21" stroke-linecap="round"/>
-                  <line x1="12" y1="17" x2="12" y2="21" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <h3 class="skill-group-title">Web &amp; Mobile Apps</h3>
-            </div>
-            <p class="skill-group-list">
-              WordPress · Semantic HTML5 · Modern CSS3 · Flutter / Dart · Laravel · Responsive Web Architecture · UI/UX Design
+            <p class="editorial-secondary">
+              Experienced in building websites with WordPress, HTML, CSS, Flutter/Dart, and Laravel, while managing administrative operations for university research teams and competing in international academic arenas. Ready to support OIA UM's digital services and global engagement.
             </p>
           </div>
 
-          <!-- Category 2: Programming, Robotics & IoT -->
-          <div class="skill-group-card reveal-on-scroll">
-            <div class="skill-group-header">
-              <div class="skill-group-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <polyline points="16 18 22 12 16 6" stroke-linecap="round" stroke-linejoin="round"/>
-                  <polyline points="8 6 2 12 8 18" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+          <!-- 3-Column Architectural Spec Block (Oryzo Spec Column Style) -->
+          <div class="spec-columns-block">
+            <!-- Column 1: Universitas Negeri Malang -->
+            <div class="spec-column-card">
+              <div class="column-header">
+                <span class="col-num">TRACK 01</span>
+                <h3 class="col-title">UNIVERSITAS NEGERI MALANG</h3>
               </div>
-              <h3 class="skill-group-title">Programming, IoT &amp; Robotics</h3>
+              <div class="column-spec-table">
+                <div class="col-spec-row">
+                  <span class="csr-label">PERIOD</span>
+                  <span class="csr-value">2024 – Present</span>
+                </div>
+                <div class="col-spec-row">
+                  <span class="csr-label">DEGREE</span>
+                  <span class="csr-value">S1 Teknik Informatika</span>
+                </div>
+                <div class="col-spec-row">
+                  <span class="csr-label">GPA</span>
+                  <span class="csr-value highlight">3.94 / 4.00</span>
+                </div>
+                <div class="col-spec-row">
+                  <span class="csr-label">CORE FOCUS</span>
+                  <span class="csr-value">Programming, Robotics, IoT, Embedded Systems, Data Analysis</span>
+                </div>
+              </div>
             </div>
-            <p class="skill-group-list">
-              C / C++ · Python · Arduino / ESP32 · IoT Systems · Sensor Integration · Embedded Systems · Robotics Programming · Visual Programming · Data Processing &amp; Analysis
-            </p>
-          </div>
 
-          <!-- Category 3: Professional & Research Governance -->
-          <div class="skill-group-card reveal-on-scroll">
-            <div class="skill-group-header">
-              <div class="skill-group-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-linecap="round" stroke-linejoin="round"/>
-                  <polyline points="14 2 14 8 20 8" stroke-linecap="round" stroke-linejoin="round"/>
-                  <line x1="16" y1="13" x2="8" y2="13" stroke-linecap="round"/>
-                  <line x1="16" y1="17" x2="8" y2="17" stroke-linecap="round"/>
-                </svg>
+            <!-- Column 2: Kagoshima KOSEN, Japan -->
+            <div class="spec-column-card">
+              <div class="column-header">
+                <span class="col-num">TRACK 02</span>
+                <h3 class="col-title">KAGOSHIMA KOSEN, JAPAN</h3>
               </div>
-              <h3 class="skill-group-title">Professional &amp; Research</h3>
+              <div class="column-spec-table">
+                <div class="col-spec-row">
+                  <span class="csr-label">YEAR</span>
+                  <span class="csr-value">2026</span>
+                </div>
+                <div class="col-spec-row">
+                  <span class="csr-label">PROGRAM</span>
+                  <span class="csr-value">UM-GIE Short Term KOSEN Immersion</span>
+                </div>
+                <div class="col-spec-row">
+                  <span class="csr-label">SCOPE</span>
+                  <span class="csr-value">Advanced engineering learning, laboratory visits, and cross-cultural technical collaboration in Japan.</span>
+                </div>
+              </div>
             </div>
-            <p class="skill-group-list">
-              Research Administration &amp; Coordination · Scientific Writing · Public Speaking &amp; Technical Presentations · Project Management · Teamwork · Problem Solving
-            </p>
-          </div>
 
-          <!-- Category 4: Languages -->
-          <div class="skill-group-card reveal-on-scroll">
-            <div class="skill-group-header">
-              <div class="skill-group-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <circle cx="12" cy="12" r="10" stroke-linecap="round"/>
-                  <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            <!-- Column 3: UiTM, Malaysia -->
+            <div class="spec-column-card">
+              <div class="column-header">
+                <span class="col-num">TRACK 03</span>
+                <h3 class="col-title">UiTM, MALAYSIA</h3>
               </div>
-              <h3 class="skill-group-title">Languages</h3>
-            </div>
-            <div class="language-items">
-              <div class="lang-row">
-                <span class="lang-name">Indonesian</span>
-                <span class="lang-level">Native Proficiency</span>
-              </div>
-              <div class="lang-row">
-                <span class="lang-name">English</span>
-                <span class="lang-level">Professional Working Proficiency</span>
-              </div>
-              <div class="lang-row">
-                <span class="lang-name">Japanese</span>
-                <span class="lang-level">Basic Conversation (KOSEN Immersion)</span>
+              <div class="column-spec-table">
+                <div class="col-spec-row">
+                  <span class="csr-label">YEAR</span>
+                  <span class="csr-value">2025</span>
+                </div>
+                <div class="col-spec-row">
+                  <span class="csr-label">PROGRAM</span>
+                  <span class="csr-value">Global Project-Based Learning (GPBL)</span>
+                </div>
+                <div class="col-spec-row">
+                  <span class="csr-label">SCOPE</span>
+                  <span class="csr-value">International collaborative engineering program building and programming a LEGO EV3 robotics system.</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1244,232 +535,388 @@
       </div>
     </section>
 
-    <!-- ======================================================================
-         ROOM 06: CONTACT — BEYOND THE HORIZON & RETURN PORTAL
-         ====================================================================== -->
-    <section class="contact-section room" id="contact" data-world="lunarhole" aria-label="Contact - Beyond the Horizon">
-      <div class="container contact-container">
-        <div class="contact-card reveal-on-scroll">
-          <div class="contact-horizon-line" aria-hidden="true"></div>
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider-line" aria-hidden="true"></div>
 
-          <div class="contact-header">
-            <div class="eyebrow eyebrow-center">
-              <span class="eyebrow-num">06</span>
-              <span class="eyebrow-rule"></span>
-              <span class="eyebrow-label">BEYOND THE LUNAR HORIZON</span>
+    <!-- ======================================================================
+         SECTION 04: EXPERIENCE & LEADERSHIP (Full-Width Architectural Ledger)
+         ====================================================================== -->
+    <section class="section experience-section" id="experience" aria-label="Experience and Leadership">
+      <div class="asymmetric-grid">
+        <!-- Left Column -->
+        <div class="col-left">
+          <div class="sticky-side">
+            <div class="section-tag-row">
+              <span class="index-num">03</span>
+              <span class="section-tag">CAREER</span>
             </div>
-            <h2 class="contact-title">Let’s shape something <span class="italic-serif">meaningful together.</span></h2>
-            <p class="contact-lead">
-              Open to conversations regarding OIA UM digital services, international engagement, web development collaborations, and research opportunities.
+            <h2 class="section-heading">OPERATIONAL<br>LEDGER.</h2>
+            <p class="section-statement">
+              Active responsibilities across classroom instruction, institutional research administration, and vocational mentoring.
             </p>
           </div>
+        </div>
 
-          <!-- Contact Channels -->
-          <div class="contact-channels">
-            <div class="channel-card">
-              <div class="channel-meta">
-                <span class="channel-type">DIRECT EMAIL</span>
-                <span class="channel-sub">Academic &amp; Professional Inquiries</span>
+        <!-- Right Column: Horizontal Ledger -->
+        <div class="col-right">
+          <div class="ledger-table">
+            <!-- Row 1 -->
+            <div class="ledger-row">
+              <div class="ledger-col-period">2026 – Present</div>
+              <div class="ledger-col-role">
+                <h3 class="role-title">Programming Instructor</h3>
+                <span class="role-org">New Primagama</span>
               </div>
-              <div class="channel-action-row">
-                <span class="channel-value" id="email-address">mukaaa.romah@gmail.com</span>
-                <button class="btn btn-copy" id="btn-copy-email" aria-label="Copy email address to clipboard">
-                  <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="9" y="9" width="13" height="13" rx="2" stroke-linecap="round"/>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke-linecap="round"/>
-                  </svg>
-                  <span class="copy-btn-text">Copy Email</span>
+              <div class="ledger-col-domain">Instruction</div>
+              <div class="ledger-col-desc">
+                Teaches visual and text-based programming to elementary students, turning computational logic into working projects.
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="ledger-row">
+              <div class="ledger-col-period">2025 – Present</div>
+              <div class="ledger-col-role">
+                <h3 class="role-title">General Secretary</h3>
+                <span class="role-org">Dewantara Research Team (DRT)</span>
+              </div>
+              <div class="ledger-col-domain">Governance</div>
+              <div class="ledger-col-desc">
+                Coordinates university-wide research administration, inter-division workflows, and national/international competition teams.
+              </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="ledger-row">
+              <div class="ledger-col-period">2025 – Present</div>
+              <div class="ledger-col-role">
+                <h3 class="role-title">Research Initiative Member</h3>
+                <span class="role-org">LPPM Universitas Negeri Malang</span>
+              </div>
+              <div class="ledger-col-domain">Applied Research</div>
+              <div class="ledger-col-desc">
+                Contributes to institutional research grants, field sensor testing, and technical documentation at Universitas Negeri Malang.
+              </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="ledger-row">
+              <div class="ledger-col-period">2024</div>
+              <div class="ledger-col-role">
+                <h3 class="role-title">Computer &amp; Network Engineering Tutor</h3>
+                <span class="role-org">Vocational High School (TKJ Partner)</span>
+              </div>
+              <div class="ledger-col-domain">Mentorship</div>
+              <div class="ledger-col-desc">
+                Delivered hands-on lab tutoring in network topology, routing, and hardware troubleshooting for vocational students.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider-line" aria-hidden="true"></div>
+
+    <!-- ======================================================================
+         SECTION 05: RECOGNITION & AWARDS (7 Verified Distinctions)
+         ====================================================================== -->
+    <section class="section recognition-section" id="recognition" aria-label="Recognition &amp; Honors">
+      <div class="asymmetric-grid">
+        <!-- Left Column -->
+        <div class="col-left">
+          <div class="sticky-side">
+            <div class="section-tag-row">
+              <span class="index-num">04</span>
+              <span class="section-tag">MERIT</span>
+            </div>
+            <h2 class="section-heading">PROVEN ON<br>STAGE.</h2>
+            <p class="section-statement">
+              Seven national and institutional awards across application design, English scientific debate, statistical essays, and robotics.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Column: Numbered Table -->
+        <div class="col-right">
+          <div class="spec-table-container">
+            <!-- Row 01 -->
+            <div class="spec-table-row">
+              <div class="st-num">01</div>
+              <div class="st-rank">2ND PLACE</div>
+              <div class="st-comp">Qur'an Application Design Competition (MDAQ)</div>
+              <div class="st-host">MTQ Universitas Negeri Malang</div>
+              <div class="st-year">2026</div>
+            </div>
+
+            <!-- Row 02 -->
+            <div class="spec-table-row">
+              <div class="st-num">02</div>
+              <div class="st-rank">3RD PLACE</div>
+              <div class="st-comp">Scientific Debate on the Contents of the Qur'an in English</div>
+              <div class="st-host">MTQ Universitas Negeri Malang</div>
+              <div class="st-year">2026</div>
+            </div>
+
+            <!-- Row 03 -->
+            <div class="spec-table-row">
+              <div class="st-num">03</div>
+              <div class="st-rank highlight">1ST WINNER</div>
+              <div class="st-comp">Qur'an Application Design Competition (MDAQ)</div>
+              <div class="st-host">MTQ Universitas Negeri Malang</div>
+              <div class="st-year">2025</div>
+            </div>
+
+            <!-- Row 04 -->
+            <div class="spec-table-row">
+              <div class="st-num">04</div>
+              <div class="st-rank highlight">1ST WINNER</div>
+              <div class="st-comp">Statistics Essay Competition (FESMARO)</div>
+              <div class="st-host">Universitas Negeri Malang</div>
+              <div class="st-year">2025</div>
+            </div>
+
+            <!-- Row 05 -->
+            <div class="spec-table-row">
+              <div class="st-num">05</div>
+              <div class="st-rank">HONORABLE MENTION</div>
+              <div class="st-comp">International Green Scientific Competition (IGSC)</div>
+              <div class="st-host">UNNES</div>
+              <div class="st-year">2025</div>
+            </div>
+
+            <!-- Row 06 -->
+            <div class="spec-table-row">
+              <div class="st-num">06</div>
+              <div class="st-rank highlight">GOLD MEDAL</div>
+              <div class="st-comp">IDEA FEST Innovation Competition</div>
+              <div class="st-host">Universitas Negeri Malang</div>
+              <div class="st-year">2024</div>
+            </div>
+
+            <!-- Row 07 -->
+            <div class="spec-table-row">
+              <div class="st-num">07</div>
+              <div class="st-rank">2ND WINNER</div>
+              <div class="st-comp">Robofest Electro Modern Creative (EMC)</div>
+              <div class="st-host">Politeknik Negeri Malang</div>
+              <div class="st-year">2024</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider-line" aria-hidden="true"></div>
+
+    <!-- ======================================================================
+         SECTION 06: TECHNICAL CAPABILITIES & LANGUAGES
+         ====================================================================== -->
+    <section class="section capabilities-section" id="capabilities" aria-label="Capabilities and Languages">
+      <div class="asymmetric-grid">
+        <!-- Left Column -->
+        <div class="col-left">
+          <div class="sticky-side">
+            <div class="section-tag-row">
+              <span class="index-num">05</span>
+              <span class="section-tag">CAPABILITIES</span>
+            </div>
+            <h2 class="section-heading">THE STACK.</h2>
+            <p class="section-statement">
+              No buzzwords. Only the languages, frameworks, microcontrollers, and workflows used in actual projects.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Column: 4 Architectural Blocks -->
+        <div class="col-right">
+          <div class="stack-grid">
+            <div class="stack-block">
+              <div class="stack-block-header">
+                <span class="sb-index">01</span>
+                <h3 class="sb-title">WEB &amp; APPLICATION DEVELOPMENT</h3>
+              </div>
+              <p class="sb-content">
+                WordPress, Semantic HTML5, Modern CSS3, Flutter / Dart, Laravel, Responsive UI
+              </p>
+            </div>
+
+            <div class="stack-block">
+              <div class="stack-block-header">
+                <span class="sb-index">02</span>
+                <h3 class="sb-title">PROGRAMMING, IOT &amp; ROBOTICS</h3>
+              </div>
+              <p class="sb-content">
+                C / C++, Python, Arduino / ESP32, IoT Systems, Sensor Integration, Embedded Systems, Robotics Programming, Visual Programming, Data Processing &amp; Analysis
+              </p>
+            </div>
+
+            <div class="stack-block">
+              <div class="stack-block-header">
+                <span class="sb-index">03</span>
+                <h3 class="sb-title">RESEARCH &amp; OPERATIONS</h3>
+              </div>
+              <p class="sb-content">
+                Research Administration &amp; Coordination, Scientific Writing, Public Speaking &amp; Technical Presentations, Project Management, Teamwork, Problem Solving
+              </p>
+            </div>
+
+            <div class="stack-block">
+              <div class="stack-block-header">
+                <span class="sb-index">04</span>
+                <h3 class="sb-title">LANGUAGES</h3>
+              </div>
+              <p class="sb-content">
+                Indonesian (Native) · English (Professional Working Proficiency) · Japanese (Basic Conversation)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider-line" aria-hidden="true"></div>
+
+    <!-- ======================================================================
+         SECTION 07: CONTACT & FOOTER (Left-Aligned, Zero Circular Portals)
+         ====================================================================== -->
+    <section class="section contact-section" id="contact" aria-label="Contact and Channels">
+      <div class="asymmetric-grid">
+        <!-- Left Column (Cols 1–5) -->
+        <div class="col-left contact-col-left">
+          <div class="sticky-side">
+            <div class="section-tag-row">
+              <span class="index-num">06</span>
+              <span class="section-tag">DISPATCH</span>
+            </div>
+            <h2 class="section-heading">PUT IT<br>TO WORK.</h2>
+            <p class="section-statement">
+              Available for OIA UM digital services, international engagement, web development, and research collaboration.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Column (Cols 6–12) -->
+        <div class="col-right contact-col-right">
+          <!-- Architectural Contact Rows -->
+          <div class="contact-spec-rows">
+            <div class="contact-row">
+              <div class="cr-label">EMAIL</div>
+              <div class="cr-value" id="email-address">mukaaa.romah@gmail.com</div>
+              <div class="cr-action">
+                <button type="button" class="btn btn-sharp-copy" id="btn-copy-email">
+                  <span>COPY EMAIL</span>
                 </button>
               </div>
             </div>
 
-            <div class="channel-card">
-              <div class="channel-meta">
-                <span class="channel-type">PHONE / WHATSAPP</span>
-                <span class="channel-sub">14A Bantaran Indah St., Malang City</span>
-              </div>
-              <div class="channel-action-row">
-                <span class="channel-value tabular-nums" id="phone-number">+62 857-3022-0374</span>
-                <button class="btn btn-copy" id="btn-copy-phone" aria-label="Copy phone number to clipboard">
-                  <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="9" y="9" width="13" height="13" rx="2" stroke-linecap="round"/>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke-linecap="round"/>
-                  </svg>
-                  <span class="copy-btn-text">Copy Number</span>
+            <div class="contact-row">
+              <div class="cr-label">PHONE / WHATSAPP</div>
+              <div class="cr-value" id="phone-number">+62 857-3022-0374</div>
+              <div class="cr-action">
+                <button type="button" class="btn btn-sharp-copy" id="btn-copy-phone">
+                  <span>COPY NUMBER</span>
                 </button>
               </div>
             </div>
-          </div>
 
-          <!-- Official CV Download Banner -->
-          <div class="cv-download-strip">
-            <div class="cv-strip-info">
-              <span class="cv-strip-label">CURRICULUM VITAE · PDF DOCUMENT</span>
-              <span class="cv-strip-title">Mukaromah — Informatics Engineering, Research &amp; International Profile</span>
+            <div class="contact-row">
+              <div class="cr-label">ADDRESS</div>
+              <div class="cr-value">14A Bantaran Indah St., Malang City, Indonesia</div>
+              <div class="cr-action">
+                <span class="cr-static-note">EAST JAVA, ID</span>
+              </div>
             </div>
-            <a href="/assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="btn btn-primary">
-              <span>Download Full CV</span>
-            </a>
+
+            <div class="contact-row">
+              <div class="cr-label">CURRICULUM VITAE</div>
+              <div class="cr-value">CV_Mukaromah_OIA.pdf</div>
+              <div class="cr-action">
+                <a href="assets/aistudio/CV_Mukaromah_OIA_f28ce201.pdf" target="_blank" rel="noopener noreferrer" download="CV_Mukaromah_OIA.pdf" class="btn btn-sharp-copy">
+                  <span>DOWNLOAD PDF ↗</span>
+                </a>
+              </div>
+            </div>
           </div>
 
-          <!-- Professional Links -->
-          <div class="contact-links-row">
-            <a href="https://www.linkedin.com/in/mukaaromah/" target="_blank" rel="noopener noreferrer" class="social-link" id="link-linkedin">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-              </svg>
-              <span>linkedin.com/in/mukaaromah</span>
-            </a>
-            <a href="https://github.com/mukaaromaah" target="_blank" rel="noopener noreferrer" class="social-link" id="link-github">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-              </svg>
-              <span>GitHub</span>
-            </a>
-            <a href="https://www.instagram.com/mukaaromah_/" target="_blank" rel="noopener noreferrer" class="social-link" id="link-instagram">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-              </svg>
-              <span>Instagram</span>
-            </a>
-            <a href="https://um.ac.id" target="_blank" rel="noopener noreferrer" class="social-link" id="link-um">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-              </svg>
-              <span>Universitas Negeri Malang</span>
-            </a>
-          </div>
-
-          <!-- Return to Origin Portal (Ref: poggufanz.xyz .portal) -->
-          <div class="portal-wrap">
-            <button type="button" class="portal-btn" id="btn-return-origin" aria-label="Warp back to the Lunar Horizon">
-              <span class="portal-ring portal-ring-outer" aria-hidden="true"></span>
-              <span class="portal-ring portal-ring-mid" aria-hidden="true"></span>
-              <span class="portal-ring portal-ring-inner" aria-hidden="true"></span>
-              <span class="portal-core">
-                <svg class="portal-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span class="portal-label">RETURN TO ORIGIN</span>
-                <span class="portal-sub">00 · LUNAR SINGULARITY</span>
-              </span>
+          <!-- External Links & Return -->
+          <div class="contact-links-bar">
+            <div class="external-links">
+              <a href="https://www.linkedin.com/in/mukaaromah/" target="_blank" rel="noopener noreferrer" class="ext-link">LINKEDIN ↗</a>
+              <a href="https://github.com/mukaaromaah" target="_blank" rel="noopener noreferrer" class="ext-link">GITHUB ↗</a>
+              <a href="https://www.instagram.com/mukaaromah_/" target="_blank" rel="noopener noreferrer" class="ext-link">INSTAGRAM ↗</a>
+              <a href="https://um.ac.id" target="_blank" rel="noopener noreferrer" class="ext-link">UNIVERSITAS NEGERI MALANG ↗</a>
+            </div>
+            <button type="button" class="btn btn-sharp-top" id="btn-back-to-top">
+              <span>BACK TO TOP ↑</span>
             </button>
+          </div>
+
+          <!-- Bottom Footer Row -->
+          <div class="footer-meta-row">
+            <span class="f-copyright">© 2026 MUKAROMAH. ARCHITECTURAL PORTFOLIO.</span>
+            <span class="f-spec">SYSTEM: S1 INFORMATICS ENGINEERING · GPA 3.94/4.00</span>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Interactive Project Details Modal (Midnight Glass Theme) -->
-  <dialog id="project-modal" class="project-modal" aria-labelledby="modal-project-title">
-    <div class="modal-surface">
-      <header class="modal-header">
-        <div class="modal-kicker-group">
-          <span class="modal-kicker" id="modal-project-category">Case Study</span>
-          <span>·</span>
-          <span class="modal-status-text" id="modal-project-status">Confirmed</span>
+  <!-- ========================================================================
+       PROJECT DETAIL SPECIFICATION MODAL (Sharp Architectural)
+       ======================================================================== -->
+  <dialog class="spec-modal" id="project-modal" aria-labelledby="modal-title" aria-modal="true">
+    <div class="spec-modal-shell">
+      <div class="modal-header">
+        <div class="modal-header-meta">
+          <span class="modal-index" id="modal-project-id">00</span>
+          <span class="modal-sep">/</span>
+          <span class="modal-category" id="modal-category">SPECIFICATION</span>
         </div>
-        <button class="modal-close-btn" id="modal-close-btn" aria-label="Close project modal">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/>
-            <line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/>
-          </svg>
+        <button type="button" class="modal-close-btn" id="modal-close" aria-label="Close Specification">
+          [ESC / CLOSE ✕]
         </button>
-      </header>
-
-      <div class="modal-body">
-        <h3 class="modal-title" id="modal-project-title">Project Name</h3>
-        <p class="modal-subtitle" id="modal-project-subtitle">Project Subtitle</p>
-
-        <div class="modal-banner" id="modal-project-banner">
-          <div class="modal-banner-graphic" id="modal-banner-graphic"></div>
-        </div>
-
-        <div class="modal-content-grid">
-          <div class="modal-narrative">
-            <h4 class="modal-section-h">Overview &amp; Objective</h4>
-            <p id="modal-project-desc" class="modal-desc-text">Detailed description will appear here.</p>
-
-            <h4 class="modal-section-h">Key Highlights &amp; Competencies</h4>
-            <ul id="modal-project-highlights" class="modal-highlights-list">
-              <li>Verified project contribution.</li>
-            </ul>
-          </div>
-
-          <aside class="modal-sidebar">
-            <div class="modal-meta-block">
-              <span class="meta-label">ROLE / SCOPE</span>
-              <span class="meta-value" id="modal-project-role">Core Contributor</span>
-            </div>
-            <div class="modal-meta-block">
-              <span class="meta-label">TECHNOLOGY &amp; METHODS</span>
-              <div class="modal-tags-container" id="modal-project-tags"></div>
-            </div>
-            <div class="modal-meta-block">
-              <span class="meta-label">INSTITUTIONAL CONTEXT</span>
-              <p class="modal-note">Universitas Negeri Malang · Informatics Engineering &amp; Research Portfolio.</p>
-            </div>
-          </aside>
-        </div>
       </div>
 
-      <footer class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="modal-dismiss-btn">Close Dossier</button>
-      </footer>
+      <div class="modal-body">
+        <h2 class="modal-title" id="modal-title">Project Title</h2>
+        <p class="modal-subtitle" id="modal-subtitle">Project Subtitle</p>
+
+        <div class="modal-spec-grid">
+          <div class="modal-spec-item">
+            <span class="ms-label">ROLE</span>
+            <span class="ms-val" id="modal-role">-</span>
+          </div>
+          <div class="modal-spec-item">
+            <span class="ms-label">STATUS</span>
+            <span class="ms-val" id="modal-status">-</span>
+          </div>
+        </div>
+
+        <div class="modal-section-title">SYSTEM ARCHITECTURE &amp; SCOPE</div>
+        <p class="modal-desc" id="modal-description">Description content goes here.</p>
+
+        <div class="modal-section-title">KEY DELIVERABLES &amp; EMPIRICAL RESULTS</div>
+        <ul class="modal-highlights" id="modal-highlights">
+          <!-- Dynamic -->
+        </ul>
+
+        <div class="modal-section-title">DEPLOYED STACK &amp; SPECIFICATIONS</div>
+        <div class="modal-tags" id="modal-tags">
+          <!-- Dynamic -->
+        </div>
+      </div>
     </div>
   </dialog>
 
-  <!-- Toast Notification -->
-  <div class="toast-notification" id="toast" role="status" aria-live="polite">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span id="toast-message">Copied to clipboard!</span>
+  <!-- Sharp Rectangular Toast -->
+  <div class="sharp-toast" id="toast" role="status" aria-live="polite">
+    <span class="toast-indicator">■</span>
+    <span class="toast-message" id="toast-message">COPIED TO CLIPBOARD</span>
   </div>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container footer-container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <span class="brand-name">MUKAROMAH</span>
-          <p class="footer-tagline">A Personal Universe Under the 3D Lunar Horizon &amp; Midnight Sky.</p>
-          <p class="footer-coords">07°58′S 112°37′E · 14A Bantaran Indah St., Malang City</p>
-        </div>
-
-        <div class="footer-nav-col">
-          <span class="footer-col-title">NAVIGATION</span>
-          <ul class="footer-links">
-            <li><a href="#hero">00 · Lunar Horizon</a></li>
-            <li><a href="#works">01 · Selected Work</a></li>
-            <li><a href="#about">02 · About &amp; Global</a></li>
-            <li><a href="#journey">03 · Experience</a></li>
-            <li><a href="#awards">04 · Awards</a></li>
-            <li><a href="#skills">05 · Skills</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-nav-col">
-          <span class="footer-col-title">ACADEMIC FOUNDATION</span>
-          <p class="footer-text-block">
-            S1 Teknik Informatika (GPA 3.94/4.00)<br>
-            Faculty of Engineering<br>
-            Universitas Negeri Malang (UM), Indonesia.
-          </p>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p class="copyright">
-          © <span id="current-year">2026</span> Mukaromah. Crafted with clarity, logic, and care.
-        </p>
-        <p class="horizon-note">
-          Celestial Engine: <em>3D Lunar Celestial Horizon &amp; Midnight Editorial System</em>
-        </p>
-      </div>
-    </div>
-  </footer>
 
   <script src="scripts/main.js"></script>
 </body>
