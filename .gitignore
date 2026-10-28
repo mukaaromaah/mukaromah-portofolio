@@ -3,5 +3,8 @@
 .system_generated/
 deploy-staging/
 staging_build/
+# Local development & IDE
+node_modules/
+.aistudio/
 .DS_Store
 Thumbs.db
