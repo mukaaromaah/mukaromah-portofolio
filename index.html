@@ -177,6 +177,13 @@
               <button type="button" class="filter-tab" data-filter="iot" role="tab" aria-selected="false">IOT &amp; ROBOTICS</button>
               <button type="button" class="filter-tab" data-filter="research" role="tab" aria-selected="false">RESEARCH</button>
             </div>
+
+            <!-- Sticky Left Column 3D Exploration Rover Robot Stage (Option C1) -->
+            <div id="rover-stage-container" class="rover-stage-box" aria-label="MK-26 AIoT Exploration Rover 3D Stage">
+              <div class="rover-badge-top">MK-26 AUTONOMOUS AIoT ROVER · UM GRANT</div>
+              <canvas id="rover-webgl-canvas"></canvas>
+              <div class="rover-badge-bottom">DRAG TO ROTATE 360° · SENSOR HEAD TRACKS CURSOR</div>
+            </div>
           </div>
         </div>
 
@@ -919,6 +926,12 @@
     <span class="toast-message" id="toast-message">COPIED TO CLIPBOARD</span>
   </div>
 
+  <!-- Three.js Library for 3D Articulated Rover Robot -->
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+    window.THREE = THREE;
+    window.dispatchEvent(new CustomEvent('three-ready'));
+  </script>
   <script src="scripts/main.js"></script>
 </body>
 </html>

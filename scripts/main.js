@@ -400,9 +400,10 @@ document.addEventListener('DOMContentLoaded', () => {
   trackedSections.forEach((sec) => sectionObserver.observe(sec));
 
   // ==========================================================================
-  // 8. 3D WEBGL LUNAR CELESTIAL ENGINE (100% PRESERVED ORIGINAL SHADER)
+  // 8. 3D WEBGL LUNAR CELESTIAL ENGINE & 3D ROVER ROBOT STAGE
   // ==========================================================================
   initLunarBlackholeEngine();
+  initRoverRobotStage();
 
   function initLunarBlackholeEngine() {
     const glCanvas = document.getElementById('space-webgl-canvas');
@@ -541,6 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
         uniform vec2 uMoonRot;
         uniform sampler2D uMoonTex;
         uniform float uHasMoonTex;
+        uniform float uMoonAlpha;
 
         #define PI 3.14159265359
 
@@ -617,10 +619,10 @@ document.addEventListener('DOMContentLoaded', () => {
           vec2 dir = p / max(r, 1e-4);
           vec2 lensedUv = uv - dir * defl * 0.085;
 
-          // Midnight Blue gradient base (--bg-canvas: #0B152B, --color-midnight: #101D3A)
-          vec3 deepMidnight = vec3(0.043, 0.082, 0.175); // #0B152B
+          // Midnight Blue gradient base (--bg-canvas: #0A1328, --color-midnight: #101D3A)
+          vec3 deepMidnight = vec3(0.039, 0.074, 0.156); // #0A1328
           vec3 midnightBase = vec3(0.063, 0.114, 0.227); // #101D3A
-          vec3 twilightBlue = vec3(0.204, 0.310, 0.502); // #344F80
+          vec3 twilightBlue = vec3(0.165, 0.271, 0.459); // #2A4575
           vec3 cloudIce     = vec3(0.788, 0.867, 0.976); // #C9DDF9
 
           float neb1 = fbm(lensedUv * 2.6 + vec2(uTime * 0.012, -uScroll * 0.35));
@@ -658,16 +660,17 @@ document.addEventListener('DOMContentLoaded', () => {
           float k = max(uIncl, 0.045);
           float spin = uTime * 0.42;
 
-          vec3 col = renderBackground(vUv, p, r, rs);
+          vec3 bg = renderBackground(vUv, p, r, rs);
+          vec3 celestial = bg;
 
           // Restored Celestial Horizon Palette: Midnight Blue, Twilight, Cloud Blue, and Mist White
-          vec3 cTwilight = vec3(0.204, 0.310, 0.502); // #344F80 Twilight Blue
+          vec3 cTwilight = vec3(0.165, 0.271, 0.459); // #2A4575 Twilight Blue
           vec3 cCloud    = vec3(0.788, 0.867, 0.976); // #C9DDF9 Cloud Blue
           vec3 cMist     = vec3(0.957, 0.969, 0.988); // #F4F7FC Pure Lunar Mist
-          vec3 cLuminous = vec3(0.498, 0.698, 0.941); // #7FB2F0 Luminous Sky Blue
+          vec3 cLuminous = vec3(0.216, 0.569, 1.000); // #3791FF Electric Blue
 
           float outerGlow = exp(-r * 2.1) * 0.48 + exp(-r * 5.0) * 0.35;
-          col += mix(cTwilight, cCloud, 0.45) * outerGlow;
+          celestial += mix(cTwilight, cCloud, 0.45) * outerGlow;
 
           float gapMask = 1.0;
           float cursorFlare = 0.0;
@@ -693,7 +696,7 @@ document.addEventListener('DOMContentLoaded', () => {
             float hI = hrad * hmask * (0.45 + 0.65 * hn) * hfil * hdop * gapMask;
             vec3 hCol = mix(cTwilight, cCloud, clamp(hI * 1.15, 0.0, 1.0));
             hCol = mix(hCol, cMist, clamp((hI - 0.55) * 1.5, 0.0, 1.0));
-            col += hCol * hI * 1.35;
+            celestial += hCol * hI * 1.35;
           }
 
           // Back Half of Relativistic Accretion Disk
@@ -728,7 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
           float frontFactor = smoothstep(0.008, -0.012, pr.y);
           float backFactor = 1.0 - frontFactor;
           float moonOcclusion = smoothstep(rs * 0.985, rs * 1.02, r);
-          col += diskColor * diskVal * backFactor * moonOcclusion * 1.45;
+          celestial += diskColor * diskVal * backFactor * moonOcclusion * 1.45;
 
           // 3D Rotating Textured Moon Sphere (r <= rs)
           if (r < rs * 1.015) {
@@ -754,9 +757,9 @@ document.addEventListener('DOMContentLoaded', () => {
             float fresnel = pow(1.0 - z, 2.6);
             float equatorBounce = exp(-sq(pr.y / (rs * 0.35))) * 0.55;
 
-            vec3 moonShadow = vec3(0.043, 0.082, 0.175); // Deep Midnight Lunar Umbra (#0B152B)
+            vec3 moonShadow = vec3(0.039, 0.074, 0.156); // Deep Midnight Lunar Umbra (#0A1328)
             vec3 moonMid    = vec3(0.580, 0.715, 0.915); // Twilight-Cloud Silver
-            vec3 moonHigh   = vec3(0.955, 0.972, 1.000); // Pure Lunar Mist (#F4F7FC)
+            vec3 moonHigh   = vec3(0.957, 0.969, 0.988); // Pure Lunar Mist (#F4F7FC)
 
             float shade = clamp(diff1 * 0.88 + 0.22, 0.0, 1.0);
             vec3 surfaceCol = mix(moonShadow, moonMid, smoothstep(0.0, 0.55, moonAlbedo.r * shade));
@@ -769,7 +772,7 @@ document.addEventListener('DOMContentLoaded', () => {
             surfaceCol += cMist * pow(fresnel, 5.0) * 0.95;
             surfaceCol += cCloud * equatorBounce * 0.22 * moonAlbedo.r;
 
-            col = mix(col, surfaceCol, sphereEdge);
+            celestial = mix(celestial, surfaceCol, sphereEdge);
           }
 
           // Relativistic Photon Ring
@@ -777,19 +780,22 @@ document.addEventListener('DOMContentLoaded', () => {
           float pr2 = exp(-sq((r - rs * 1.045) / (rs * 0.032))) * 0.52;
           float prDop = 0.78 + 0.52 * (-pr.x / max(r, 1e-3));
           float photonRing = (pr1 + pr2) * prDop * gapMask;
-          col += mix(cCloud, cMist, 0.72) * photonRing * 1.38;
+          celestial += mix(cCloud, cMist, 0.72) * photonRing * 1.38;
 
           // Front Half of Relativistic Accretion Disk
-          col += diskColor * diskVal * frontFactor * 1.55;
+          celestial += diskColor * diskVal * frontFactor * 1.55;
 
           // Cursor Flare
-          col += cCloud * cursorFlare * exp(-abs(r - rs * 1.8) * 3.5);
+          celestial += cCloud * cursorFlare * exp(-abs(r - rs * 1.8) * 3.5);
 
           // Scroll Dive Flash
           if (uDive > 0.01) {
             float flash = smoothstep(0.55, 0.98, uDive) * (1.0 - smoothstep(0.98, 1.0, uDive));
-            col += mix(cTwilight, cCloud, 0.5) * flash * 0.35;
+            celestial += mix(cTwilight, cCloud, 0.5) * flash * 0.35;
           }
+
+          // Smooth interpolation between background starry sky and moon:
+          vec3 col = mix(bg, celestial, uMoonAlpha);
 
           // Filmic Tone Mapping
           col = col / (1.0 + col * 0.42);
@@ -847,7 +853,8 @@ document.addEventListener('DOMContentLoaded', () => {
             uPointer: gl.getUniformLocation(program, 'uPointer'),
             uMoonRot: gl.getUniformLocation(program, 'uMoonRot'),
             uMoonTex: gl.getUniformLocation(program, 'uMoonTex'),
-            uHasMoonTex: gl.getUniformLocation(program, 'uHasMoonTex')
+            uHasMoonTex: gl.getUniformLocation(program, 'uHasMoonTex'),
+            uMoonAlpha: gl.getUniformLocation(program, 'uMoonAlpha')
           };
 
           moonTexture = gl.createTexture();
@@ -957,21 +964,31 @@ document.addEventListener('DOMContentLoaded', () => {
         moonDrag.velX *= 0.94;
       }
 
+      // Part 2: Scroll Transition Choreography (3D Moon in Hero -> Fade out as user scrolls toward #works)
+      const scrollY = window.scrollY || window.pageYOffset;
+      const moonThreshold = window.innerHeight * 0.75;
+      const rawFade = Math.max(0, Math.min(1, 1 - scrollY / moonThreshold));
+      const moonAlpha = rawFade * rawFade * (3.0 - 2.0 * rawFade);
+
       const diveEase = heroDiveProgress * heroDiveProgress * (3.0 - 2.0 * heroDiveProgress);
 
       const isMobile = width < 960;
       const baseAnchorX = isMobile ? 0.50 : 0.74;
       const baseAnchorY = isMobile ? 0.28 : 0.46;
 
+      // Drift upward and scale down slightly as moon fades out
+      const moonDriftY = (1.0 - moonAlpha) * (isMobile ? 0.16 : 0.22);
+      const moonScaleFactor = 1.0 - (1.0 - moonAlpha) * 0.16;
+
       const anchorX = baseAnchorX + pointer.x * 0.016 - diveEase * (isMobile ? 0.0 : 0.12);
-      const anchorY = baseAnchorY + pointer.y * 0.014 - diveEase * 0.05;
+      const anchorY = baseAnchorY + pointer.y * 0.014 - diveEase * 0.05 - moonDriftY;
 
       const centerPxX = anchorX * width;
       const centerPxY = anchorY * height;
 
       const baseScale = Math.min(width, height) * (isMobile ? 0.88 : 1.05);
       const diveScaleMul = 1.0 + Math.sin(diveEase * Math.PI) * 0.38 - diveEase * 0.16;
-      const sizePx = baseScale * diveScaleMul;
+      const sizePx = baseScale * diveScaleMul * moonScaleFactor;
 
       const tilt = -0.11 + pointer.x * 0.045 + moonDrag.rotX * 0.15;
       const incl = 0.088 + pointer.y * 0.022 + Math.abs(moonDrag.rotX) * 0.04;
@@ -1005,6 +1022,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gl.uniform2f(uniforms.uPointer, pointer.x, pointer.y);
         gl.uniform2f(uniforms.uMoonRot, moonDrag.rotY, moonDrag.rotX);
         gl.uniform1f(uniforms.uHasMoonTex, hasMoonTex);
+        gl.uniform1f(uniforms.uMoonAlpha, moonAlpha);
 
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, moonTexture);
@@ -1023,7 +1041,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cosT = Math.cos(-tilt);
         const sinT = Math.sin(-tilt);
 
-        // Star Trails when scrolling down
+        // Star Trails when scrolling down (subtle background element)
         const trailVis = Math.min(0.55, globalScrollProgress * 1.05);
         if (trailVis > 0.02) {
           const maxDim = Math.hypot(width, height);
@@ -1040,31 +1058,35 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        // Keplerian Accretion Dust
-        for (let i = 0; i < orbitalDust.length; i++) {
-          const p = orbitalDust[i];
-          const a = p.angle + elapsed * (p.speed / Math.pow(p.orbitMul, 0.8));
-          const rx = rsPx * p.orbitMul;
-          const ry = rx * incl;
+        // Keplerian Accretion Dust (fades out synchronously with 3D moon)
+        if (moonAlpha > 0.01) {
+          for (let i = 0; i < orbitalDust.length; i++) {
+            const p = orbitalDust[i];
+            const a = p.angle + elapsed * (p.speed / Math.pow(p.orbitMul, 0.8));
+            const rx = rsPx * p.orbitMul;
+            const ry = rx * incl;
 
-          const lx = Math.cos(a) * rx;
-          const ly = Math.sin(a) * ry;
+            const lx = Math.cos(a) * rx;
+            const ly = Math.sin(a) * ry;
 
-          const distFromCenter = Math.hypot(lx, ly);
-          if (Math.sin(a) < 0 && distFromCenter < rsPx * 0.98) {
-            continue;
+            const distFromCenter = Math.hypot(lx, ly);
+            if (Math.sin(a) < 0 && distFromCenter < rsPx * 0.98) {
+              continue;
+            }
+
+            const sx = centerPxX + lx * cosT - ly * sinT;
+            const sy = centerPxY + lx * sinT + ly * cosT;
+
+            const doppler = 0.65 + 0.45 * (-Math.cos(a));
+            const alpha = Math.max(0.0, Math.min(0.95, p.alpha * doppler * moonAlpha));
+
+            if (alpha > 0.01) {
+              ctx2d.fillStyle = `rgba(244, 247, 252, ${alpha.toFixed(3)})`;
+              ctx2d.beginPath();
+              ctx2d.arc(sx, sy, p.radius, 0, Math.PI * 2);
+              ctx2d.fill();
+            }
           }
-
-          const sx = centerPxX + lx * cosT - ly * sinT;
-          const sy = centerPxY + lx * sinT + ly * cosT;
-
-          const doppler = 0.65 + 0.45 * (-Math.cos(a));
-          const alpha = Math.max(0.08, Math.min(0.95, p.alpha * doppler));
-
-          ctx2d.fillStyle = `rgba(244, 247, 252, ${alpha.toFixed(3)})`;
-          ctx2d.beginPath();
-          ctx2d.arc(sx, sy, p.radius, 0, Math.PI * 2);
-          ctx2d.fill();
         }
 
         ctx2d.restore();
@@ -1074,5 +1096,522 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     requestAnimationFrame(renderFrame);
+  }
+
+  // ==========================================================================
+  // 9. 3D TRUE ARTICULATED EXPLORATION ROVER ROBOT (THREE.JS PROCEDURAL STAGE)
+  // ==========================================================================
+  function initRoverRobotStage() {
+    const stageBox = document.getElementById('rover-stage-container');
+    const canvas = document.getElementById('rover-webgl-canvas');
+    if (!stageBox || !canvas) return;
+
+    function buildRoverScene(THREE) {
+      const scene = new THREE.Scene();
+
+      // Camera: Telephoto Product-Shot Lens (FOV = 24)
+      const camera = new THREE.PerspectiveCamera(24, stageBox.clientWidth / stageBox.clientHeight, 1, 1000);
+      camera.position.set(65, 38, 110);
+      camera.lookAt(0, 3, 0);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(stageBox.clientWidth, stageBox.clientHeight);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+
+      // 4-Point Studio Lighting (Detent Style)
+      // 1. Cool White Key Light
+      const keyLight = new THREE.DirectionalLight(0xf4f7ff, 1.8);
+      keyLight.position.set(50, 70, 60);
+      scene.add(keyLight);
+
+      // 2. Electric Blue Left Rim Light
+      const leftRimLight = new THREE.DirectionalLight(0x3791ff, 2.4);
+      leftRimLight.position.set(-70, 30, -50);
+      scene.add(leftRimLight);
+
+      // 3. Sky Blue Right Rim Light
+      const rightRimLight = new THREE.DirectionalLight(0x5aa6ff, 1.8);
+      rightRimLight.position.set(70, 20, -40);
+      scene.add(rightRimLight);
+
+      // 4. Hemisphere Fill Light
+      const fillLight = new THREE.HemisphereLight(0x182c55, 0x081022, 1.25);
+      scene.add(fillLight);
+
+      // Materials
+      const matChassis = new THREE.MeshStandardMaterial({
+        color: 0x101726,
+        roughness: 0.35,
+        metalness: 0.65
+      });
+      const matChassisLight = new THREE.MeshStandardMaterial({
+        color: 0x182338,
+        roughness: 0.3,
+        metalness: 0.7
+      });
+      const matGunmetal = new THREE.MeshStandardMaterial({
+        color: 0x2a3242,
+        roughness: 0.5,
+        metalness: 0.75
+      });
+      const matAnodizedBlue = new THREE.MeshStandardMaterial({
+        color: 0x2a74ee,
+        roughness: 0.22,
+        metalness: 0.88
+      });
+      const matRubber = new THREE.MeshStandardMaterial({
+        color: 0x111620,
+        roughness: 0.9,
+        metalness: 0.08
+      });
+      const matNeonBlue = new THREE.MeshBasicMaterial({ color: 0x3791ff });
+      const matNeonCyan = new THREE.MeshBasicMaterial({ color: 0x9ec5ff });
+      const matSpotWhite = new THREE.MeshBasicMaterial({ color: 0xf4f7fc });
+
+      // Root Group (for base viewing angle & interactive orbit)
+      const roverRoot = new THREE.Group();
+      scene.add(roverRoot);
+
+      // Chassis Suspension Group (for idle hover / breathing)
+      const chassisGroup = new THREE.Group();
+      roverRoot.add(chassisGroup);
+
+      // --------------------------------------------------------------------
+      // 1. ELONGATED ARMORED ROVER CHASSIS (Width: 44, Height: 12, Length: 72)
+      // --------------------------------------------------------------------
+      // Main Hull Box
+      const hullGeom = new THREE.BoxGeometry(44, 12, 72);
+      const hullMesh = new THREE.Mesh(hullGeom, matChassis);
+      hullMesh.position.set(0, 8, 0);
+      chassisGroup.add(hullMesh);
+
+      // Angled Front Nose / Glacis Plate
+      const glacisGeom = new THREE.BoxGeometry(40, 10, 16);
+      const glacisMesh = new THREE.Mesh(glacisGeom, matChassisLight);
+      glacisMesh.position.set(0, 7.5, 33);
+      glacisMesh.rotation.x = -0.32;
+      chassisGroup.add(glacisMesh);
+
+      // Angled Side Chamfer Fenders (Left & Right)
+      const fenderGeom = new THREE.BoxGeometry(2.5, 8, 68);
+      const leftFender = new THREE.Mesh(fenderGeom, matChassisLight);
+      leftFender.position.set(-22.5, 9, 0);
+      chassisGroup.add(leftFender);
+
+      const rightFender = new THREE.Mesh(fenderGeom, matChassisLight);
+      rightFender.position.set(22.5, 9, 0);
+      chassisGroup.add(rightFender);
+
+      // Glowing Electric Blue (#3791FF) Perimeter LED Light Strips
+      const stripGeom = new THREE.BoxGeometry(1.2, 1.2, 68);
+      const leftStrip = new THREE.Mesh(stripGeom, matNeonBlue);
+      leftStrip.position.set(-23.4, 6.5, 0);
+      chassisGroup.add(leftStrip);
+
+      const rightStrip = new THREE.Mesh(stripGeom, matNeonBlue);
+      rightStrip.position.set(23.4, 6.5, 0);
+      chassisGroup.add(rightStrip);
+
+      // Front Tubular Gunmetal Bull-Bar Bumper (#2a3242)
+      const bumperBarGeom = new THREE.CylinderGeometry(1.4, 1.4, 46, 16);
+      const bumperBar = new THREE.Mesh(bumperBarGeom, matGunmetal);
+      bumperBar.rotation.z = Math.PI / 2;
+      bumperBar.position.set(0, 5, 42);
+      chassisGroup.add(bumperBar);
+
+      // Bumper Struts
+      [-16, 16].forEach((xPos) => {
+        const strutGeom = new THREE.CylinderGeometry(1.2, 1.2, 8, 12);
+        const strut = new THREE.Mesh(strutGeom, matGunmetal);
+        strut.rotation.x = Math.PI / 2;
+        strut.position.set(xPos, 5, 38);
+        chassisGroup.add(strut);
+      });
+
+      // 2 Forward Glowing LED Headlights / Spotlights
+      [-10, 10].forEach((xPos) => {
+        const lampHousGeom = new THREE.CylinderGeometry(2.6, 2.8, 3.5, 16);
+        const lampHous = new THREE.Mesh(lampHousGeom, matGunmetal);
+        lampHous.rotation.x = Math.PI / 2;
+        lampHous.position.set(xPos, 7.5, 41);
+        chassisGroup.add(lampHous);
+
+        const lensGeom = new THREE.CylinderGeometry(2.2, 2.2, 0.6, 16);
+        const lens = new THREE.Mesh(lensGeom, matSpotWhite);
+        lens.rotation.x = Math.PI / 2;
+        lens.position.set(xPos, 7.5, 42.8);
+        chassisGroup.add(lens);
+      });
+
+      // Dorsal AIoT Sensor & Solar Payload Deck on the rover's back
+      const deckGeom = new THREE.BoxGeometry(36, 1.6, 44);
+      const deckPlate = new THREE.Mesh(deckGeom, matGunmetal);
+      deckPlate.position.set(0, 14.6, -8);
+      chassisGroup.add(deckPlate);
+
+      // 6 Raised Modular Sensor Pods (2 rows of 3)
+      for (let row = 0; row < 3; row++) {
+        for (let col = -1; col <= 1; col += 2) {
+          const podGeom = new THREE.BoxGeometry(8, 3.5, 8);
+          const pod = new THREE.Mesh(podGeom, matChassis);
+          pod.position.set(col * 11, 16.5, -20 + row * 12);
+          chassisGroup.add(pod);
+
+          // Glowing blue/cyan status LED on top of each pod
+          const ledGeom = new THREE.BoxGeometry(5, 0.4, 2);
+          const led = new THREE.Mesh(ledGeom, (row + col) % 2 === 0 ? matNeonBlue : matNeonCyan);
+          led.position.set(col * 11, 18.3, -20 + row * 12);
+          chassisGroup.add(led);
+        }
+      }
+
+      // Rear High-Gain Telemetry Antenna Mast
+      const antennaBaseGeom = new THREE.CylinderGeometry(2, 2.5, 3, 12);
+      const antennaBase = new THREE.Mesh(antennaBaseGeom, matGunmetal);
+      antennaBase.position.set(-12, 15.5, -28);
+      chassisGroup.add(antennaBase);
+
+      const antennaRodGeom = new THREE.CylinderGeometry(0.7, 0.35, 26, 12);
+      const antennaRod = new THREE.Mesh(antennaRodGeom, matGunmetal);
+      antennaRod.position.set(-12, 28, -30);
+      antennaRod.rotation.x = -0.15;
+      chassisGroup.add(antennaRod);
+
+      const beaconGeom = new THREE.SphereGeometry(1.5, 16, 16);
+      const beaconMat = new THREE.MeshBasicMaterial({ color: 0x3791ff, transparent: true, opacity: 0.95 });
+      const beaconTip = new THREE.Mesh(beaconGeom, beaconMat);
+      beaconTip.position.set(-12, 40.8, -32);
+      chassisGroup.add(beaconTip);
+
+      // --------------------------------------------------------------------
+      // 2. ARTICULATED ROCKER-BOGIE SUSPENSION LINKAGE (Left & Right)
+      // --------------------------------------------------------------------
+      [-1, 1].forEach((side) => {
+        const xSide = side * 23;
+
+        // Rocker Main Pivot on Hull Side
+        const pivotGeom = new THREE.CylinderGeometry(3, 3, 3.5, 16);
+        const pivot = new THREE.Mesh(pivotGeom, matAnodizedBlue);
+        pivot.rotation.z = Math.PI / 2;
+        pivot.position.set(xSide, 6, 0);
+        chassisGroup.add(pivot);
+
+        // Forward Rocker Arm to Front Wheel
+        const armFwdGeom = new THREE.CylinderGeometry(1.6, 1.6, 32, 12);
+        const armFwd = new THREE.Mesh(armFwdGeom, matGunmetal);
+        armFwd.position.set(side * 27, 0, 14);
+        armFwd.rotation.x = 0.72;
+        armFwd.rotation.z = side * -0.22;
+        chassisGroup.add(armFwd);
+
+        // Rear Rocker Arm to Bogie Pivot
+        const armRearGeom = new THREE.CylinderGeometry(1.6, 1.6, 22, 12);
+        const armRear = new THREE.Mesh(armRearGeom, matGunmetal);
+        armRear.position.set(side * 27, 2, -10);
+        armRear.rotation.x = -0.65;
+        armRear.rotation.z = side * -0.22;
+        chassisGroup.add(armRear);
+
+        // Bogie Linkage connecting middle & rear wheels
+        const bogieGeom = new THREE.BoxGeometry(2.4, 2.8, 30);
+        const bogie = new THREE.Mesh(bogieGeom, matGunmetal);
+        bogie.position.set(side * 28.5, -4, -13);
+        chassisGroup.add(bogie);
+
+        // Bogie Blue Pivot Cap
+        const bogieCapGeom = new THREE.CylinderGeometry(2.4, 2.4, 2.5, 14);
+        const bogieCap = new THREE.Mesh(bogieCapGeom, matAnodizedBlue);
+        bogieCap.rotation.z = Math.PI / 2;
+        bogieCap.position.set(side * 29.5, -4, -13);
+        chassisGroup.add(bogieCap);
+      });
+
+      // --------------------------------------------------------------------
+      // 3. 6 RUGGED OFF-ROAD TREADED WHEELS (3 Left, 3 Right)
+      // --------------------------------------------------------------------
+      const wheelPositions = [
+        { x: -32, z: -26 },
+        { x: -32, z: 0 },
+        { x: -32, z: 26 },
+        { x: 32, z: -26 },
+        { x: 32, z: 0 },
+        { x: 32, z: 26 }
+      ];
+
+      const wheels = [];
+      wheelPositions.forEach((pos) => {
+        const wheelGroup = new THREE.Group();
+        wheelGroup.position.set(pos.x, -6, pos.z);
+        roverRoot.add(wheelGroup);
+
+        // Rubber Tire
+        const tireGeom = new THREE.CylinderGeometry(8.5, 8.5, 7.2, 24);
+        const tire = new THREE.Mesh(tireGeom, matRubber);
+        tire.rotation.z = Math.PI / 2;
+        wheelGroup.add(tire);
+
+        // 12 Off-Road Raised Tread Lugs
+        for (let i = 0; i < 12; i++) {
+          const ang = (i / 12) * Math.PI * 2;
+          const lugGeom = new THREE.BoxGeometry(7.2, 1.2, 2.4);
+          const lug = new THREE.Mesh(lugGeom, matRubber);
+          lug.position.set(0, Math.cos(ang) * 8.6, Math.sin(ang) * 8.6);
+          lug.rotation.x = -ang;
+          wheelGroup.add(lug);
+        }
+
+        // Anodized Electric Blue Metallic Rim
+        const rimGeom = new THREE.CylinderGeometry(6.2, 6.2, 7.4, 18);
+        const rim = new THREE.Mesh(rimGeom, matAnodizedBlue);
+        rim.rotation.z = Math.PI / 2;
+        wheelGroup.add(rim);
+
+        // Center Gunmetal Axle Hub
+        const hubGeom = new THREE.CylinderGeometry(2.6, 2.6, 8.0, 14);
+        const hub = new THREE.Mesh(hubGeom, matGunmetal);
+        hub.rotation.z = Math.PI / 2;
+        wheelGroup.add(hub);
+
+        wheels.push(wheelGroup);
+      });
+
+      // --------------------------------------------------------------------
+      // 4. FRONT SPINNING LIDAR SCANNER DRUM
+      // --------------------------------------------------------------------
+      const lidarBaseGeom = new THREE.CylinderGeometry(4.2, 4.6, 3, 16);
+      const lidarBase = new THREE.Mesh(lidarBaseGeom, matGunmetal);
+      lidarBase.position.set(0, 15, 26);
+      chassisGroup.add(lidarBase);
+
+      const lidarDrumGroup = new THREE.Group();
+      lidarDrumGroup.position.set(0, 18, 26);
+      chassisGroup.add(lidarDrumGroup);
+
+      const drumBodyGeom = new THREE.CylinderGeometry(3.6, 3.6, 4.2, 20);
+      const drumBody = new THREE.Mesh(drumBodyGeom, matChassisLight);
+      lidarDrumGroup.add(drumBody);
+
+      // Glowing Optical Laser Band
+      const laserBandGeom = new THREE.CylinderGeometry(3.7, 3.7, 1.2, 20);
+      const laserBand = new THREE.Mesh(laserBandGeom, matNeonCyan);
+      laserBand.position.set(0, 0, 0);
+      lidarDrumGroup.add(laserBand);
+
+      // --------------------------------------------------------------------
+      // 5. ARTICULATED NECK MAST + PAN-TILT CAMERA / SNIFFER HEAD (turretHead)
+      // --------------------------------------------------------------------
+      const mastGeom = new THREE.CylinderGeometry(2.2, 2.6, 8, 16);
+      const neckMast = new THREE.Mesh(mastGeom, matGunmetal);
+      neckMast.position.set(0, 17.5, 12);
+      chassisGroup.add(neckMast);
+
+      // Gimbal Pivot Joint
+      const gimbalGeom = new THREE.SphereGeometry(2.4, 16, 16);
+      const gimbal = new THREE.Mesh(gimbalGeom, matAnodizedBlue);
+      gimbal.position.set(0, 22, 12);
+      chassisGroup.add(gimbal);
+
+      // Pan-Tilt Turret Head Group (rotates on Y for pan, on X for tilt)
+      const turretHead = new THREE.Group();
+      turretHead.position.set(0, 23.5, 12);
+      chassisGroup.add(turretHead);
+
+      // Head Sensor Housing
+      const headHousingGeom = new THREE.BoxGeometry(16, 9, 12);
+      const headHousing = new THREE.Mesh(headHousingGeom, matChassisLight);
+      turretHead.add(headHousing);
+
+      // Front Chamfer Faceplate
+      const facePlateGeom = new THREE.BoxGeometry(15, 8, 1.5);
+      const facePlate = new THREE.Mesh(facePlateGeom, matGunmetal);
+      facePlate.position.set(0, 0, 6.2);
+      turretHead.add(facePlate);
+
+      // Dual Forward Optical Barrels & Glowing Blue Eyes
+      [-4.5, 4.5].forEach((xEye) => {
+        const barrelGeom = new THREE.CylinderGeometry(2.4, 2.5, 4.5, 16);
+        const barrel = new THREE.Mesh(barrelGeom, matAnodizedBlue);
+        barrel.rotation.x = Math.PI / 2;
+        barrel.position.set(xEye, 0, 7.8);
+        turretHead.add(barrel);
+
+        // Glowing Electric Blue Eye Lens (#3791FF)
+        const eyeLensGeom = new THREE.CylinderGeometry(1.9, 1.9, 0.6, 16);
+        const eyeLens = new THREE.Mesh(eyeLensGeom, matNeonBlue);
+        eyeLens.rotation.x = Math.PI / 2;
+        eyeLens.position.set(xEye, 0, 10.1);
+        turretHead.add(eyeLens);
+
+        // Bright Cyan Pupil
+        const pupilGeom = new THREE.CylinderGeometry(0.9, 0.9, 0.7, 12);
+        const pupil = new THREE.Mesh(pupilGeom, matNeonCyan);
+        pupil.rotation.x = Math.PI / 2;
+        pupil.position.set(xEye, 0, 10.2);
+        turretHead.add(pupil);
+      });
+
+      // Top Laser Rangefinder / Sniffer Aperture
+      const snifferGeom = new THREE.CylinderGeometry(1.5, 1.5, 3.2, 12);
+      const sniffer = new THREE.Mesh(snifferGeom, matGunmetal);
+      sniffer.position.set(0, 5.6, 1);
+      turretHead.add(sniffer);
+
+      const snifferLensGeom = new THREE.SphereGeometry(1.2, 12, 12);
+      const snifferLens = new THREE.Mesh(snifferLensGeom, matNeonCyan);
+      snifferLens.position.set(0, 7.0, 1);
+      turretHead.add(snifferLens);
+
+      // --------------------------------------------------------------------
+      // 6. INTERACTIVE 360° ORBIT, CURSOR TRACKING, SCROLL AND IDLE LOOPS
+      // --------------------------------------------------------------------
+      let isDragging = false;
+      let lastDragX = 0;
+      let lastDragY = 0;
+      let userYaw = 0.45;
+      let userPitch = 0.12;
+      let velYaw = 0;
+      let velPitch = 0;
+
+      stageBox.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        lastDragX = e.clientX;
+        lastDragY = e.clientY;
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (isDragging) {
+          const dx = e.clientX - lastDragX;
+          const dy = e.clientY - lastDragY;
+          lastDragX = e.clientX;
+          lastDragY = e.clientY;
+
+          velYaw = dx * 0.012;
+          velPitch = dy * 0.008;
+          userYaw += velYaw;
+          userPitch = Math.max(-0.45, Math.min(0.55, userPitch + velPitch));
+        }
+
+        // Real-Time Cursor Tracking: Sensor Head looks at mouse cursor
+        const rect = canvas.getBoundingClientRect();
+        const centerX = rect.left + rect.width * 0.5;
+        const centerY = rect.top + rect.height * 0.5;
+        const normX = (e.clientX - centerX) / (window.innerWidth * 0.5);
+        const normY = (e.clientY - centerY) / (window.innerHeight * 0.5);
+
+        targetHeadYaw = Math.max(-0.70, Math.min(0.70, normX * 0.75));
+        targetHeadPitch = Math.max(-0.38, Math.min(0.38, -normY * 0.52));
+      }, { passive: true });
+
+      window.addEventListener('pointerup', () => {
+        isDragging = false;
+      }, { passive: true });
+
+      window.addEventListener('pointercancel', () => {
+        isDragging = false;
+      }, { passive: true });
+
+      let targetHeadYaw = 0;
+      let targetHeadPitch = 0;
+      let currentHeadYaw = 0;
+      let currentHeadPitch = 0;
+
+      let lastScrollY = window.scrollY || window.pageYOffset;
+      const clock = new THREE.Clock();
+      const workSection = document.getElementById('work');
+
+      function onResize() {
+        const w = stageBox.clientWidth;
+        const h = stageBox.clientHeight;
+        if (w > 0 && h > 0) {
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        }
+      }
+      window.addEventListener('resize', onResize, { passive: true });
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const delta = Math.min(0.05, clock.getDelta());
+        const time = clock.getElapsedTime();
+
+        // 1. Scroll-driven pose & wheel/LiDAR rotation
+        const currentScroll = window.scrollY || window.pageYOffset;
+        const scrollDelta = currentScroll - lastScrollY;
+        lastScrollY = currentScroll;
+
+        // Spin wheels proportional to scroll delta
+        wheels.forEach((w) => {
+          w.rotation.x += scrollDelta * 0.014;
+        });
+
+        // Spin LiDAR continuously + speed up on scroll
+        lidarDrumGroup.rotation.y += 0.045 + Math.abs(scrollDelta) * 0.02;
+
+        // Smooth scroll interpolation across #work section
+        let scrollYawOffset = 0;
+        if (workSection) {
+          const rect = workSection.getBoundingClientRect();
+          const progress = Math.max(0, Math.min(1, -rect.top / Math.max(1, rect.height)));
+          scrollYawOffset = -progress * 0.40;
+        }
+
+        // 2. Head Cursor Tracking (smooth lerp)
+        currentHeadYaw += (targetHeadYaw - currentHeadYaw) * Math.min(1, delta * 7.0);
+        currentHeadPitch += (targetHeadPitch - currentHeadPitch) * Math.min(1, delta * 7.0);
+        turretHead.rotation.y = currentHeadYaw;
+        turretHead.rotation.x = currentHeadPitch;
+
+        // 3. User Orbit Drag Inertia
+        if (!isDragging) {
+          userYaw += velYaw;
+          userPitch = Math.max(-0.45, Math.min(0.55, userPitch + velPitch));
+          velYaw *= 0.92;
+          velPitch *= 0.92;
+        }
+
+        // 4. Idle Zero-G Suspension Breathing / Hover
+        const hoverY = Math.sin(time * 1.8) * 1.1;
+        const hoverPitch = Math.sin(time * 1.4) * 0.015;
+        chassisGroup.position.y = hoverY;
+        chassisGroup.rotation.x = hoverPitch;
+
+        // Pulsing antenna beacon
+        beaconMat.opacity = 0.55 + 0.45 * Math.sin(time * 4.5);
+
+        // Apply overall base rotation
+        roverRoot.rotation.y = userYaw + scrollYawOffset;
+        roverRoot.rotation.x = userPitch;
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    }
+
+    // Load Three.js if not yet attached to window
+    if (window.THREE) {
+      buildRoverScene(window.THREE);
+    } else {
+      window.addEventListener('three-ready', () => {
+        if (window.THREE) buildRoverScene(window.THREE);
+      }, { once: true });
+
+      // Fallback dynamic import
+      import('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js')
+        .then((module) => {
+          window.THREE = module;
+          buildRoverScene(module);
+        })
+        .catch(() => {});
+    }
   }
 });

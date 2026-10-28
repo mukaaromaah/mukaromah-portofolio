@@ -8,25 +8,26 @@
   /* ========================================================================
      1. HIGH-CONTRAST MIDNIGHT BLUE ("BLUE HOUR HORIZON") PALETTE
      ======================================================================== */
-  --bg-canvas: #0B152B;
+  --bg-canvas: #0A1328;
   --color-midnight: #101D3A;
-  --color-twilight: #344F80;
+  --color-twilight: #2A4575;
   --bg-surface: rgba(16, 29, 58, 0.78);
-  --bg-surface-solid: #132347;
+  --bg-surface-solid: #122244;
   --bg-surface-elevated: #162850;
-  --bg-surface-active: #1C3263;
-  --bg-modal: #0D1730;
+  --bg-surface-active: #1B3260;
+  --bg-modal: #0B162C;
 
   /* Stark High-Contrast Typography (100% Solid, Zero Washed-Out Gray) */
   --text-primary: #F4F7FC;   /* Crisp Mist White — 100% solid, pure & bright */
-  --text-secondary: #D8E7FC; /* Bright Ice-Cloud White-Blue — 100% solid */
+  --text-secondary: #D6E6FF; /* Bright Ice-Cloud Blue — 100% solid opacity */
   --text-muted: #A3C4F3;     /* Clear Light Sky — never murky gray */
-  --text-inverse: #0B152B;
+  --text-inverse: #0A1328;
 
   /* Accents */
-  --accent-primary: #C9DDF9;  /* Cloud Blue */
-  --accent-luminous: #7FB2F0; /* Luminous Sky Blue */
-  --accent-primary-hover: #E2EBFB;
+  --accent-primary: #3791FF;  /* Electric Blue */
+  --accent-secondary: #C9DDF9; /* Cloud Blue */
+  --accent-luminous: #3791FF; /* Electric Blue */
+  --accent-primary-hover: #60A5FA;
 
   /* Structural Dividers */
   --border-solid: rgba(201, 221, 249, 0.24); /* Crisp hairline grid lines */
@@ -433,6 +434,7 @@ main {
 
 .col-left {
   grid-column: span 4;
+  align-self: start;
 }
 
 .col-right {
@@ -441,7 +443,8 @@ main {
 
 .sticky-side {
   position: sticky;
-  top: calc(var(--nav-height) + 24px);
+  top: 90px;
+  align-self: start;
 }
 
 .section-tag-row {
@@ -501,11 +504,16 @@ main {
    ========================================================================== */
 .hero-section {
   min-height: 100svh;
+  height: 100svh;
+  max-height: 100svh;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: calc(var(--nav-height) + 1.5rem);
-  padding-bottom: 1.5rem;
+  padding-inline: var(--gutter);
+  padding-top: calc(var(--nav-height) + 0.85rem);
+  padding-bottom: 1.1rem;
+  overflow: hidden;
 }
 
 .hero-content {
@@ -513,38 +521,38 @@ main {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  flex-grow: 1;
-  gap: 1.5rem;
+  height: 100%;
+  gap: 0.85rem;
 }
 
-/* Constrained to 58% width so it stays cleanly left of the 3D Moon accretion ring */
+/* Constrained to 60% width so it stays cleanly left of the 3D Moon accretion ring */
 .hero-title-block {
-  max-width: 58%;
+  max-width: 60%;
   width: 100%;
 }
 
-/* Hero Display Wordmark: clamp(3.25rem, 6.2vw, 6.2rem), Weight 500, Line-Height 0.90 */
+/* Hero Display Wordmark: clamp(3.0rem, 5.5vw, 5.5rem), Weight 500, Line-Height 0.90 */
 .hero-display-title {
   font-family: var(--font-halyard);
-  font-size: clamp(3.25rem, 6.2vw, 6.2rem);
+  font-size: clamp(3.0rem, 5.5vw, 5.5rem);
   font-weight: 500;
   line-height: 0.90;
   letter-spacing: 0em;
   color: var(--text-primary);
   text-transform: uppercase;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
-/* Hero Statement: Mode 2 Conversational Voice (clamp(1.15rem, 1.6vw, 1.55rem), Weight 400, Sentence Case, Line-Height 1.26) */
+/* Hero Statement: Mode 2 Conversational Voice (clamp(1.05rem, 1.4vw, 1.35rem), Weight 400, Sentence Case, Line-Height 1.25) */
 .hero-statement {
   font-family: var(--font-halyard);
-  font-size: clamp(1.15rem, 1.6vw, 1.55rem);
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
   font-weight: 400;
   text-transform: none;
-  line-height: 1.26;
+  line-height: 1.25;
   letter-spacing: 0em;
-  color: var(--text-primary);
-  max-width: 42ch;
+  color: var(--text-secondary);
+  max-width: 44ch;
 }
 
 .hero-lower-grid {
@@ -553,7 +561,7 @@ main {
   gap: var(--grid-gap);
   align-items: flex-end;
   width: 100%;
-  padding-top: 14px;
+  padding-top: 10px;
   border-top: 1px solid var(--border-solid);
 }
 
@@ -561,12 +569,12 @@ main {
   grid-column: span 8;
   display: flex;
   align-items: flex-start;
-  gap: 20px;
+  gap: 16px;
 }
 
 .hero-portrait-frame {
-  width: 88px;
-  height: 110px;
+  width: 76px;
+  height: 96px;
   flex-shrink: 0;
   border: 1px solid var(--border-solid-strong);
   background-color: var(--bg-surface-solid);
@@ -590,10 +598,10 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 4px 0;
+  padding: 2.5px 0;
   border-bottom: 1px dashed var(--border-dashed);
-  gap: 16px;
-  font-size: 13px;
+  gap: 14px;
+  font-size: 12px;
 }
 
 .spec-row:last-child {
@@ -602,10 +610,10 @@ main {
 
 .spec-label {
   font-family: var(--font-halyard);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
-  letter-spacing: 0em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   line-height: 1.10;
   flex-shrink: 0;
@@ -613,7 +621,7 @@ main {
 
 .spec-value {
   font-family: var(--font-halyard);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
   letter-spacing: 0em;
   color: var(--text-primary);
@@ -629,13 +637,14 @@ main {
   grid-column: span 4;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   align-items: flex-end;
 }
 
 .hero-actions-panel .btn {
   width: 100%;
   max-width: 320px;
+  min-height: 42px;
 }
 
 /* ==========================================================================
@@ -675,6 +684,69 @@ main {
   color: var(--text-inverse);
   background-color: var(--text-primary);
   border-color: var(--text-primary);
+}
+
+/* ==========================================================================
+   OPTION C1: STICKY 3D EXPLORATION ROVER STAGE
+   ========================================================================== */
+.rover-stage-box {
+  width: 100%;
+  height: 340px;
+  border: 1px solid rgba(201, 221, 249, 0.28);
+  background: radial-gradient(circle at 50% 55%, rgba(55, 145, 255, 0.18) 0%, rgba(11, 21, 43, 0.85) 75%);
+  border-radius: 2px;
+  position: relative;
+  cursor: grab;
+  margin-top: 18px;
+  overflow: hidden;
+  touch-action: none;
+  box-shadow: 0 10px 30px rgba(4, 9, 20, 0.45);
+}
+
+.rover-stage-box:active {
+  cursor: grabbing;
+}
+
+.rover-stage-box canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.rover-badge-top {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-family: var(--font-halyard);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #C9DDF9;
+  z-index: 2;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.rover-badge-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px;
+  font-family: var(--font-halyard);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #F4F7FC;
+  border-top: 1px dashed rgba(201, 221, 249, 0.25);
+  background: rgba(11, 21, 43, 0.82);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2;
+  pointer-events: none;
+  text-align: center;
 }
 
 .projects-matrix {
@@ -1503,6 +1575,19 @@ main {
    RESPONSIVE LAYOUT (360px Mobile to 1920px Full-Bleed Desktop)
    ========================================================================== */
 @media (max-width: 1100px) {
+  .hero-section {
+    min-height: auto;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding-top: calc(var(--nav-height) + 1.5rem);
+    padding-bottom: 2rem;
+  }
+
+  .rover-stage-box {
+    height: 300px;
+  }
+
   .hero-title-block {
     max-width: 100%;
   }
