@@ -617,31 +617,31 @@ document.addEventListener('DOMContentLoaded', () => {
           vec2 dir = p / max(r, 1e-4);
           vec2 lensedUv = uv - dir * defl * 0.085;
 
-          // Seamless transition into Oryzo Walnut Shadow #100904 & Bark Brown #382416
-          vec3 deepWalnut = vec3(0.063, 0.035, 0.016); // #100904
-          vec3 barkBrown  = vec3(0.180, 0.110, 0.060); // #382416
-          vec3 warmHaze   = vec3(0.350, 0.220, 0.130);
-          vec3 warmBone   = vec3(0.965, 0.878, 0.776); // #F6E0C6
+          // Midnight Blue gradient base (--bg-canvas: #0B152B, --color-midnight: #101D3A)
+          vec3 deepMidnight = vec3(0.043, 0.082, 0.175); // #0B152B
+          vec3 midnightBase = vec3(0.063, 0.114, 0.227); // #101D3A
+          vec3 twilightBlue = vec3(0.204, 0.310, 0.502); // #344F80
+          vec3 cloudIce     = vec3(0.788, 0.867, 0.976); // #C9DDF9
 
           float neb1 = fbm(lensedUv * 2.6 + vec2(uTime * 0.012, -uScroll * 0.35));
           float neb2 = fbm(lensedUv * 5.2 - vec2(uTime * 0.018, uScroll * 0.2));
 
-          vec3 bg = mix(deepWalnut, barkBrown, smoothstep(0.0, 0.85, uv.y));
-          bg += warmHaze * pow(neb1, 2.2) * 0.35;
-          bg += warmBone * pow(neb1 * neb2, 3.2) * 0.16;
+          vec3 bg = mix(deepMidnight, midnightBase, smoothstep(0.0, 0.85, uv.y));
+          bg += twilightBlue * pow(neb1, 2.2) * 0.42;
+          bg += cloudIce * pow(neb1 * neb2, 3.2) * 0.22;
 
           // Gravitationally lensed background stars
           vec2 starGrid = lensedUv * vec2(uRes.x / uRes.y * 42.0, 42.0);
           vec2 id = floor(starGrid);
           vec2 gv = fract(starGrid) - 0.5;
           float rnd = hash21(id);
-          if (rnd > 0.80) {
+          if (rnd > 0.78) {
             vec2 offset = vec2(fract(rnd * 34.1) - 0.5, fract(rnd * 71.7) - 0.5) * 0.6;
             float d = length(gv - offset);
             float twinkle = 0.65 + 0.35 * sin(uTime * (1.5 + rnd * 3.0) + rnd * 40.0);
             float star = smoothstep(0.09, 0.0, d) * twinkle;
-            float einstein = 1.0 + 2.2 * exp(-sq((r - rs * 1.45) / (rs * 0.24)));
-            bg += mix(warmBone, vec3(1.0, 0.93, 0.84), rnd) * star * einstein * 0.85;
+            float einstein = 1.0 + 2.4 * exp(-sq((r - rs * 1.45) / (rs * 0.24)));
+            bg += mix(cloudIce, vec3(0.96, 0.98, 1.0), rnd) * star * einstein * 0.85;
           }
 
           return bg;
@@ -660,14 +660,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
           vec3 col = renderBackground(vUv, p, r, rs);
 
-          // Oryzo Design Palette: Warm Cream (#FFEDD7), Bone Sand (#F6E0C6), and Ember (#DC5000)
-          vec3 cTint  = vec3(0.240, 0.150, 0.090);
-          vec3 cBone  = vec3(0.965, 0.878, 0.776); // #F6E0C6
-          vec3 cCream = vec3(1.000, 0.929, 0.843); // #FFEDD7
-          vec3 cEmber = vec3(0.863, 0.314, 0.000); // #DC5000
+          // Restored Celestial Horizon Palette: Midnight Blue, Twilight, Cloud Blue, and Mist White
+          vec3 cTwilight = vec3(0.204, 0.310, 0.502); // #344F80 Twilight Blue
+          vec3 cCloud    = vec3(0.788, 0.867, 0.976); // #C9DDF9 Cloud Blue
+          vec3 cMist     = vec3(0.957, 0.969, 0.988); // #F4F7FC Pure Lunar Mist
+          vec3 cLuminous = vec3(0.498, 0.698, 0.941); // #7FB2F0 Luminous Sky Blue
 
-          float outerGlow = exp(-r * 2.1) * 0.42 + exp(-r * 5.0) * 0.30;
-          col += mix(cTint, cBone, 0.35) * outerGlow;
+          float outerGlow = exp(-r * 2.1) * 0.48 + exp(-r * 5.0) * 0.35;
+          col += mix(cTwilight, cCloud, 0.45) * outerGlow;
 
           float gapMask = 1.0;
           float cursorFlare = 0.0;
@@ -691,8 +691,8 @@ document.addEventListener('DOMContentLoaded', () => {
             float hdop = clamp(1.0 - 0.62 * (pr.x / max(r, 1e-3)), 0.32, 2.05);
 
             float hI = hrad * hmask * (0.45 + 0.65 * hn) * hfil * hdop * gapMask;
-            vec3 hCol = mix(cTint, cBone, clamp(hI * 1.15, 0.0, 1.0));
-            hCol = mix(hCol, cCream, clamp((hI - 0.55) * 1.5, 0.0, 1.0));
+            vec3 hCol = mix(cTwilight, cCloud, clamp(hI * 1.15, 0.0, 1.0));
+            hCol = mix(hCol, cMist, clamp((hI - 0.55) * 1.5, 0.0, 1.0));
             col += hCol * hI * 1.35;
           }
 
@@ -720,9 +720,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             diskVal = radial * (0.42 + 0.58 * n) * (0.52 + 0.48 * fil) * arms * doppler * plane * gapMask;
 
-            diskColor = mix(cTint, cBone, clamp(diskVal * 1.2, 0.0, 1.0));
-            diskColor = mix(diskColor, cCream, clamp((diskVal - 0.52) * 1.45, 0.0, 1.0));
-            diskColor = mix(diskColor, cEmber, clamp((diskVal - 0.92) * 1.35, 0.0, 1.0));
+            diskColor = mix(cTwilight, cCloud, clamp(diskVal * 1.2, 0.0, 1.0));
+            diskColor = mix(diskColor, cMist, clamp((diskVal - 0.52) * 1.45, 0.0, 1.0));
+            diskColor = mix(diskColor, cLuminous, clamp((diskVal - 0.95) * 1.2, 0.0, 1.0));
           }
 
           float frontFactor = smoothstep(0.008, -0.012, pr.y);
@@ -754,9 +754,9 @@ document.addEventListener('DOMContentLoaded', () => {
             float fresnel = pow(1.0 - z, 2.6);
             float equatorBounce = exp(-sq(pr.y / (rs * 0.35))) * 0.55;
 
-            vec3 moonShadow = vec3(0.063, 0.035, 0.016); // Deep Walnut Umbra #100904
-            vec3 moonMid    = vec3(0.780, 0.680, 0.580); // Warm Cork Midtone
-            vec3 moonHigh   = vec3(1.000, 0.929, 0.843); // Pure Warm Cream Highlight #FFEDD7
+            vec3 moonShadow = vec3(0.043, 0.082, 0.175); // Deep Midnight Lunar Umbra (#0B152B)
+            vec3 moonMid    = vec3(0.580, 0.715, 0.915); // Twilight-Cloud Silver
+            vec3 moonHigh   = vec3(0.955, 0.972, 1.000); // Pure Lunar Mist (#F4F7FC)
 
             float shade = clamp(diff1 * 0.88 + 0.22, 0.0, 1.0);
             vec3 surfaceCol = mix(moonShadow, moonMid, smoothstep(0.0, 0.55, moonAlbedo.r * shade));
@@ -765,9 +765,9 @@ document.addEventListener('DOMContentLoaded', () => {
             float ringShadow = 1.0 - 0.38 * exp(-sq((pr.y + rs * 0.11) / (rs * 0.065))) * frontFactor;
             surfaceCol *= ringShadow;
 
-            surfaceCol += cBone * fresnel * 0.85;
-            surfaceCol += cCream * pow(fresnel, 5.0) * 0.95;
-            surfaceCol += cEmber * equatorBounce * 0.18 * moonAlbedo.r;
+            surfaceCol += cCloud * fresnel * 0.85;
+            surfaceCol += cMist * pow(fresnel, 5.0) * 0.95;
+            surfaceCol += cCloud * equatorBounce * 0.22 * moonAlbedo.r;
 
             col = mix(col, surfaceCol, sphereEdge);
           }
@@ -777,18 +777,18 @@ document.addEventListener('DOMContentLoaded', () => {
           float pr2 = exp(-sq((r - rs * 1.045) / (rs * 0.032))) * 0.52;
           float prDop = 0.78 + 0.52 * (-pr.x / max(r, 1e-3));
           float photonRing = (pr1 + pr2) * prDop * gapMask;
-          col += mix(cBone, cCream, 0.72) * photonRing * 1.38;
+          col += mix(cCloud, cMist, 0.72) * photonRing * 1.38;
 
           // Front Half of Relativistic Accretion Disk
           col += diskColor * diskVal * frontFactor * 1.55;
 
           // Cursor Flare
-          col += cBone * cursorFlare * exp(-abs(r - rs * 1.8) * 3.5);
+          col += cCloud * cursorFlare * exp(-abs(r - rs * 1.8) * 3.5);
 
           // Scroll Dive Flash
           if (uDive > 0.01) {
             float flash = smoothstep(0.55, 0.98, uDive) * (1.0 - smoothstep(0.98, 1.0, uDive));
-            col += mix(cTint, cBone, 0.5) * flash * 0.35;
+            col += mix(cTwilight, cCloud, 0.5) * flash * 0.35;
           }
 
           // Filmic Tone Mapping
@@ -861,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
             0,
             gl.RGBA,
             gl.UNSIGNED_BYTE,
-            new Uint8Array([223, 217, 206, 255])
+            new Uint8Array([201, 221, 249, 255])
           );
 
           function uploadMoonImage(img) {
@@ -1032,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const tr = starTrails[i];
             const ang = tr.angle + elapsed * tr.speed;
             const r = tr.radiusNorm * maxDim;
-            ctx2d.strokeStyle = `rgba(246, 224, 198, ${(tr.alpha * trailVis).toFixed(3)})`;
+            ctx2d.strokeStyle = `rgba(201, 221, 249, ${(tr.alpha * trailVis).toFixed(3)})`;
             ctx2d.lineWidth = tr.width;
             ctx2d.beginPath();
             ctx2d.arc(centerPxX, centerPxY, r, ang, ang + tr.arcLen);
@@ -1061,7 +1061,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const doppler = 0.65 + 0.45 * (-Math.cos(a));
           const alpha = Math.max(0.08, Math.min(0.95, p.alpha * doppler));
 
-          ctx2d.fillStyle = `rgba(255, 237, 215, ${alpha.toFixed(3)})`;
+          ctx2d.fillStyle = `rgba(244, 247, 252, ${alpha.toFixed(3)})`;
           ctx2d.beginPath();
           ctx2d.arc(sx, sy, p.radius, 0, Math.PI * 2);
           ctx2d.fill();

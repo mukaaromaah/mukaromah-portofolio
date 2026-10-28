@@ -1,42 +1,40 @@
 /* ==========================================================================
-   MUKAROMAH ARCHITECTURAL PORTFOLIO — EXACT ORYZO.AI TYPOGRAPHY & DESIGN SYSTEM
-   Lusion Behind-The-Scenes Spec · Two Typographic Modes · Zero Letter-Spacing
-   Palette: Walnut Shadow (#100904), Warm Cream (#FFEDD7), Ember Accent (#DC5000)
+   MUKAROMAH ARCHITECTURAL PORTFOLIO — MIDNIGHT BLUE ("BLUE HOUR HORIZON")
+   Exact Oryzo.ai Layout & Two-Mode Typography · Restored Celestial Blue Palette
+   Palette: Deep Midnight (#0B152B / #101D3A), Mist White (#F4F7FC), Cloud Blue (#C9DDF9)
    ========================================================================== */
 
 :root {
   /* ========================================================================
-     1. EXACT ORYZO.AI COLOR TOKENS (No Gray Text, No Cold Blue)
+     1. HIGH-CONTRAST MIDNIGHT BLUE ("BLUE HOUR HORIZON") PALETTE
      ======================================================================== */
-  --color-walnut-shadow: #100904; /* Main page background canvas */
-  --color-bark-brown: #382416;    /* Elevated surface / active block fill */
-  --color-cork-border: #40372e;   /* 1px dashed structural dividers & borders */
-  --color-driftwood: #6c5f51;     /* Secondary structural lines */
-  --color-warm-cream: #ffedd7;    /* ALL primary headings, body text, nav, borders — 100% solid */
-  --color-ink-cream: #f6e0c6;     /* Secondary specifications text — warm and bright */
-  --color-ember-accent: #dc5000;  /* Rationed strictly to small index accents, tags, credit links */
+  --bg-canvas: #0B152B;
+  --color-midnight: #101D3A;
+  --color-twilight: #344F80;
+  --bg-surface: rgba(16, 29, 58, 0.78);
+  --bg-surface-solid: #132347;
+  --bg-surface-elevated: #162850;
+  --bg-surface-active: #1C3263;
+  --bg-modal: #0D1730;
 
-  /* Structural UI Aliases */
-  --bg-canvas: var(--color-walnut-shadow);
-  --bg-surface: #170e07;
-  --bg-surface-elevated: var(--color-bark-brown);
-  --bg-surface-active: #2a1a10;
-  --bg-modal: #130a05;
+  /* Stark High-Contrast Typography (100% Solid, Zero Washed-Out Gray) */
+  --text-primary: #F4F7FC;   /* Crisp Mist White — 100% solid, pure & bright */
+  --text-secondary: #D8E7FC; /* Bright Ice-Cloud White-Blue — 100% solid */
+  --text-muted: #A3C4F3;     /* Clear Light Sky — never murky gray */
+  --text-inverse: #0B152B;
 
-  --text-primary: var(--color-warm-cream);
-  --text-secondary: var(--color-ink-cream);
-  --text-muted: #b89f84;
-  --text-inverse: var(--color-walnut-shadow);
+  /* Accents */
+  --accent-primary: #C9DDF9;  /* Cloud Blue */
+  --accent-luminous: #7FB2F0; /* Luminous Sky Blue */
+  --accent-primary-hover: #E2EBFB;
 
-  --accent-primary: var(--color-ember-accent);
-  --accent-primary-hover: #ff5700;
-
-  --border-solid: var(--color-cork-border);
-  --border-solid-strong: var(--color-driftwood);
-  --border-dashed: var(--color-cork-border);
+  /* Structural Dividers */
+  --border-solid: rgba(201, 221, 249, 0.24); /* Crisp hairline grid lines */
+  --border-solid-strong: rgba(201, 221, 249, 0.42);
+  --border-dashed: rgba(201, 221, 249, 0.32);
 
   /* ========================================================================
-     2. ORYZO.AI FONT FAMILY SETUP
+     2. ORYZO.AI FONT FAMILY SETUP (Halyard Variable Match + Arial Micro-Footnotes)
      ======================================================================== */
   --font-halyard: 'halyard-display-variable', 'Inter Tight', system-ui, -apple-system, sans-serif;
   --font-arial: 'Arial', system-ui, sans-serif;
@@ -58,8 +56,8 @@
 }
 
 html {
-  background-color: var(--color-walnut-shadow);
-  color: var(--color-warm-cream);
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
   font-family: var(--font-halyard);
   font-size: 16px;
   line-height: 1.25;
@@ -68,8 +66,8 @@ html {
 }
 
 body {
-  background-color: var(--color-walnut-shadow);
-  color: var(--color-warm-cream);
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
   font-family: var(--font-halyard);
   font-feature-settings: "ss01" on;
   letter-spacing: 0em;
@@ -97,7 +95,7 @@ img {
 }
 
 /* ==========================================================================
-   SUBTLE FIXED CELESTIAL BACKGROUND CANVAS
+   SUBTLE FIXED CELESTIAL BACKGROUND CANVAS (Deep Midnight Horizon Gradient)
    ========================================================================== */
 .space-canvas-wrap {
   position: fixed;
@@ -107,7 +105,16 @@ img {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.90;
+  background: radial-gradient(ellipse 100% 80% at 68% 42%, #182C55 0%, #101D3A 62%, #081022 100%);
+  opacity: 0.95;
+}
+
+.space-vignette-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(8, 16, 34, 0.55) 100%);
+  pointer-events: none;
+  z-index: 3;
 }
 
 #space-webgl-canvas,
@@ -121,7 +128,7 @@ img {
 
 #space-hud-canvas {
   z-index: 2;
-  opacity: 0.65;
+  opacity: 0.70;
 }
 
 #top-nav,
@@ -136,7 +143,7 @@ main {
 .section-divider-line {
   width: 100%;
   height: 1px;
-  background-color: var(--color-cork-border);
+  background-color: var(--border-solid);
 }
 
 /* ==========================================================================
@@ -148,10 +155,10 @@ main {
   left: 0;
   right: 0;
   height: var(--nav-height);
-  background-color: rgba(16, 9, 4, 0.94);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--color-cork-border);
+  background-color: rgba(11, 21, 43, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-solid);
   z-index: 900;
 }
 
@@ -174,7 +181,7 @@ main {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   text-transform: uppercase;
   line-height: 1.10;
 }
@@ -190,7 +197,7 @@ main {
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   text-transform: uppercase;
   line-height: 1.10;
   transition: color 0.15s ease;
@@ -198,7 +205,7 @@ main {
 
 .nav-item:hover,
 .nav-item.active {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
 }
 
 .nav-actions {
@@ -219,17 +226,17 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-warm-cream);
-  border: 1px solid var(--color-driftwood);
+  color: var(--text-primary);
+  border: 1px solid var(--border-solid-strong);
   border-radius: 2px;
-  background-color: var(--bg-surface);
+  background-color: var(--bg-surface-solid);
   transition: all 0.15s ease;
 }
 
 .btn-nav:hover {
-  background-color: var(--color-warm-cream);
-  color: var(--color-walnut-shadow);
-  border-color: var(--color-warm-cream);
+  background-color: var(--text-primary);
+  color: var(--text-inverse);
+  border-color: var(--text-primary);
 }
 
 .mobile-menu-btn {
@@ -240,15 +247,15 @@ main {
   width: 38px;
   height: 38px;
   padding: 8px;
-  border: 1px solid var(--color-cork-border);
+  border: 1px solid var(--border-solid);
   border-radius: 2px;
-  background-color: var(--bg-surface);
+  background-color: var(--bg-surface-solid);
 }
 
 .mobile-menu-btn .bar {
   width: 100%;
   height: 2px;
-  background-color: var(--color-warm-cream);
+  background-color: var(--text-primary);
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -258,8 +265,8 @@ main {
   top: var(--nav-height);
   left: 0;
   right: 0;
-  background-color: var(--color-walnut-shadow);
-  border-bottom: 1px solid var(--color-cork-border);
+  background-color: var(--color-midnight);
+  border-bottom: 1px solid var(--border-solid);
   padding: 24px;
 }
 
@@ -280,7 +287,7 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
 }
 
 .mobile-cv-btn {
@@ -310,26 +317,27 @@ main {
 }
 
 .btn-primary {
-  background-color: var(--color-warm-cream);
-  color: var(--color-walnut-shadow);
-  border: 1px solid var(--color-warm-cream);
+  background-color: var(--text-primary);
+  color: var(--text-inverse);
+  border: 1px solid var(--text-primary);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-ember-accent);
-  border-color: var(--color-ember-accent);
-  color: var(--color-warm-cream);
+  background-color: var(--accent-luminous);
+  border-color: var(--accent-luminous);
+  color: var(--text-inverse);
 }
 
 .btn-secondary {
-  background-color: transparent;
-  color: var(--color-warm-cream);
-  border: 1px solid var(--color-driftwood);
+  background-color: rgba(16, 29, 58, 0.6);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-primary);
 }
 
 .btn-secondary:hover {
-  background-color: var(--color-bark-brown);
-  border-color: var(--color-warm-cream);
+  background-color: var(--bg-surface-active);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .btn-card-action {
@@ -345,16 +353,16 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-ink-cream);
-  background-color: var(--color-walnut-shadow);
-  border-top: 1px solid var(--color-cork-border);
+  color: var(--text-secondary);
+  background-color: var(--bg-canvas);
+  border-top: 1px solid var(--border-solid);
   border-radius: 0;
   transition: all 0.15s ease;
 }
 
 .btn-card-action:hover {
-  background-color: var(--color-ember-accent);
-  color: var(--color-warm-cream);
+  background-color: var(--accent-luminous);
+  color: var(--text-inverse);
 }
 
 .btn-sharp-copy {
@@ -369,17 +377,17 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-warm-cream);
-  background-color: var(--bg-surface);
-  border: 1px solid var(--color-driftwood);
+  color: var(--text-primary);
+  background-color: var(--bg-surface-solid);
+  border: 1px solid var(--border-solid-strong);
   border-radius: 2px;
   transition: all 0.15s ease;
 }
 
 .btn-sharp-copy:hover {
-  background-color: var(--color-warm-cream);
-  color: var(--color-walnut-shadow);
-  border-color: var(--color-warm-cream);
+  background-color: var(--text-primary);
+  color: var(--text-inverse);
+  border-color: var(--text-primary);
 }
 
 .btn-sharp-top {
@@ -394,17 +402,17 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   background-color: transparent;
-  border: 1px solid var(--color-cork-border);
+  border: 1px solid var(--border-solid);
   border-radius: 2px;
   transition: all 0.15s ease;
 }
 
 .btn-sharp-top:hover {
-  color: var(--color-walnut-shadow);
-  border-color: var(--color-warm-cream);
-  background-color: var(--color-warm-cream);
+  color: var(--text-inverse);
+  border-color: var(--text-primary);
+  background-color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -447,7 +455,7 @@ main {
   font-family: var(--font-halyard);
   font-size: 13px;
   font-weight: 500;
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
@@ -457,7 +465,7 @@ main {
   font-family: var(--font-halyard);
   font-size: 13px;
   font-weight: 500;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
@@ -470,7 +478,7 @@ main {
   font-weight: 500;
   line-height: 0.90;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   text-transform: uppercase;
   margin-bottom: 22px;
 }
@@ -483,21 +491,21 @@ main {
   text-transform: none;
   line-height: 1.35;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
   max-width: 36ch;
   margin-bottom: 28px;
 }
 
 /* ==========================================================================
-   SECTION 01: HERO
+   SECTION 01: HERO (Fits 100svh Without Clipping, No Overlap with 3D Moon)
    ========================================================================== */
 .hero-section {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding-top: calc(var(--nav-height) + 40px);
-  padding-bottom: 48px;
+  justify-content: space-between;
+  padding-top: calc(var(--nav-height) + 1.5rem);
+  padding-bottom: 1.5rem;
 }
 
 .hero-content {
@@ -505,35 +513,38 @@ main {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  gap: 48px;
+  flex-grow: 1;
+  gap: 1.5rem;
 }
 
+/* Constrained to 58% width so it stays cleanly left of the 3D Moon accretion ring */
 .hero-title-block {
-  max-width: 1400px;
+  max-width: 58%;
+  width: 100%;
 }
 
-/* Hero Display Wordmark: clamp(51px, 8vw, 123px), Weight 500, Line-Height 0.90, Letter-Spacing 0em */
+/* Hero Display Wordmark: clamp(3.25rem, 6.2vw, 6.2rem), Weight 500, Line-Height 0.90 */
 .hero-display-title {
   font-family: var(--font-halyard);
-  font-size: clamp(51px, 8vw, 123px);
+  font-size: clamp(3.25rem, 6.2vw, 6.2rem);
   font-weight: 500;
   line-height: 0.90;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   text-transform: uppercase;
-  margin-bottom: 28px;
+  margin-bottom: 16px;
 }
 
-/* Hero Statement: Mode 2 Conversational Voice (clamp(22px, 2.2vw, 29px), Weight 400, Sentence Case, Line-Height 1.26) */
+/* Hero Statement: Mode 2 Conversational Voice (clamp(1.15rem, 1.6vw, 1.55rem), Weight 400, Sentence Case, Line-Height 1.26) */
 .hero-statement {
   font-family: var(--font-halyard);
-  font-size: clamp(22px, 2.2vw, 29px);
+  font-size: clamp(1.15rem, 1.6vw, 1.55rem);
   font-weight: 400;
   text-transform: none;
   line-height: 1.26;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
-  max-width: 44ch;
+  color: var(--text-primary);
+  max-width: 42ch;
 }
 
 .hero-lower-grid {
@@ -542,23 +553,23 @@ main {
   gap: var(--grid-gap);
   align-items: flex-end;
   width: 100%;
-  padding-top: 24px;
-  border-top: 1px solid var(--color-cork-border);
+  padding-top: 14px;
+  border-top: 1px solid var(--border-solid);
 }
 
 .hero-editorial-panel {
   grid-column: span 8;
   display: flex;
   align-items: flex-start;
-  gap: 24px;
+  gap: 20px;
 }
 
 .hero-portrait-frame {
   width: 88px;
   height: 110px;
   flex-shrink: 0;
-  border: 1px solid var(--color-driftwood);
-  background-color: var(--bg-surface);
+  border: 1px solid var(--border-solid-strong);
+  background-color: var(--bg-surface-solid);
   overflow: hidden;
 }
 
@@ -579,8 +590,8 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 6px 0;
-  border-bottom: 1px dashed var(--color-cork-border);
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--border-dashed);
   gap: 16px;
   font-size: 13px;
 }
@@ -593,7 +604,7 @@ main {
   font-family: var(--font-halyard);
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
@@ -605,20 +616,20 @@ main {
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   text-align: right;
   line-height: 1.10;
 }
 
 .spec-value.highlight {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
 }
 
 .hero-actions-panel {
   grid-column: span 4;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-end;
 }
 
@@ -648,22 +659,22 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-ink-cream);
-  background-color: var(--bg-surface);
-  border: 1px solid var(--color-cork-border);
+  color: var(--text-secondary);
+  background-color: var(--bg-surface-solid);
+  border: 1px solid var(--border-solid);
   border-radius: 2px;
   transition: all 0.15s ease;
 }
 
 .filter-tab:hover {
-  color: var(--color-warm-cream);
-  border-color: var(--color-driftwood);
+  color: var(--text-primary);
+  border-color: var(--border-solid-strong);
 }
 
 .filter-tab.active {
-  color: var(--color-walnut-shadow);
-  background-color: var(--color-warm-cream);
-  border-color: var(--color-warm-cream);
+  color: var(--text-inverse);
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
 }
 
 .projects-matrix {
@@ -678,13 +689,15 @@ main {
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--bg-surface);
-  border: 1px solid var(--color-cork-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-solid);
   border-radius: 0;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .spec-card:hover {
-  border-color: var(--color-driftwood);
+  border-color: var(--border-solid-strong);
 }
 
 .card-top-bar {
@@ -692,7 +705,7 @@ main {
   align-items: center;
   justify-content: space-between;
   padding: 14px 18px;
-  border-bottom: 1px solid var(--color-cork-border);
+  border-bottom: 1px solid var(--border-solid);
   font-family: var(--font-halyard);
   font-size: 12px;
   font-weight: 500;
@@ -701,11 +714,11 @@ main {
 }
 
 .card-index {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
 }
 
 .card-category {
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
@@ -716,7 +729,7 @@ main {
   font-weight: 500;
   line-height: 1.09;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   text-transform: uppercase;
   padding: 18px 18px 4px 18px;
 }
@@ -728,7 +741,7 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   padding: 0 18px 12px 18px;
 }
 
@@ -740,7 +753,7 @@ main {
   text-transform: none;
   line-height: 1.35;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
   padding: 0 18px 18px 18px;
   flex-grow: 1;
 }
@@ -749,14 +762,14 @@ main {
   display: flex;
   flex-direction: column;
   padding: 0 18px 14px 18px;
-  border-top: 1px dashed var(--color-cork-border);
+  border-top: 1px dashed var(--border-dashed);
 }
 
 .card-spec-row {
   display: flex;
   justify-content: space-between;
   padding: 6px 0;
-  border-bottom: 1px dashed var(--color-cork-border);
+  border-bottom: 1px dashed var(--border-dashed);
   font-size: 13px;
 }
 
@@ -771,7 +784,7 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
 }
 
 .cs-value {
@@ -780,7 +793,7 @@ main {
   font-weight: 500;
   letter-spacing: 0em;
   line-height: 1.10;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   text-align: right;
 }
 
@@ -800,7 +813,7 @@ main {
   text-transform: none;
   line-height: 1.26;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   margin-bottom: 18px;
 }
 
@@ -811,7 +824,7 @@ main {
   text-transform: none;
   line-height: 1.35;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
 }
 
 .spec-columns-block {
@@ -825,20 +838,22 @@ main {
   display: flex;
   flex-direction: column;
   background-color: var(--bg-surface);
-  border: 1px solid var(--color-cork-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-solid);
   border-radius: 0;
 }
 
 .column-header {
   padding: 16px 18px;
-  border-bottom: 1px solid var(--color-cork-border);
+  border-bottom: 1px solid var(--border-solid);
 }
 
 .col-num {
   font-family: var(--font-halyard);
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
@@ -853,7 +868,7 @@ main {
   font-weight: 500;
   line-height: 1.00;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   text-transform: uppercase;
 }
 
@@ -869,7 +884,7 @@ main {
   flex-direction: column;
   gap: 4px;
   padding: 8px 0;
-  border-bottom: 1px dashed var(--color-cork-border);
+  border-bottom: 1px dashed var(--border-dashed);
 }
 
 .col-spec-row:last-child {
@@ -883,19 +898,19 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
 }
 
 .csr-value {
   font-family: var(--font-halyard);
   font-size: 14px;
   font-weight: 400;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   line-height: 1.35;
 }
 
 .csr-value.highlight {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   font-weight: 500;
   font-size: 16px;
 }
@@ -906,7 +921,7 @@ main {
 .ledger-table {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-cork-border);
+  border-top: 1px solid var(--border-solid);
   width: 100%;
 }
 
@@ -915,13 +930,13 @@ main {
   grid-template-columns: 160px 240px 140px 1fr;
   align-items: baseline;
   padding: 22px 0;
-  border-bottom: 1px solid var(--color-cork-border);
+  border-bottom: 1px solid var(--border-solid);
   gap: 20px;
   transition: background-color 0.15s ease;
 }
 
 .ledger-row:hover {
-  background-color: rgba(255, 237, 215, 0.02);
+  background-color: rgba(201, 221, 249, 0.04);
 }
 
 .ledger-col-period {
@@ -930,7 +945,7 @@ main {
   font-weight: 500;
   letter-spacing: 0em;
   line-height: 1.10;
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
 }
 
 .ledger-col-role .role-title {
@@ -940,7 +955,7 @@ main {
   letter-spacing: 0em;
   line-height: 1.00;
   text-transform: uppercase;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
 }
 
 .ledger-col-role .role-org {
@@ -949,7 +964,7 @@ main {
   font-weight: 500;
   letter-spacing: 0em;
   line-height: 1.10;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   text-transform: uppercase;
   display: block;
   margin-top: 6px;
@@ -960,7 +975,7 @@ main {
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
   text-transform: uppercase;
   line-height: 1.10;
 }
@@ -972,7 +987,7 @@ main {
   text-transform: none;
   line-height: 1.35;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
 }
 
 /* ==========================================================================
@@ -981,7 +996,7 @@ main {
 .spec-table-container {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-cork-border);
+  border-top: 1px solid var(--border-solid);
   width: 100%;
 }
 
@@ -990,19 +1005,19 @@ main {
   grid-template-columns: 48px 180px 1fr 220px 80px;
   align-items: baseline;
   padding: 16px 0;
-  border-bottom: 1px dashed var(--color-cork-border);
+  border-bottom: 1px dashed var(--border-dashed);
   gap: 16px;
   font-size: 13px;
 }
 
 .spec-table-row:hover {
-  background-color: rgba(255, 237, 215, 0.02);
+  background-color: rgba(201, 221, 249, 0.04);
 }
 
 .st-num {
   font-family: var(--font-halyard);
   font-size: 13px;
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   font-weight: 500;
   letter-spacing: 0em;
   line-height: 1.10;
@@ -1015,16 +1030,16 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
 }
 
 .st-rank.highlight {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
 }
 
 .st-comp {
   font-family: var(--font-halyard);
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   font-weight: 500;
   letter-spacing: 0em;
   text-transform: uppercase;
@@ -1034,7 +1049,7 @@ main {
 .st-host {
   font-family: var(--font-halyard);
   font-size: 12px;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
@@ -1043,7 +1058,7 @@ main {
 .st-year {
   font-family: var(--font-halyard);
   font-size: 13px;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
   letter-spacing: 0em;
   line-height: 1.10;
   text-align: right;
@@ -1061,7 +1076,9 @@ main {
 
 .stack-block {
   background-color: var(--bg-surface);
-  border: 1px solid var(--color-cork-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-solid);
   border-radius: 0;
   padding: 24px;
 }
@@ -1071,7 +1088,7 @@ main {
   align-items: baseline;
   gap: 12px;
   margin-bottom: 14px;
-  border-bottom: 1px solid var(--color-cork-border);
+  border-bottom: 1px solid var(--border-solid);
   padding-bottom: 12px;
 }
 
@@ -1079,7 +1096,7 @@ main {
   font-family: var(--font-halyard);
   font-size: 13px;
   font-weight: 500;
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   letter-spacing: 0em;
   line-height: 1.10;
 }
@@ -1088,7 +1105,7 @@ main {
   font-family: var(--font-halyard);
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
@@ -1100,7 +1117,7 @@ main {
   font-weight: 400;
   line-height: 1.45;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
 }
 
 /* ==========================================================================
@@ -1121,7 +1138,7 @@ main {
 .contact-spec-rows {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-cork-border);
+  border-top: 1px solid var(--border-solid);
   margin-bottom: 36px;
 }
 
@@ -1130,7 +1147,7 @@ main {
   grid-template-columns: 180px 1fr auto;
   align-items: center;
   padding: 16px 0;
-  border-bottom: 1px dashed var(--color-cork-border);
+  border-bottom: 1px dashed var(--border-dashed);
   gap: 16px;
 }
 
@@ -1138,7 +1155,7 @@ main {
   font-family: var(--font-halyard);
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
@@ -1150,14 +1167,14 @@ main {
   font-weight: 500;
   letter-spacing: 0em;
   line-height: 1.10;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   word-break: break-all;
 }
 
 .cr-static-note {
   font-family: var(--font-halyard);
   font-size: 12px;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
@@ -1168,7 +1185,7 @@ main {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 32px;
-  border-bottom: 1px solid var(--color-cork-border);
+  border-bottom: 1px solid var(--border-solid);
   margin-bottom: 24px;
   gap: 16px;
 }
@@ -1184,14 +1201,14 @@ main {
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
   text-transform: uppercase;
   line-height: 1.10;
   transition: color 0.15s ease;
 }
 
 .ext-link:hover {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
 }
 
 .footer-meta-row {
@@ -1207,7 +1224,7 @@ main {
   font-family: var(--font-halyard);
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   text-transform: uppercase;
   line-height: 1.10;
 }
@@ -1219,7 +1236,7 @@ main {
   font-size: 8px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   text-transform: uppercase;
   line-height: 1.20;
 }
@@ -1236,7 +1253,7 @@ main {
   max-height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: rgba(16, 9, 4, 0.86);
+  background-color: rgba(11, 21, 43, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: none;
@@ -1255,7 +1272,7 @@ main {
   max-height: calc(100vh - 64px);
   overflow-y: auto;
   background-color: var(--bg-modal);
-  border: 1px solid var(--color-driftwood);
+  border: 1px solid var(--border-solid-strong);
   border-radius: 0;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.9);
 }
@@ -1265,8 +1282,8 @@ main {
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
-  border-bottom: 1px solid var(--color-cork-border);
-  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-solid);
+  background-color: var(--bg-surface-solid);
 }
 
 .modal-header-meta {
@@ -1280,16 +1297,16 @@ main {
 }
 
 .modal-index {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   font-weight: 500;
 }
 
 .modal-sep {
-  color: var(--color-cork-border);
+  color: var(--border-solid);
 }
 
 .modal-category {
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
@@ -1298,14 +1315,14 @@ main {
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
   text-transform: uppercase;
   line-height: 1.10;
   transition: color 0.15s ease;
 }
 
 .modal-close-btn:hover {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
 }
 
 .modal-body {
@@ -1317,7 +1334,7 @@ main {
   font-family: var(--font-halyard);
   font-size: clamp(24px, 3.5vw, 33.75px);
   font-weight: 500;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   line-height: 0.94;
   letter-spacing: 0em;
   text-transform: uppercase;
@@ -1329,7 +1346,7 @@ main {
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   text-transform: uppercase;
   line-height: 1.10;
   margin-bottom: 24px;
@@ -1340,8 +1357,8 @@ main {
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   padding: 14px 18px;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--color-cork-border);
+  background-color: var(--bg-surface-solid);
+  border: 1px solid var(--border-solid);
   margin-bottom: 24px;
 }
 
@@ -1358,7 +1375,7 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
 }
 
 .ms-val {
@@ -1366,7 +1383,7 @@ main {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
   line-height: 1.10;
 }
 
@@ -1375,13 +1392,13 @@ main {
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-muted);
   text-transform: uppercase;
   line-height: 1.10;
   margin-top: 24px;
   margin-bottom: 10px;
   padding-bottom: 6px;
-  border-bottom: 1px dashed var(--color-cork-border);
+  border-bottom: 1px dashed var(--border-dashed);
 }
 
 .modal-desc {
@@ -1391,7 +1408,7 @@ main {
   text-transform: none;
   line-height: 1.35;
   letter-spacing: 0em;
-  color: var(--color-warm-cream);
+  color: var(--text-primary);
 }
 
 .modal-highlights {
@@ -1410,7 +1427,7 @@ main {
   text-transform: none;
   line-height: 1.40;
   letter-spacing: 0em;
-  color: var(--color-ink-cream);
+  color: var(--text-secondary);
 }
 
 .modal-highlights li::before {
@@ -1419,7 +1436,7 @@ main {
   left: 0;
   top: 2px;
   font-size: 10px;
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
 }
 
 .modal-tags {
@@ -1436,9 +1453,9 @@ main {
   letter-spacing: 0em;
   text-transform: uppercase;
   line-height: 1.10;
-  color: var(--color-warm-cream);
-  background-color: var(--bg-surface);
-  border: 1px solid var(--color-cork-border);
+  color: var(--text-primary);
+  background-color: var(--bg-surface-solid);
+  border: 1px solid var(--border-solid);
   padding: 4px 10px;
   border-radius: 0;
 }
@@ -1453,9 +1470,9 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background-color: var(--color-bark-brown);
-  border: 1px solid var(--color-ember-accent);
-  color: var(--color-warm-cream);
+  background-color: var(--bg-surface-solid);
+  border: 1px solid var(--accent-luminous);
+  color: var(--text-primary);
   font-family: var(--font-halyard);
   font-size: 13px;
   font-weight: 500;
@@ -1478,7 +1495,7 @@ main {
 }
 
 .toast-indicator {
-  color: var(--color-ember-accent);
+  color: var(--accent-luminous);
   font-size: 10px;
 }
 
@@ -1486,6 +1503,10 @@ main {
    RESPONSIVE LAYOUT (360px Mobile to 1920px Full-Bleed Desktop)
    ========================================================================== */
 @media (max-width: 1100px) {
+  .hero-title-block {
+    max-width: 100%;
+  }
+
   .asymmetric-grid {
     grid-template-columns: 1fr;
     gap: 36px;
@@ -1512,7 +1533,7 @@ main {
 
   .hero-lower-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 24px;
   }
 
   .hero-editorial-panel {
